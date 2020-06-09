@@ -17,8 +17,25 @@ import logo from '../../assets/logo.png';
 
 function NewPlantHome({ navigation }) {
   const [selectedImage, setSelectedImage] = React.useState(null);
+  const [imagePickerSelected, setPickerSelected] = React.useState(true);
+
+  let launchCameraAsync = async () => {
+    setPickerSelected(false);
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchCameraAsync();
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+  };
 
   let openImagePickerAsync = async () => {
+    setPickerSelected(true);
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -59,9 +76,21 @@ function NewPlantHome({ navigation }) {
         >
           <Text style={styles.buttonText}>use photo</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-          <Text style={styles.buttonText}>choose another photo</Text>
-        </TouchableOpacity>
+
+        {imagePickerSelected && (
+          <TouchableOpacity
+            onPress={openImagePickerAsync}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>choose another photo</Text>
+          </TouchableOpacity>
+        )}
+
+        {imagePickerSelected || (
+          <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
+            <Text style={styles.buttonText}>choose another photo</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
@@ -74,10 +103,9 @@ function NewPlantHome({ navigation }) {
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
         <Text style={styles.buttonText}>pick from gallery</Text>
       </TouchableOpacity>
-      <Button
-        title="image capture"
-        onPress={() => navigation.navigate('image capture')}
-      />
+      <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
+        <Text style={styles.buttonText}>Take a photo!</Text>
+      </TouchableOpacity>
     </View>
   );
 }
