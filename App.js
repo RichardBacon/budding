@@ -1,13 +1,31 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// import 'react-native-gesture-handler';
+import * as React from 'react';
+import {
+  Animated,
+  View,
+  StyleSheet,
+  PanResponder,
+  Text,
+  Image,
+  Button,
+} from 'react-native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MeasureFunction from './components/MeasureFunction';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="MeasureFunction" component={MeasureFunction} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
