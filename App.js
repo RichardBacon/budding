@@ -11,16 +11,21 @@ import {
 } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import MeasureFunction from './components/MeasureFunction';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import Garden from './components/Garden';
+import Profile from './components/Profile';
+import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 
-const Stack = createStackNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="MeasureFunction" component={MeasureFunction} />
-      </Stack.Navigator>
+      <Tab.Navigator barStyle={styles.bottomNav}>
+        <Tab.Screen name="garden" component={Garden} />
+        <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
+        <Tab.Screen name="profile" component={Profile} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
@@ -33,5 +38,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bottomNav: {
+    backgroundColor: '#52875a',
   },
 });
