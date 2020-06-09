@@ -9,7 +9,8 @@ import {
   Button,
 } from 'react-native';
 
-function MeasureFunction() {
+function MeasureFunction({ route }) {
+  const { image } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(0);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
@@ -75,8 +76,7 @@ function MeasureFunction() {
         // onTouchStart={this.handleTouch}
         style={styles.logo}
         source={{
-          uri:
-            'https://media.discordapp.net/attachments/718422011516420147/719547331522986124/prayer-centre.jpg?width=422&height=562',
+          uri: image,
         }}
       />
       <Animated.View
@@ -85,9 +85,9 @@ function MeasureFunction() {
         }}
         {...panResponder.panHandlers}
       >
-        {/* <View style={styles.box} /> */}
+        <View style={styles.box} />
         <View style={styles.box2} />
-        {/* <View style={styles.box3} /> */}
+        <View style={styles.box3} />
       </Animated.View>
       <Button title={'reset'} onPress={resetMeasure} />
       <Button title={'calculate'} onPress={calculateDistance} />
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   box2: {
     position: 'absolute',
-    height: 3,
+    height: 1,
     width: 100,
     marginTop: 50,
     opacity: 1,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   box3: {
     position: 'absolute',
     height: 100,
-    width: 2,
+    width: 1,
     marginLeft: 50,
     opacity: 1,
     backgroundColor: 'green',

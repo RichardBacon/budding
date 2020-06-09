@@ -1,24 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
-  Animated,
-  View,
-  StyleSheet,
-  PanResponder,
-  Text,
   Image,
-  Button,
-  TouchableOpacity,
   Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 // import * as Sharing from 'expo-sharing';
 import uploadToAnonymousFilesAsync from 'anonymous-files';
 import logo from '../../assets/logo.png';
 
-function NewPlantHome({ navigation }) {
+export default function ImageCapture(props) {
   const [selectedImage, setSelectedImage] = React.useState(null);
+  const [images, setImages] = React.useState([]);
 
-  let openImagePickerAsync = async () => {
+  let launchCameraAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchCameraAsync();
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+  };
+
+  const openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
@@ -40,44 +52,31 @@ function NewPlantHome({ navigation }) {
     }
   };
 
+  let clearImageAndBack = async () => {};
+
   if (selectedImage !== null) {
     return (
       <View style={styles.container}>
         <Image
-          source={{
-            uri: selectedImage.localUri,
-          }}
+          source={{ uri: selectedImage.localUri }}
           style={styles.thumbnail}
         />
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('measure plant', {
-              image: selectedImage.localUri,
-            })
-          }
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>use photo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-          <Text style={styles.buttonText}>choose another photo</Text>
+        <TouchableOpacity onPress={clearImageAndBack} style={styles.button}>
+          <Text style={styles.buttonText}>Go back</Text>
         </TouchableOpacity>
       </View>
     );
   }
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        title="tutorials"
-        onPress={() => navigation.navigate('tutorials')}
-      />
+    <View style={styles.container}>
+      <Image source={logo} style={styles.logo} />
+      <Text style={styles.instructions}>Select a plant!</Text>
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>pick from gallery</Text>
+        <Text style={styles.buttonText}>Pick from gallery</Text>
       </TouchableOpacity>
-      <Button
-        title="image capture"
-        onPress={() => navigation.navigate('image capture')}
-      />
+      <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
+        <Text style={styles.buttonText}>Take a photo!</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -117,5 +116,3 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
 });
-
-export default NewPlantHome;

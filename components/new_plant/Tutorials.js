@@ -9,12 +9,16 @@ import {
   Button,
 } from 'react-native';
 
-function PlantOptions() {
+function Tutorials({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Tutorials</Text>
+      <Button
+        title="measure plant"
+        onPress={() => navigation.navigate('measure plant')}
+      />
     </View>
   );
 }
 
-export default PlantOptions;
+export default Tutorials;
