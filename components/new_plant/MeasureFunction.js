@@ -12,7 +12,7 @@ import {
 import { set } from 'react-native-reanimated';
 
 function MeasureFunction({ route }) {
-  // const { image } = route.params;
+  const { image } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
@@ -41,7 +41,7 @@ function MeasureFunction({ route }) {
 
   const calculateDistance = () => {
     console.log(pan.y);
-    const potHeight = 12.5;
+    const potHeight = 12;
     const unit = (bottomPotClick - topPotClick) / potHeight;
     let plantHeight = (topPotClick - topPlantClick) / unit;
     // console.log(bottomPotClick, topPotClick, topPlantClick);
@@ -83,8 +83,8 @@ function MeasureFunction({ route }) {
         // onTouchStart={this.handleTouch}
         style={styles.logo}
         source={{
-          uri: 'https://i.ibb.co/hR0hV9h/Plant.png',
-          // uri: image,
+          // uri: 'https://i.ibb.co/hR0hV9h/Plant.png',
+          uri: image,
         }}
       />
       <Animated.View
