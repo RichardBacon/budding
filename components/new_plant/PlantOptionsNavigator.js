@@ -9,7 +9,15 @@ const Stack = createStackNavigator();
 
 function PlantOptionsNavigator() {
   return (
-    <Stack.Navigator initialRouteName="new plant">
+    <Stack.Navigator
+      screenOptions={{
+        headerBackTitle: 'back',
+        headerStyle: {
+          height: 55,
+        },
+      }}
+      initialRouteName="new plant"
+    >
       <Stack.Screen name="new plant" component={NewPlantHome} />
       <Stack.Screen name="tutorial" component={Tutorials} />
       <Stack.Screen name="measure plant" component={MeasureFunction} />
