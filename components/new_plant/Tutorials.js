@@ -7,15 +7,27 @@ import {
   Text,
   Image,
   Button,
+  useEffect,
 } from 'react-native';
 
-function Tutorials({ navigation }) {
+function Tutorials(props) {
+  const { openImagePickerAsync } = props.route.params;
+  // const opacity = new Animated.Value(0);
+
+  // useEffect(() => {
+  //   Animated.timing(opacity, {
+  //     toValue: 1,
+  //     duration: 500,
+  //   }).start();
+  // }, []);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Tutorials</Text>
       <Button
-        title="measure plant"
-        onPress={() => navigation.navigate('measure plant')}
+        title="take photo"
+        onPress={() => openImagePickerAsync()}
+        // onPress={() => navigation.navigate('new plant')}
       />
     </View>
   );

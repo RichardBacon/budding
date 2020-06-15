@@ -7,16 +7,18 @@ import {
   Text,
   Image,
   Button,
+  TouchableOpacity,
 } from 'react-native';
+import { set } from 'react-native-reanimated';
 
 function MeasureFunction({ route }) {
   const { image } = route.params;
-  const [bottomPotClick, setBottomPotClick] = useState(0);
+  const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
   const pressCount = useRef(0);
-
   const pan = useRef(new Animated.ValueXY()).current;
+  const [showCalculateButton, setShow] = useState(false);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -33,29 +35,33 @@ function MeasureFunction({ route }) {
       },
       onPanResponderRelease: (e, gestureState) => {
         const { moveY } = gestureState;
-
-        if (pressCount.current === 0) {
-          pressCount.current++;
-          setBottomPotClick(moveY);
-        } else if (pressCount.current === 1) {
-          pressCount.current++;
-          setTopPotClick(moveY);
-        } else if (pressCount.current === 2) {
-          pressCount.current++;
-          setTopPlantClick(moveY);
-        }
       },
     }),
   ).current;
 
   const calculateDistance = () => {
-    const potHeight = 12.5;
+    console.log(pan.y);
+    const potHeight = 12;
     const unit = (bottomPotClick - topPotClick) / potHeight;
     let plantHeight = (topPotClick - topPlantClick) / unit;
-    console.log(bottomPotClick, topPotClick, topPlantClick);
-    // plantHeight = plantHeight * (1 + 0.15)
-
+    // console.log(bottomPotClick, topPotClick, topPlantClick);
     console.log(plantHeight + 'CM  ----PLANT HEIGHT');
+  };
+
+  const addMarker = () => {
+    const { _value } = pan.y;
+    console.log(pan);
+    if (pressCount.current === 0) {
+      pressCount.current++;
+      setBottomPotClick(_value);
+    } else if (pressCount.current === 1) {
+      pressCount.current++;
+      setTopPotClick(_value);
+    } else if (pressCount.current === 2) {
+      pressCount.current++;
+      setTopPlantClick(_value);
+      setShow(true);
+    }
   };
 
   const resetMeasure = () => {
@@ -63,11 +69,12 @@ function MeasureFunction({ route }) {
     setTopPotClick(0);
     setTopPlantClick(0);
     pressCount.current = 0;
+    setShow(false);
   };
 
   return (
     <View style={styles.container}>
-      <Text>Bottom pot: {bottomPotClick / 10}</Text>
+      <Text>Bottom pot: {bottomPotClick}</Text>
       <Text>top of pot: {topPotClick}</Text>
       <Text>top of plant: {topPlantClick}</Text>
       <Text>{pressCount.current}</Text>
@@ -76,6 +83,7 @@ function MeasureFunction({ route }) {
         // onTouchStart={this.handleTouch}
         style={styles.logo}
         source={{
+          // uri: 'https://i.ibb.co/hR0hV9h/Plant.png',
           uri: image,
         }}
       />
@@ -89,27 +97,30 @@ function MeasureFunction({ route }) {
         <View style={styles.box2} />
         <View style={styles.box3} />
       </Animated.View>
-      <Button title={'reset'} onPress={resetMeasure} />
-      <Button title={'calculate'} onPress={calculateDistance} />
+      {!showCalculateButton && (
+        <TouchableOpacity onPress={addMarker} style={styles.button}>
+          <Text style={styles.buttonText}>{`add ${
+            pressCount.current === 0
+              ? 'first'
+              : pressCount.current === 1
+              ? 'second'
+              : 'third'
+          } marker`}</Text>
+        </TouchableOpacity>
+      )}
+      {showCalculateButton && (
+        <TouchableOpacity onPress={calculateDistance} style={styles.button}>
+          <Text style={styles.buttonText}>calculate</Text>
+        </TouchableOpacity>
+      )}
+      <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+        <Text style={styles.buttonText}>reset</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 export default MeasureFunction;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     paddingTop: 50,
-//   },
-//   tinyLogo: {
-//     width: 50,
-//     height: 50,
-//   },
-//   logo: {
-//     width: 300,
-//     height: 500,
-//   },
-// });
 
 const styles = StyleSheet.create({
   container: {
@@ -133,6 +144,16 @@ const styles = StyleSheet.create({
     opacity: 0.3,
     backgroundColor: 'blue',
     borderRadius: 5,
+  },
+  button: {
+    backgroundColor: '#52875a',
+    padding: 20,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: '#fff',
   },
   box2: {
     position: 'absolute',
