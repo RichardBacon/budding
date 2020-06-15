@@ -12,7 +12,7 @@ import {
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Garden from './components/Garden';
+import Garden from './components/garden/Garden';
 import Profile from './components/Profile';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 
