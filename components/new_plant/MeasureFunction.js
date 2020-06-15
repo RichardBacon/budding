@@ -8,6 +8,8 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import { set } from 'react-native-reanimated';
 
@@ -30,8 +32,7 @@ function MeasureFunction({ route }) {
         });
       },
       onPanResponderMove: (evt, gestureState) => {
-        // I need this space to do some other functions
-        // This is where I imagine I should implement constraint logic
+        const panTest = -385;
         return Animated.event([
           null,
           {
@@ -75,6 +76,7 @@ function MeasureFunction({ route }) {
   };
 
   const resetMeasure = () => {
+    console.log(pan.y);
     setBottomPotClick(0);
     setTopPotClick(0);
     setTopPlantClick(0);
@@ -84,11 +86,15 @@ function MeasureFunction({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text>Bottom pot: {bottomPotClick}</Text>
-      <Text>top of pot: {topPotClick}</Text>
-      <Text>top of plant: {topPlantClick}</Text>
-      <Text>{pressCount.current}</Text>
-      <Text style={styles.titleText}>Drag this box!</Text>
+      <Text style={styles.headingText}>
+        {pressCount.current === 0
+          ? `Place your first marker at the bottom of the pot`
+          : pressCount.current === 1
+          ? `Place your second marker at the top of the pot`
+          : pressCount.current === 2
+          ? `Place your third marker at the top of the plant`
+          : `Confirm your measurements`}
+      </Text>
       <Image
         // onTouchStart={this.handleTouch}
         style={styles.logo}
@@ -119,7 +125,10 @@ function MeasureFunction({ route }) {
         </TouchableOpacity>
       )}
       {showCalculateButton && (
-        <TouchableOpacity onPress={calculateDistance} style={styles.top_button}>
+        <TouchableOpacity
+          onPress={calculateDistance}
+          style={styles.top_button_select}
+        >
           <Text style={styles.buttonText}>calculate</Text>
         </TouchableOpacity>
       )}
@@ -134,6 +143,7 @@ export default MeasureFunction;
 
 const styles = StyleSheet.create({
   container: {
+    padding: 40,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -142,17 +152,20 @@ const styles = StyleSheet.create({
     width: 450,
     height: 500,
   },
-  titleText: {
-    fontSize: 14,
+  headingText: {
+    textAlign: 'center',
+    fontSize: 25,
     lineHeight: 24,
     fontWeight: 'bold',
+    marginBottom: 15,
+    letterSpacing: -1,
   },
   oval: {
     zIndex: 10,
     elevation: 11,
     position: 'relative',
     height: 70,
-    width: 350,
+    width: 300,
     opacity: 0.3,
     backgroundColor: '#fdbe39',
     borderRadius: 200,
@@ -160,7 +173,7 @@ const styles = StyleSheet.create({
   horizontal_line: {
     position: 'absolute',
     height: 1,
-    width: 350,
+    width: 300,
     marginTop: 35,
     opacity: 1,
     backgroundColor: 'green',
@@ -170,23 +183,41 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 70,
     width: 1,
-    marginLeft: 175,
+    marginLeft: 150,
     opacity: 1,
     backgroundColor: 'green',
     borderRadius: 5,
   },
   top_button: {
-    marginTop: -65,
+    alignItems: 'center',
+    height: 35,
+    width: 200,
+    marginTop: -60,
     backgroundColor: '#52875a',
-    padding: 20,
+    padding: 4,
+    borderRadius: 5,
+    marginBottom: 10,
+    zIndex: 5,
+    elevation: 5,
+  },
+  top_button_select: {
+    backgroundColor: '#fdbe39',
+    alignItems: 'center',
+    height: 35,
+    width: 200,
+    marginTop: -60,
+    padding: 4,
     borderRadius: 5,
     marginBottom: 10,
     zIndex: 5,
     elevation: 5,
   },
   button: {
+    alignItems: 'center',
+    height: 35,
+    width: 200,
     backgroundColor: '#52875a',
-    padding: 20,
+    padding: 4,
     borderRadius: 5,
     marginBottom: 10,
     zIndex: 5,
@@ -201,7 +232,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   logo: {
-    width: 350,
-    height: 450,
+    width: 300,
+    height: 350,
   },
 });
