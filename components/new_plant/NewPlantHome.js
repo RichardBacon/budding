@@ -32,6 +32,7 @@ function NewPlantHome({ navigation }) {
       return;
     }
     setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+    imagePickerScreen();
   };
 
   let openImagePickerAsync = async () => {
