@@ -8,6 +8,9 @@ import {
   Image,
   Button,
 } from 'react-native';
+import { RNS3 } from 'react-native-s3-upload';
+const shortid = require('shortid');
+const { options } = require('../../s3-config.js');
 
 function MeasureFunction({ route }) {
   const { image } = route.params;
@@ -65,6 +68,30 @@ function MeasureFunction({ route }) {
     pressCount.current = 0;
   };
 
+  const submitPlant = () => {
+    const name = shortid.generate();
+    console.log(image);
+
+    const file = {
+      uri: image,
+      name,
+      type: 'image/jpg',
+    };
+
+    RNS3.put(file, options)
+      .then((response) => {
+        console.log('status: ', response.status);
+        if (response.status === 201) {
+          console.log('body: ', response.body);
+          const { location } = response.body.postResponse;
+          console.log(location);
+        } else console.log('message: ', response.text);
+      })
+      .catch((err) => console.log(err));
+
+    //setImage(null);
+  };
+
   return (
     <View style={styles.container}>
       <Text>Bottom pot: {bottomPotClick / 10}</Text>
@@ -89,6 +116,7 @@ function MeasureFunction({ route }) {
         <View style={styles.box2} />
         <View style={styles.box3} />
       </Animated.View>
+      <Button title={'submit'} onPress={submitPlant} />
       <Button title={'reset'} onPress={resetMeasure} />
       <Button title={'calculate'} onPress={calculateDistance} />
     </View>
