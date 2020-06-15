@@ -29,11 +29,21 @@ function MeasureFunction({ route }) {
           y: pan.y._value,
         });
       },
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
+      onPanResponderMove: (evt, gestureState) => {
+        // I need this space to do some other functions
+        // This is where I imagine I should implement constraint logic
+        return Animated.event([
+          null,
+          {
+            dy: pan.y,
+          },
+        ])(evt, gestureState);
+      },
       onPanResponderEnd: (e, gestureState) => {
         pan.flattenOffset();
       },
       onPanResponderRelease: (e, gestureState) => {
+        pan.flattenOffset();
         const { moveY } = gestureState;
       },
     }),
@@ -93,12 +103,12 @@ function MeasureFunction({ route }) {
         }}
         {...panResponder.panHandlers}
       >
-        <View style={styles.box} />
-        <View style={styles.box2} />
-        <View style={styles.box3} />
+        <View style={styles.oval} />
+        <View style={styles.horizontal_line} />
+        <View style={styles.vertical_line} />
       </Animated.View>
       {!showCalculateButton && (
-        <TouchableOpacity onPress={addMarker} style={styles.button}>
+        <TouchableOpacity onPress={addMarker} style={styles.top_button}>
           <Text style={styles.buttonText}>{`add ${
             pressCount.current === 0
               ? 'first'
@@ -109,7 +119,7 @@ function MeasureFunction({ route }) {
         </TouchableOpacity>
       )}
       {showCalculateButton && (
-        <TouchableOpacity onPress={calculateDistance} style={styles.button}>
+        <TouchableOpacity onPress={calculateDistance} style={styles.top_button}>
           <Text style={styles.buttonText}>calculate</Text>
         </TouchableOpacity>
       )}
@@ -137,41 +147,54 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'bold',
   },
-  box: {
-    position: 'absolute',
-    height: 100,
-    width: 100,
+  oval: {
+    zIndex: 10,
+    elevation: 11,
+    position: 'relative',
+    height: 70,
+    width: 350,
     opacity: 0.3,
-    backgroundColor: 'blue',
+    backgroundColor: '#fdbe39',
+    borderRadius: 200,
+  },
+  horizontal_line: {
+    position: 'absolute',
+    height: 1,
+    width: 350,
+    marginTop: 35,
+    opacity: 1,
+    backgroundColor: 'green',
     borderRadius: 5,
+  },
+  vertical_line: {
+    position: 'absolute',
+    height: 70,
+    width: 1,
+    marginLeft: 175,
+    opacity: 1,
+    backgroundColor: 'green',
+    borderRadius: 5,
+  },
+  top_button: {
+    marginTop: -65,
+    backgroundColor: '#52875a',
+    padding: 20,
+    borderRadius: 5,
+    marginBottom: 10,
+    zIndex: 5,
+    elevation: 5,
   },
   button: {
     backgroundColor: '#52875a',
     padding: 20,
     borderRadius: 5,
     marginBottom: 10,
+    zIndex: 5,
+    elevation: 5,
   },
   buttonText: {
     fontSize: 20,
     color: '#fff',
-  },
-  box2: {
-    position: 'absolute',
-    height: 1,
-    width: 100,
-    marginTop: 50,
-    opacity: 1,
-    backgroundColor: 'green',
-    borderRadius: 5,
-  },
-  box3: {
-    position: 'absolute',
-    height: 100,
-    width: 1,
-    marginLeft: 50,
-    opacity: 1,
-    backgroundColor: 'green',
-    borderRadius: 5,
   },
   tinyLogo: {
     width: 50,
