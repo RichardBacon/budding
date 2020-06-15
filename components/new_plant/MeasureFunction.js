@@ -8,6 +8,8 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import { set } from 'react-native-reanimated';
 
@@ -83,50 +85,66 @@ function MeasureFunction({ route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Bottom pot: {bottomPotClick}</Text>
-      <Text>top of pot: {topPotClick}</Text>
-      <Text>top of plant: {topPlantClick}</Text>
-      <Text>{pressCount.current}</Text>
-      <Text style={styles.titleText}>Drag this box!</Text>
-      <Image
-        // onTouchStart={this.handleTouch}
-        style={styles.logo}
-        source={{
-          // uri: 'https://i.ibb.co/hR0hV9h/Plant.png',
-          uri: image,
-        }}
-      />
-      <Animated.View
-        style={{
-          transform: [{ translateX: pan.x }, { translateY: pan.y }],
-        }}
-        {...panResponder.panHandlers}
-      >
-        <View style={styles.oval} />
-        <View style={styles.horizontal_line} />
-        <View style={styles.vertical_line} />
-      </Animated.View>
-      {!showCalculateButton && (
-        <TouchableOpacity onPress={addMarker} style={styles.top_button}>
-          <Text style={styles.buttonText}>{`add ${
-            pressCount.current === 0
-              ? 'first'
-              : pressCount.current === 1
-              ? 'second'
-              : 'third'
-          } marker`}</Text>
+    // <View style={styles.container}>
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text>Bottom pot: {bottomPotClick}</Text>
+        <Text>top of pot: {topPotClick}</Text>
+        <Text>top of plant: {topPlantClick}</Text>
+        <Text>{pressCount.current}</Text>
+        <Text style={styles.titleText}>Drag this box!</Text>
+        <Image
+          // onTouchStart={this.handleTouch}
+          style={styles.logo}
+          source={{
+            // uri: 'https://i.ibb.co/hR0hV9h/Plant.png',
+            uri: image,
+          }}
+        />
+        <Animated.View
+          style={{
+            transform: [{ translateX: pan.x }, { translateY: pan.y }],
+          }}
+          {...panResponder.panHandlers}
+        >
+          <View style={styles.oval} />
+          <View style={styles.horizontal_line} />
+          <View style={styles.vertical_line} />
+        </Animated.View>
+        {!showCalculateButton && (
+          <TouchableOpacity onPress={addMarker} style={styles.top_button}>
+            <Text style={styles.buttonText}>{`add ${
+              pressCount.current === 0
+                ? 'first'
+                : pressCount.current === 1
+                ? 'second'
+                : 'third'
+            } marker`}</Text>
+          </TouchableOpacity>
+        )}
+        {showCalculateButton && (
+          <TouchableOpacity
+            onPress={calculateDistance}
+            style={styles.top_button}
+          >
+            <Text style={styles.buttonText}>calculate</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+          <Text style={styles.buttonText}>reset</Text>
         </TouchableOpacity>
-      )}
-      {showCalculateButton && (
-        <TouchableOpacity onPress={calculateDistance} style={styles.top_button}>
-          <Text style={styles.buttonText}>calculate</Text>
+        <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+          <Text style={styles.buttonText}>reset</Text>
         </TouchableOpacity>
-      )}
-      <TouchableOpacity onPress={resetMeasure} style={styles.button}>
-        <Text style={styles.buttonText}>reset</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+          <Text style={styles.buttonText}>reset</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+          <Text style={styles.buttonText}>reset</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
+    // </View>
   );
 }
 
