@@ -12,11 +12,12 @@ import { RNS3 } from 'react-native-s3-upload';
 const shortid = require('shortid');
 const { options } = require('../../s3-config.js');
 
-function MeasureFunction({ route }) {
+function MeasureFunction({ route, navigation }) {
   const { image } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(0);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
+  const [height, setPlantHeight] = useState(null);
   const pressCount = useRef(0);
 
   const pan = useRef(new Animated.ValueXY()).current;
@@ -55,6 +56,7 @@ function MeasureFunction({ route }) {
     const potHeight = 12.5;
     const unit = (bottomPotClick - topPotClick) / potHeight;
     let plantHeight = (topPotClick - topPlantClick) / unit;
+    setPlantHeight(plantHeight);
     console.log(bottomPotClick, topPotClick, topPlantClick);
     // plantHeight = plantHeight * (1 + 0.15)
 
@@ -68,28 +70,11 @@ function MeasureFunction({ route }) {
     pressCount.current = 0;
   };
 
-  const submitPlant = () => {
-    const name = shortid.generate();
-    console.log(image);
-
-    const file = {
-      uri: image,
-      name,
-      type: 'image/jpg',
-    };
-
-    RNS3.put(file, options)
-      .then((response) => {
-        console.log('status: ', response.status);
-        if (response.status === 201) {
-          console.log('body: ', response.body);
-          const { location } = response.body.postResponse;
-          console.log(location);
-        } else console.log('message: ', response.text);
-      })
-      .catch((err) => console.log(err));
-
-    //setImage(null);
+  const plantInfo = {
+    image,
+    height,
+    plantHeight: 7,
+    potHeight: 12.5,
   };
 
   return (
@@ -116,7 +101,13 @@ function MeasureFunction({ route }) {
         <View style={styles.box2} />
         <View style={styles.box3} />
       </Animated.View>
-      <Button title={'submit'} onPress={submitPlant} />
+      <Button
+        title={'submit'}
+        onPress={() => navigation.navigate('new plant entry', plantInfo)}
+      />
+      {
+        // image, s3 link, plant measurements, pot measurement
+      }
       <Button title={'reset'} onPress={resetMeasure} />
       <Button title={'calculate'} onPress={calculateDistance} />
     </View>
