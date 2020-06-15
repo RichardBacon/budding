@@ -32,9 +32,11 @@ function NewPlantHome({ navigation }) {
       return;
     }
     setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+    imagePickerScreen();
   };
 
   let openImagePickerAsync = async () => {
+    navigation.navigate('new plant');
     setPickerSelected(true);
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
@@ -54,52 +56,31 @@ function NewPlantHome({ navigation }) {
       setSelectedImage({ localUri: pickerResult.uri, remoteUri });
     } else {
       setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+      imagePickerScreen();
     }
   };
 
-  if (selectedImage !== null) {
-    return (
-      <View style={styles.container}>
-        <Image
-          source={{
-            uri: selectedImage.localUri,
-          }}
-          style={styles.thumbnail}
-        />
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('measure plant', {
-              image: selectedImage.localUri,
-            })
-          }
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>use photo</Text>
-        </TouchableOpacity>
+  imagePickerScreen = () => {
+    navigation.navigate('image picker', {
+      selectedImage: selectedImage,
+      openImagePickerAsync: openImagePickerAsync,
+      launchCameraAsync: launchCameraAsync,
+      imagePickerSelected: imagePickerSelected,
+    });
+  };
 
-        {imagePickerSelected && (
-          <TouchableOpacity
-            onPress={openImagePickerAsync}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>choose another photo</Text>
-          </TouchableOpacity>
-        )}
-
-        {imagePickerSelected || (
-          <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
-            <Text style={styles.buttonText}>choose another photo</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
-  }
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        title="tutorials"
-        onPress={() => navigation.navigate('tutorials')}
-      />
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('tutorial', {
+            openImagePickerAsync: openImagePickerAsync,
+          })
+        }
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>tutorial</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
         <Text style={styles.buttonText}>pick from gallery</Text>
       </TouchableOpacity>

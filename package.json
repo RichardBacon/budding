@@ -16,6 +16,7 @@
     "anonymous-files": "^1.0.1",
     "expo": "~37.0.3",
     "expo-image-picker": "^8.1.0",
+    "firebase": "^7.15.1",
     "install": "^0.13.0",
     "npm": "^6.14.5",
     "react": "~16.9.0",
