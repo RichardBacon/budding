@@ -7,23 +7,33 @@ import {
   TextInput,
   ScrollView,
   Button,
+  Picker,
 } from 'react-native';
-import { Picker } from '@react-native-community/picker';
+import * as api from '../../api-requests/api';
+const { options } = require('../../s3-config.js');
+const shortid = require('shortid');
+import { RNS3 } from 'react-native-s3-upload';
 
-function NewPlantEntry(plantInfo) {
-  const [name, setName] = useState('');
+function NewPlantEntry({ route, navigation }) {
+  const [plantName, setPlantName] = useState('');
   const [type, setType] = useState('vegetable');
   const [variety, setVariety] = useState('');
   const [waterFreq, setWaterFreq] = useState('');
   const [soil, setSoil] = useState('');
   const [sunlight, setSunlight] = useState('indirect');
-  const [location, setLocation] = useState('indoors');
-  const [leaves, setLeaves] = useState(null);
+  const [location, setLocation] = useState('indoor');
 
-  const { params } = plantInfo.route;
+  const { image, potHeight, plantHeight } = route.params;
+
+  let plantId = '';
+
   const submitPlant = () => {
+    // POST request to postPlant
+    // upload to s3 bucket
+    // POST reques to postSnapshot using plant_id received from postPlant
+    // navigate to garden page AFTER has posted (.then)
+    console.log('inside submit plant');
     const name = shortid.generate();
-    console.log(image);
 
     const file = {
       uri: image,
@@ -31,23 +41,41 @@ function NewPlantEntry(plantInfo) {
       type: 'image/jpg',
     };
 
-    RNS3.put(file, options)
+    api
+      .postPlant(
+        1,
+        plantName,
+        type,
+        soil,
+        sunlight,
+        location,
+        waterFreq,
+        variety,
+        potHeight,
+      )
+      .then((plant) => {
+        plantId = plant.plant_id;
+        return RNS3.put(file, options);
+      })
       .then((response) => {
         console.log('status: ', response.status);
         if (response.status === 201) {
           console.log('body: ', response.body);
-          const { location } = response.body.postResponse;
-          const plantInfo = {
-            image,
-            location,
-            height,
-            potHeight: 12.5,
-          };
-          navigation.navigate('new plant entry', plantInfo);
-        } else console.log('message: ', response.text);
+          const { postResponse } = response.body;
+          return postResponse;
+        } else {
+          console.log('error message: ', response.text);
+          navigation.navigate('new plant');
+          // navigates back to new plant page if there is an error
+        }
+      })
+      .then((postResponse) => {
+        return api.postSnapshot(plantId, postResponse.location, plantHeight);
+      })
+      .then((response) => {
+        navigation.navigate('garden');
       })
       .catch((err) => console.log(err));
-    //setImage(null);
   };
   return (
     <View style={styles.view}>
@@ -55,15 +83,15 @@ function NewPlantEntry(plantInfo) {
         <Image
           style={styles.logo}
           source={{
-            uri: params.image,
+            uri: image,
           }}
         />
-        <Text style={styles.titleText}>{name}</Text>
+        <Text style={styles.titleText}>{plantName}</Text>
 
         <Text>plant name:</Text>
         <TextInput
-          onChangeText={(name) => {
-            setName(name);
+          onChangeText={(plantName) => {
+            setPlantName(plantName);
           }}
           style={styles.input}
           placeholder={'e.g. Plants Armstrong'}
@@ -77,7 +105,9 @@ function NewPlantEntry(plantInfo) {
         >
           <Picker.Item label="vegetable" value="vegetable" />
           <Picker.Item label="fruit" value="fruit" />
+          <Picker.Item label="herb" value="herb" />
           <Picker.Item label="houseplant" value="houseplant" />
+          <Picker.Item label="garden" value="garden" />
           <Picker.Item label="succulent" value="succulent" />
         </Picker>
         <Text>variety: </Text>
@@ -88,8 +118,8 @@ function NewPlantEntry(plantInfo) {
           style={styles.input}
           placeholder={'e.g. bell pepper'}
         />
-        <Text>plant height: {params.plantHeight}cm</Text>
-        <Text>pot height: {params.potHeight}cm</Text>
+        <Text>plant height: {plantHeight}cm</Text>
+        <Text>pot height: {potHeight}cm</Text>
         <Text>sunlight:</Text>
         <Picker
           selectedValue={sunlight}
@@ -107,19 +137,9 @@ function NewPlantEntry(plantInfo) {
             setLocation(itemValue);
           }}
         >
-          <Picker.Item label="indoors" value="indoors" />
-          <Picker.Item label="outdoors" value="outdoors" />
+          <Picker.Item label="indoor" value="indoor" />
+          <Picker.Item label="outdoor" value="outdoor" />
         </Picker>
-        <Text>
-          number of leaves: <Text style={styles.optional}>optional</Text>
-        </Text>
-        <TextInput
-          onChangeText={(leaves) => {
-            setLeaves(leaves);
-          }}
-          style={styles.input}
-          placeholder={'must be a number'}
-        />
         <Text>
           watering frequency: <Text style={styles.optional}>optional</Text>
         </Text>
@@ -143,7 +163,7 @@ function NewPlantEntry(plantInfo) {
         />
         <Button
           title={'add new plant'}
-          onPress={() => console.log('add new plant')}
+          onPress={submitPlant}
           style={styles.button}
         >
           add new plant

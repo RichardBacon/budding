@@ -4,7 +4,6 @@ import NewPlantHome from './NewPlantHome';
 import Tutorials from './Tutorials';
 import MeasureFunction from './MeasureFunction';
 import NewPlantEntry from './NewPlantEntry';
-import ImageCapture from './ImageCapture';
 import ImagePickerScreen from './ImagePickerScreen';
 
 const Stack = createStackNavigator();
@@ -24,7 +23,6 @@ function PlantOptionsNavigator() {
       <Stack.Screen name="tutorial" component={Tutorials} />
       <Stack.Screen name="measure plant" component={MeasureFunction} />
       <Stack.Screen name="new plant entry" component={NewPlantEntry} />
-      <Stack.Screen name="image capture" component={ImageCapture} />
       <Stack.Screen name="image picker" component={ImagePickerScreen} />
     </Stack.Navigator>
   );
