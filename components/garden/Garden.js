@@ -38,10 +38,9 @@ function Garden() {
   // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
     const user_id = 1;
-    let arr = []; // [{}, {}]
     api.getPlantsByUserId(user_id).then((plants) => {
       // console.log(plants);
-      const snapsArr = plants.map((plant) => {
+      const arr = plants.map((plant) => {
         const { plant_id, plant_name, snapshot_count } = plant;
         return api.getSnapshotsByPlantId(plant_id).then((snap) => {
           // console.log(snaps);
@@ -49,12 +48,17 @@ function Garden() {
           let newObj = { plant_name, snapshot_count, ...snap[0] };
           let newArr = [];
           newArr.push(newObj);
-          // console.log(newObj);
+          return newArr;
           // console.log(newObj, '<--- obj');
           // arr.push(newObj);
+          // end goal - is to setSnaps(array_of_newObj)
         });
       });
-      console.log(snapsArr);
+      Promise.all(arr).then((obj) => {
+        const newObj = obj.flat();
+        setSnaps(newObj);
+        // console.log(obj.flat());
+      });
     });
   }, []);
 
