@@ -11,13 +11,17 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
+import { RNS3 } from 'react-native-s3-upload';
+const shortid = require('shortid');
+const { options } = require('../../s3-config.js');
 import { set } from 'react-native-reanimated';
 
-function MeasureFunction({ route }) {
+function MeasureFunction({ route, navigation }) {
   const { image } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
+  const [height, setPlantHeight] = useState(null);
   const pressCount = useRef(0);
   const pan = useRef(new Animated.ValueXY()).current;
   const [showCalculateButton, setShow] = useState(false);
@@ -55,6 +59,10 @@ function MeasureFunction({ route }) {
     const potHeight = 12;
     const unit = (bottomPotClick - topPotClick) / potHeight;
     let plantHeight = (topPotClick - topPlantClick) / unit;
+    setPlantHeight(plantHeight);
+    console.log(bottomPotClick, topPotClick, topPlantClick);
+    // plantHeight = plantHeight * (1 + 0.15)
+
     // console.log(bottomPotClick, topPotClick, topPlantClick);
     console.log(plantHeight + 'CM  ----PLANT HEIGHT');
   };
@@ -81,6 +89,13 @@ function MeasureFunction({ route }) {
     setTopPlantClick(0);
     pressCount.current = 0;
     setShow(false);
+  };
+
+  const plantInfo = {
+    image,
+    height,
+    plantHeight: 7,
+    potHeight: 12.5,
   };
 
   return (
@@ -112,6 +127,15 @@ function MeasureFunction({ route }) {
         <View style={styles.horizontal_line} />
         <View style={styles.vertical_line} />
       </Animated.View>
+      <Button
+        title={'submit'}
+        onPress={() => navigation.navigate('new plant entry', plantInfo)}
+      />
+      {
+        // image, s3 link, plant measurements, pot measurement
+      }
+      <Button title={'reset'} onPress={resetMeasure} />
+      <Button title={'calculate'} onPress={calculateDistance} />
       {!showCalculateButton && (
         <TouchableOpacity onPress={addMarker} style={styles.top_button}>
           <Text style={styles.buttonText}>{`add ${

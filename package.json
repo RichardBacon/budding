@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",
+    "@react-native-community/picker": "^1.6.3",
     "@react-navigation/material-bottom-tabs": "^5.2.10",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
@@ -30,12 +31,16 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-paper": "^3.10.1",
     "react-native-reanimated": "^1.7.1",
+    "react-native-s3-upload": "0.0.12",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.2.0",
+
     "react-native-super-grid": "^4.0.2",
     "react-native-svg": "11.0.1",
     "react-native-web": "~0.11.7",
-    "semver": "^7.3.2"
+    "semver": "^7.3.2",
+    "shortid": "^2.2.15",
+
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
