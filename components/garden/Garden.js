@@ -16,183 +16,39 @@ import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
 import GlobalStyles from '../../styles/GlobalStyles';
+import { makeRefObj, formatArray } from '../../utils/utils';
 
 function Garden() {
-  const [plants, setPlants] = useState([
+  const [selectedValue, setSelectedValue] = useState('uk');
+  const [snaps, setSnaps] = useState([
     {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
       created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
       height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
       no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
+      plant_id: 8,
+      plant_uri:
+        'https://cdn.discordapp.com/attachments/718422373522735155/722409976949375046/image0.jpg',
+      snapshot_id: 11,
+      plant_name: 'plantName8',
+      snapshot_count: '1',
     },
   ]);
-  const [selectedValue, setSelectedValue] = useState('uk');
-  const [snapshots, setSnapshots] = useState();
 
-  //  <Logo width={120} height={40} />
-
-  // useEffect(() => {
-  //   api.getPlantsByUserId(1).then((plants) => {
-  //     const { name } = plants;
-  //     setPlants(plants);
-  //   });
-  // });
+  useEffect(() => {
+    const user_id = 1;
+    let arr = [];
+    api.getPlantsByUserId(user_id).then((plants) => {
+      plants.forEach((plant) => {
+        const { plant_id } = plant;
+        api.getSnapshotsByPlantId(plant_id).then((snaps) => {
+          // console.log(snaps);
+          const arr3 = [snaps];
+          const arr4 = arr3.flat();
+          console.log(arr4);
+        });
+      });
+    });
+  }, []);
 
   return (
     <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
@@ -237,13 +93,16 @@ function Garden() {
       <View style={styles.container}>
         <FlatGrid
           itemDimension={130}
-          data={plants}
+          data={snaps}
           style={styles.gridView}
           spacing={10}
           renderItem={({ item }) => (
             <View>
               <View style={styles.plantContainer}>
-                <Image source={{ uri: item.uri }} style={styles.image}></Image>
+                <Image
+                  source={{ uri: item.plant_uri }}
+                  style={styles.image}
+                ></Image>
               </View>
               <View style={styles.plant_view}>
                 <View style={styles.plant_left_view}>
@@ -319,3 +178,15 @@ const styles = StyleSheet.create({
 });
 
 export default Garden;
+
+//  <Logo width={120} height={40} />
+
+// function joinPlantProperties(plants, snap) {
+//   const newObj = {};
+//   plants.forEach((plant) => {
+//     if (plant.plant_id === snap.plant_id) {
+//       newObj.name = plants.plant_name;
+//     }
+//     console.log(newObj);
+//   });
+// }
