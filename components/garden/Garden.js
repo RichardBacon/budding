@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { SearchBar } from 'react-native-elements';
@@ -34,21 +35,74 @@ function Garden() {
     },
   ]);
 
+  // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
     const user_id = 1;
-    let arr = [];
+    let arr = []; // [{}, {}]
     api.getPlantsByUserId(user_id).then((plants) => {
-      plants.forEach((plant) => {
-        const { plant_id } = plant;
-        api.getSnapshotsByPlantId(plant_id).then((snaps) => {
+      // console.log(plants);
+      const snapsArr = plants.map((plant) => {
+        const { plant_id, plant_name, snapshot_count } = plant;
+        return api.getSnapshotsByPlantId(plant_id).then((snap) => {
           // console.log(snaps);
-          const arr3 = [snaps];
-          const arr4 = arr3.flat();
-          console.log(arr4);
+          // [{}, {}]
+          let newObj = { plant_name, snapshot_count, ...snap[0] };
+          let newArr = [];
+          newArr.push(newObj);
+          // console.log(newObj);
+          // console.log(newObj, '<--- obj');
+          // arr.push(newObj);
         });
       });
+      console.log(snapsArr);
     });
   }, []);
+
+  // current plant object
+
+  // {
+  //   "created_at": "2014-11-10T17:28:34.171Z",
+  //   "location": "inside",
+  //   "plant_id": 2,
+  //   "plant_name": "plantName2",
+  //   "plant_type": "vegetable",
+  //   "plant_variety": "tomato",
+  //   "pot_height": "10.00",
+  //   "snapshot_count": "2",
+  //   "soil": "soil1",
+  //   "sunlight": "indirect",
+  //   "user_id": 1,
+  //   "watering_freq": "twice a day",
+  // }
+
+  // current snapshot object
+
+  // {
+  //   created_at: '2014-11-16T12:21:54.171Z',
+  //   height: 10,
+  //   no_leaves: 4,
+  //   plant_id: 6,
+  //   plant_uri: 'https://cdn.discordapp.com/attachments/718422373522735155/722409976949375046/image0.jpg',
+  //   snapshot_id: 9,
+  // }
+
+  // result we want
+
+  // {
+  //   created_at: '2014-11-16T12:21:54.171Z',
+  //   height: 10,
+  //   no_leaves: 4,
+  //   plant_id: 6,
+  //   plant_uri: 'https://cdn.discordapp.com/attachments/718422373522735155/722409976949375046/image0.jpg',
+  //   snapshot_id: 9,
+  //   snapshot_count: 4,
+  //   plant_name: 'missPlant'
+  // }
+
+  // const queries = [api.getSnapshotsByPlantId(plant_id)];
+  // Promise.all(queries).then((snap) => {
+  //   console.log(snap);
+  // });
 
   return (
     <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
@@ -99,10 +153,27 @@ function Garden() {
           renderItem={({ item }) => (
             <View>
               <View style={styles.plantContainer}>
-                <Image
-                  source={{ uri: item.plant_uri }}
-                  style={styles.image}
-                ></Image>
+                <TouchableOpacity style={styles.image}>
+                  <View>
+                    <Text></Text>
+                  </View>
+                  <Image
+                    source={{ uri: item.plant_uri }}
+                    style={styles.image}
+                  />
+                </TouchableOpacity>
+                {/* <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('tutorial', {
+                      openImagePickerAsync: openImagePickerAsync,
+                    })
+                  }
+                >
+                  <Image
+                    source={{ uri: item.plant_uri }}
+                    style={styles.image}
+                  ></Image>
+                </TouchableOpacity> */}
               </View>
               <View style={styles.plant_view}>
                 <View style={styles.plant_left_view}>
