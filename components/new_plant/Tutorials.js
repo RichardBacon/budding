@@ -22,13 +22,24 @@ function Tutorials(props) {
   // }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Tutorials</Text>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#52875a',
+      }}
+    >
+      <Image
+        style={{ height: 600, width: 350 }}
+        source={require('../../assets/tutorial_pot_measuring.gif')}
+      />
+      {/* <Text>Tutorials</Text>
       <Button
         title="take photo"
         onPress={() => openImagePickerAsync()}
         // onPress={() => navigation.navigate('new plant')}
-      />
+      /> */}
     </View>
   );
 }

@@ -84,7 +84,6 @@ function MeasureFunction({ route, navigation }) {
   };
 
   const resetMeasure = () => {
-    console.log(pan.y);
     setBottomPotClick(0);
     setTopPotClick(0);
     setTopPlantClick(0);
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 35,
     opacity: 1,
-    backgroundColor: 'green',
+    backgroundColor: 'red',
     borderRadius: 5,
   },
   vertical_line: {
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     width: 1,
     marginLeft: 150,
     opacity: 1,
-    backgroundColor: 'green',
+    backgroundColor: 'red',
     borderRadius: 5,
   },
   top_button: {
