@@ -229,7 +229,7 @@ function Garden() {
           defaultValue={selectedValue}
           containerStyle={{ height: 40 }}
           style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa', width: 20 }}
+          dropDownStyle={{ backgroundColor: '#fafafa' }}
           onChangeItem={(item) => setSelectedValue(item)}
         />
       </View>
