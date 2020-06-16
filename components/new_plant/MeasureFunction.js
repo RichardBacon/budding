@@ -11,9 +11,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { RNS3 } from 'react-native-s3-upload';
-const shortid = require('shortid');
-const { options } = require('../../s3-config.js');
+
 import { set } from 'react-native-reanimated';
 
 function MeasureFunction({ route, navigation }) {

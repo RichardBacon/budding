@@ -33,8 +33,8 @@ export const postPlant = (
   plant_name,
   plant_type,
   soil,
-  direct_sunlight,
-  inside,
+  sunlight,
+  location,
   watering_freq,
   plant_variety,
   pot_height,
@@ -44,8 +44,8 @@ export const postPlant = (
       plant_name,
       plant_type,
       soil,
-      direct_sunlight,
-      inside,
+      sunlight,
+      location,
       watering_freq,
       plant_variety,
       pot_height,
@@ -67,11 +67,11 @@ export const patchPlantById = (plant_id) => {
       plant_name,
       plant_type,
       soil,
-      direct_sunlight,
-      inside,
+      sunlight,
+      location,
       watering_freq,
       plant_variety,
-      pot_height,
+      pot_height, // should you be able to change pot height without measuring plant?
     })
     .then(({ data }) => {
       return data.plant;
@@ -90,19 +90,11 @@ export const getSnapshotsByPlantId = (plant_id) => {
     });
 };
 
-export const postSnapshot = (
-  plant_id,
-  plant_uri,
-  no_leaves,
-  height,
-  created_at,
-) => {
+export const postSnapshot = (plant_id, plant_uri, height) => {
   return axios
     .post(`${baseURL}/plants/${plant_id}/snapshots`, {
       plant_uri,
-      no_leaves,
       height,
-      created_at,
     })
     .then(({ data }) => {
       return data.snap;
