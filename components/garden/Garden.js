@@ -15,6 +15,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
+import GlobalStyles from '../../styles/GlobalStyles';
 
 function Garden() {
   const [plants, setPlants] = useState([
@@ -194,7 +195,7 @@ function Garden() {
   // });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
       <Plant width={120} height={40} fill="green" />
       <Text>My Garden</Text>
       <SearchBar placeholder="search-plants" value={'plants'} />
