@@ -19,8 +19,10 @@ import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
+import TimeAgo from 'react-native-timeago';
 
-function Garden() {
+function Garden({ navigation }) {
+  console.log(navigation);
   const [sort_by, changeSort] = useState('created_at');
   const [snaps, setSnaps] = useState([]);
   const [loading, isLoading] = useState(true);
@@ -30,13 +32,10 @@ function Garden() {
   // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
     const user_id = 1;
-    console.log(order);
-    console.log(sort_by);
     api
       .getPlantsByUserId(user_id, order, sort_by, plant_type)
       .then((plants) => {
         const snapShotArr = plants.map((plant) => {
-          console.log(plant);
           const { plant_id, plant_name, snapshot_count } = plant;
           return api.getSnapshotsByPlantId(plant_id).then((snap) => {
             return { plant_name, snapshot_count, ...snap[0] };
@@ -82,9 +81,7 @@ function Garden() {
 
   return (
     <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
-      <Plant width={120} height={40} fill="green" />
       <Text>My Garden</Text>
-      {/* <SearchBar placeholder="search-plants" value={'plants'} /> */}
       <View style={styles.heroContainer}>
         <RNPickerSelect
           onValueChange={(value) => toggleOrder(value)}
@@ -124,8 +121,10 @@ function Garden() {
           renderItem={({ item }) => (
             <View>
               <View style={styles.plantContainer}>
-                <TouchableOpacity style={styles.image}>
-                  <View></View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('plant page')}
+                  style={styles.image}
+                >
                   <Image
                     source={{ uri: item.plant_uri }}
                     style={styles.image}
@@ -136,7 +135,11 @@ function Garden() {
               <View style={styles.plant_view}>
                 <View style={styles.plant_left_view}>
                   <Text style={styles.plantName}>{item.plant_name}</Text>
-                  <Text style={styles.plantStats}>{item.height}</Text>
+                  <TimeAgo time={item.created_at} />
+                  <View>
+                    <Plant width={120} height={40} fill="green" />
+                    <Text style={styles.plantStats}>{item.height}</Text>
+                  </View>
                 </View>
                 <View style={styles.plant_right_view}>
                   <Text style={styles.plantStats}>{item.snapshot_count}</Text>
