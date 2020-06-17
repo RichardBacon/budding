@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Button,
   Picker,
+  ActivityIndicator,
 } from 'react-native';
 import * as api from '../../api-requests/api';
 const { options } = require('../../s3-config.js');
@@ -22,6 +23,7 @@ function NewPlantEntry({ route, navigation }) {
   const [soil, setSoil] = useState('');
   const [sunlight, setSunlight] = useState('indirect');
   const [location, setLocation] = useState('indoor');
+  const [loading, isLoading] = useState(false);
 
   const { image, potHeight, plantHeight } = route.params;
 
@@ -30,9 +32,11 @@ function NewPlantEntry({ route, navigation }) {
   const submitPlant = () => {
     // POST request to postPlant
     // upload to s3 bucket
-    // POST reques to postSnapshot using plant_id received from postPlant
+    // POST request to postSnapshot using plant_id received from postPlant
     // navigate to garden page AFTER has posted (.then)
-    console.log('inside submit plant');
+
+    isLoading(true);
+
     const name = shortid.generate();
 
     const file = {
@@ -77,100 +81,104 @@ function NewPlantEntry({ route, navigation }) {
       })
       .catch((err) => console.log(err));
   };
-  return (
-    <View style={styles.view}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Image
-          style={styles.logo}
-          source={{
-            uri: image,
-          }}
-        />
-        <Text style={styles.titleText}>{plantName}</Text>
 
-        <Text>plant name:</Text>
-        <TextInput
-          onChangeText={(plantName) => {
-            setPlantName(plantName);
-          }}
-          style={styles.input}
-          placeholder={'e.g. Plants Armstrong'}
-        />
-        <Text>plant type:</Text>
-        <Picker
-          selectedValue={type}
-          onValueChange={(itemValue) => {
-            setType(itemValue);
-          }}
-        >
-          <Picker.Item label="vegetable" value="vegetable" />
-          <Picker.Item label="fruit" value="fruit" />
-          <Picker.Item label="herb" value="herb" />
-          <Picker.Item label="houseplant" value="houseplant" />
-          <Picker.Item label="garden" value="garden" />
-          <Picker.Item label="succulent" value="succulent" />
-        </Picker>
-        <Text>variety: </Text>
-        <TextInput
-          onChangeText={(variety) => {
-            setVariety(variety);
-          }}
-          style={styles.input}
-          placeholder={'e.g. bell pepper'}
-        />
-        <Text>plant height: {plantHeight}cm</Text>
-        <Text>pot height: {potHeight}cm</Text>
-        <Text>sunlight:</Text>
-        <Picker
-          selectedValue={sunlight}
-          onValueChange={(itemValue) => {
-            setSunlight(itemValue);
-          }}
-        >
-          <Picker.Item label="indirect" value="indirect" />
-          <Picker.Item label="direct" value="direct" />
-        </Picker>
-        <Text>location:</Text>
-        <Picker
-          selectedValue={location}
-          onValueChange={(itemValue) => {
-            setLocation(itemValue);
-          }}
-        >
-          <Picker.Item label="indoor" value="indoor" />
-          <Picker.Item label="outdoor" value="outdoor" />
-        </Picker>
-        <Text>
-          watering frequency: <Text style={styles.optional}>optional</Text>
-        </Text>
-        <TextInput
-          onChangeText={(freq) => {
-            setWaterFreq(freq);
-          }}
-          style={styles.input}
-          placeholder={'e.g. once a week'}
-        />
+  if (loading) return <ActivityIndicator />;
+  else {
+    return (
+      <View style={styles.view}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <Image
+            style={styles.logo}
+            source={{
+              uri: image,
+            }}
+          />
+          <Text style={styles.titleText}>{plantName}</Text>
 
-        <Text>
-          soil:<Text style={styles.optional}>optional</Text>
-        </Text>
-        <TextInput
-          onChangeText={(soil) => {
-            setSoil(soil);
-          }}
-          style={styles.input}
-          placeholder={'e.g. peat'}
-        />
-        <Button
-          title={'add new plant'}
-          onPress={submitPlant}
-          style={styles.button}
-        >
-          add new plant
-        </Button>
-      </ScrollView>
-    </View>
-  );
+          <Text>plant name:</Text>
+          <TextInput
+            onChangeText={(plantName) => {
+              setPlantName(plantName);
+            }}
+            style={styles.input}
+            placeholder={'e.g. Plants Armstrong'}
+          />
+          <Text>plant type:</Text>
+          <Picker
+            selectedValue={type}
+            onValueChange={(itemValue) => {
+              setType(itemValue);
+            }}
+          >
+            <Picker.Item label="vegetable" value="vegetable" />
+            <Picker.Item label="fruit" value="fruit" />
+            <Picker.Item label="herb" value="herb" />
+            <Picker.Item label="houseplant" value="houseplant" />
+            <Picker.Item label="garden" value="garden" />
+            <Picker.Item label="succulent" value="succulent" />
+          </Picker>
+          <Text>variety: </Text>
+          <TextInput
+            onChangeText={(variety) => {
+              setVariety(variety);
+            }}
+            style={styles.input}
+            placeholder={'e.g. bell pepper'}
+          />
+          <Text>plant height: {plantHeight}cm</Text>
+          <Text>pot height: {potHeight}cm</Text>
+          <Text>sunlight:</Text>
+          <Picker
+            selectedValue={sunlight}
+            onValueChange={(itemValue) => {
+              setSunlight(itemValue);
+            }}
+          >
+            <Picker.Item label="indirect" value="indirect" />
+            <Picker.Item label="direct" value="direct" />
+          </Picker>
+          <Text>location:</Text>
+          <Picker
+            selectedValue={location}
+            onValueChange={(itemValue) => {
+              setLocation(itemValue);
+            }}
+          >
+            <Picker.Item label="indoor" value="indoor" />
+            <Picker.Item label="outdoor" value="outdoor" />
+          </Picker>
+          <Text>
+            watering frequency: <Text style={styles.optional}>optional</Text>
+          </Text>
+          <TextInput
+            onChangeText={(freq) => {
+              setWaterFreq(freq);
+            }}
+            style={styles.input}
+            placeholder={'e.g. once a week'}
+          />
+
+          <Text>
+            soil:<Text style={styles.optional}>optional</Text>
+          </Text>
+          <TextInput
+            onChangeText={(soil) => {
+              setSoil(soil);
+            }}
+            style={styles.input}
+            placeholder={'e.g. peat'}
+          />
+          <Button
+            title={'add new plant'}
+            onPress={submitPlant}
+            style={styles.button}
+          >
+            add new plant
+          </Button>
+        </ScrollView>
+      </View>
+    );
+  }
 }
 
 export default NewPlantEntry;

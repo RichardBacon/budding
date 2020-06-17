@@ -63,7 +63,7 @@ export const getPlantById = (plant_id) => {
 
 export const patchPlantById = (plant_id) => {
   return axios
-    .get(`${baseURL}/plants/${plant_id}`, {
+    .patch(`${baseURL}/plants/${plant_id}`, {
       plant_name,
       plant_type,
       soil,
