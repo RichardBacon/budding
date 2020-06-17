@@ -22,7 +22,6 @@ import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
 
 function Garden({ navigation }) {
-  console.log(navigation);
   const [sort_by, changeSort] = useState('created_at');
   const [snaps, setSnaps] = useState([]);
   const [loading, isLoading] = useState(true);
@@ -122,7 +121,11 @@ function Garden({ navigation }) {
             <View>
               <View style={styles.plantContainer}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('plant page')}
+                  onPress={() =>
+                    navigation.navigate('plant page', {
+                      item,
+                    })
+                  }
                   style={styles.image}
                 >
                   <Image

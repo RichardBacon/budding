@@ -17,7 +17,11 @@ function GardenNavigator() {
       initialRouteName="garden"
     >
       <Stack.Screen name="garden" component={Garden} />
-      <Stack.Screen name="plant page" component={PlantPage} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="plant page"
+        component={PlantPage}
+      />
     </Stack.Navigator>
   );
 }
