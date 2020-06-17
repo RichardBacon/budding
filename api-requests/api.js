@@ -22,9 +22,9 @@ export const postUser = (username, name, avatar_url, password) => {
     });
 };
 
-export const getPlantsByUserId = (user_id, order) => {
+export const getPlantsByUserId = (user_id, order, sort_by) => {
   return axios
-    .get(`${baseURL}/users/${user_id}/plants`, { params: { order: order } })
+    .get(`${baseURL}/users/${user_id}/plants`, { params: { order, sort_by } })
     .then(({ data }) => {
       return data.plants;
     });

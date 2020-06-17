@@ -21,7 +21,7 @@ import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 
 function Garden() {
-  const [selectedValue, setSelectedValue] = useState('desc');
+  const [sort_by, changeSort] = useState('created_at');
   const [snaps, setSnaps] = useState([]);
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
@@ -29,23 +29,20 @@ function Garden() {
   // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
     const user_id = 1;
-    const { value } = order;
-    api.getPlantsByUserId(user_id, value).then((plants) => {
+    console.log(order);
+    console.log(sort_by);
+    api.getPlantsByUserId(user_id, order, sort_by).then((plants) => {
       const snapShotArr = plants.map((plant) => {
         const { plant_id, plant_name, snapshot_count } = plant;
         return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-          let newObj = { plant_name, snapshot_count, ...snap[0] };
-          let newArr = [];
-          newArr.push(newObj);
-          return newArr;
+          return { plant_name, snapshot_count, ...snap[0] };
         });
       });
       Promise.all(snapShotArr).then((snapshots) => {
-        const newObj = snapshots.flat();
-        setSnaps(newObj);
+        setSnaps(snapshots);
       });
     });
-  }, [order]);
+  }, [order, sort_by]);
 
   // if (loading)
   //   return (
@@ -57,6 +54,28 @@ function Garden() {
   //     </View>
   //   );
 
+  const toggleSortBy = (data) => {
+    if (data === 'most snaps') {
+      changeOrder('desc');
+      changeSort('snapshot_count');
+    }
+    if (data === 'least snaps') {
+      changeOrder('asc');
+      changeSort('snapshot_count');
+    }
+  };
+
+  const toggOrder = (data) => {
+    if (data === 'desc') {
+      changeOrder('desc');
+      changeSort('created_at');
+    }
+    if (data === 'asc') {
+      changeOrder('asc');
+      changeSort('created_at');
+    }
+  };
+
   return (
     <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
       <Plant width={120} height={40} fill="green" />
@@ -65,25 +84,25 @@ function Garden() {
       <View style={styles.heroContainer}>
         <DropDownPicker
           items={[
-            { label: 'New', value: 'desc' },
-            { label: 'Old', value: 'asc' },
+            { label: 'newest', value: 'desc' },
+            { label: 'oldest', value: 'asc' },
           ]}
-          defaultValue={selectedValue}
+          defaultValue={sort_by.value}
           containerStyle={{ height: 40 }}
           style={styles.dropDown}
           dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => changeOrder(item)}
+          onChangeItem={(item) => toggOrder(item.value)}
         />
         <DropDownPicker
           items={[
-            { label: 'New', value: 'desc' },
-            { label: 'Old', value: 'desc' },
+            { label: 'most snaps', value: 'most snaps' },
+            { label: 'least snaps', value: 'least snaps' },
           ]}
-          defaultValue={selectedValue}
+          defaultValue={order.value}
           containerStyle={{ height: 40 }}
           style={styles.dropDown}
           dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => setSelectedValue(item)}
+          onChangeItem={(item) => toggleSortBy(item.value)}
         />
       </View>
       <View style={styles.container}>
@@ -179,13 +198,3 @@ const styles = StyleSheet.create({
 export default Garden;
 
 //  <Logo width={120} height={40} />
-
-// function joinPlantProperties(plants, snap) {
-//   const newObj = {};
-//   plants.forEach((plant) => {
-//     if (plant.plant_id === snap.plant_id) {
-//       newObj.name = plants.plant_name;
-//     }
-//     console.log(newObj);
-//   });
-// }
