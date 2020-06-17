@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   ScrollView,
   Button,
   Picker,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as api from '../../api-requests/api';
 const { options } = require('../../s3-config.js');
@@ -22,155 +24,189 @@ function NewPlantEntry({ route, navigation }) {
   const [soil, setSoil] = useState('');
   const [sunlight, setSunlight] = useState('indirect');
   const [location, setLocation] = useState('indoor');
+  const [loading, isLoading] = useState(false);
 
-  const { image, potHeight, plantHeight } = route.params;
-
+  const { resizedImage, potHeight, plantHeight } = route.params;
   let plantId = '';
 
   const submitPlant = () => {
     // POST request to postPlant
     // upload to s3 bucket
-    // POST reques to postSnapshot using plant_id received from postPlant
+    // POST request to postSnapshot using plant_id received from postPlant
     // navigate to garden page AFTER has posted (.then)
-    console.log('inside submit plant');
-    const name = shortid.generate();
 
-    const file = {
-      uri: image,
-      name,
-      type: 'image/jpg',
-    };
+    isLoading(true);
 
-    api
-      .postPlant(
-        1,
-        plantName,
-        type,
-        soil,
-        sunlight,
-        location,
-        waterFreq,
-        variety,
-        potHeight,
-      )
-      .then((plant) => {
-        plantId = plant.plant_id;
-        return RNS3.put(file, options);
-      })
-      .then((response) => {
-        console.log('status: ', response.status);
-        if (response.status === 201) {
-          console.log('body: ', response.body);
-          const { postResponse } = response.body;
-          return postResponse;
-        } else {
-          console.log('error message: ', response.text);
-          navigation.navigate('new plant');
-          // navigates back to new plant page if there is an error
-        }
-      })
-      .then((postResponse) => {
-        return api.postSnapshot(plantId, postResponse.location, plantHeight);
-      })
-      .then((response) => {
-        navigation.navigate('garden');
-      })
-      .catch((err) => console.log(err));
+    //check plantName was minimum length 1
+    //check variety minimum length 3
+    if (plantName.length < 1 || variety.length < 3) {
+      Alert.alert(
+        'Input field error',
+        'Name must be between 1 and 25 characters, variety must be between 3 and 25 characters',
+        [{ text: 'Got it' }],
+      );
+      isLoading(false);
+      return;
+    } else {
+      const name = shortid.generate();
+
+      const file = {
+        uri: resizedImage,
+        name,
+        type: 'image/jpg',
+      };
+
+      api
+        .postPlant(
+          1,
+          plantName,
+          type,
+          soil,
+          sunlight,
+          location,
+          waterFreq,
+          variety,
+          potHeight,
+        )
+        .then((plant) => {
+          plantId = plant.plant_id;
+          return RNS3.put(file, options);
+        })
+        .then((response) => {
+          console.log('status: ', response.status);
+          if (response.status === 201) {
+            console.log('body: ', response.body);
+            const { postResponse } = response.body;
+            return postResponse;
+          } else {
+            // navigates back to new plant page if there is an error
+            Alert.alert('Error', 'Problem uploading photo. Please try again.');
+            isLoading(false);
+            console.log('error message: ', response.text);
+            navigation.navigate('new plant');
+          }
+        })
+        .then((postResponse) => {
+          return api.postSnapshot(plantId, postResponse.location, plantHeight);
+        })
+        .then(() => {
+          isLoading(false);
+          setPlantName('');
+          setType('vegetable');
+          setVariety('');
+          setWaterFreq('');
+          setSoil('');
+          setSunlight('indirect');
+          setLocation('indoor');
+          navigation.navigate('garden');
+        })
+        .catch((err) => {
+          Alert.alert('Error', `${err}`);
+          isLoading(false);
+          console.log(err);
+        });
+    }
   };
-  return (
-    <View style={styles.view}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Image
-          style={styles.logo}
-          source={{
-            uri: image,
-          }}
-        />
-        <Text style={styles.titleText}>{plantName}</Text>
 
-        <Text>plant name:</Text>
-        <TextInput
-          onChangeText={(plantName) => {
-            setPlantName(plantName);
-          }}
-          style={styles.input}
-          placeholder={'e.g. Plants Armstrong'}
-        />
-        <Text>plant type:</Text>
-        <Picker
-          selectedValue={type}
-          onValueChange={(itemValue) => {
-            setType(itemValue);
-          }}
-        >
-          <Picker.Item label="vegetable" value="vegetable" />
-          <Picker.Item label="fruit" value="fruit" />
-          <Picker.Item label="herb" value="herb" />
-          <Picker.Item label="houseplant" value="houseplant" />
-          <Picker.Item label="garden" value="garden" />
-          <Picker.Item label="succulent" value="succulent" />
-        </Picker>
-        <Text>variety: </Text>
-        <TextInput
-          onChangeText={(variety) => {
-            setVariety(variety);
-          }}
-          style={styles.input}
-          placeholder={'e.g. bell pepper'}
-        />
-        <Text>plant height: {plantHeight}cm</Text>
-        <Text>pot height: {potHeight}cm</Text>
-        <Text>sunlight:</Text>
-        <Picker
-          selectedValue={sunlight}
-          onValueChange={(itemValue) => {
-            setSunlight(itemValue);
-          }}
-        >
-          <Picker.Item label="indirect" value="indirect" />
-          <Picker.Item label="direct" value="direct" />
-        </Picker>
-        <Text>location:</Text>
-        <Picker
-          selectedValue={location}
-          onValueChange={(itemValue) => {
-            setLocation(itemValue);
-          }}
-        >
-          <Picker.Item label="indoor" value="indoor" />
-          <Picker.Item label="outdoor" value="outdoor" />
-        </Picker>
-        <Text>
-          watering frequency: <Text style={styles.optional}>optional</Text>
-        </Text>
-        <TextInput
-          onChangeText={(freq) => {
-            setWaterFreq(freq);
-          }}
-          style={styles.input}
-          placeholder={'e.g. once a week'}
-        />
+  if (loading) return <ActivityIndicator />;
+  else {
+    return (
+      <View style={styles.view}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <Image
+            style={styles.logo}
+            source={{
+              uri: resizedImage,
+            }}
+          />
+          <Text style={styles.titleText}>{plantName}</Text>
 
-        <Text>
-          soil:<Text style={styles.optional}>optional</Text>
-        </Text>
-        <TextInput
-          onChangeText={(soil) => {
-            setSoil(soil);
-          }}
-          style={styles.input}
-          placeholder={'e.g. peat'}
-        />
-        <Button
-          title={'add new plant'}
-          onPress={submitPlant}
-          style={styles.button}
-        >
-          add new plant
-        </Button>
-      </ScrollView>
-    </View>
-  );
+          <Text>plant name:</Text>
+          <TextInput
+            maxLength={25}
+            onChangeText={(plantName) => {
+              setPlantName(plantName);
+            }}
+            style={styles.input}
+            placeholder={'e.g. Plants Armstrong'}
+          />
+          <Text>plant type:</Text>
+          <Picker
+            selectedValue={type}
+            onValueChange={(itemValue) => {
+              setType(itemValue);
+            }}
+          >
+            <Picker.Item label="vegetable" value="vegetable" />
+            <Picker.Item label="fruit" value="fruit" />
+            <Picker.Item label="herb" value="herb" />
+            <Picker.Item label="houseplant" value="houseplant" />
+            <Picker.Item label="garden" value="garden" />
+            <Picker.Item label="succulent" value="succulent" />
+          </Picker>
+          <Text>variety: </Text>
+          <TextInput
+            maxLength={25}
+            onChangeText={(variety) => {
+              setVariety(variety);
+            }}
+            style={styles.input}
+            placeholder={'e.g. bell pepper'}
+          />
+          <Text>plant height: {plantHeight}cm</Text>
+          <Text>pot height: {potHeight}cm</Text>
+          <Text>sunlight:</Text>
+          <Picker
+            selectedValue={sunlight}
+            onValueChange={(itemValue) => {
+              setSunlight(itemValue);
+            }}
+          >
+            <Picker.Item label="indirect" value="indirect" />
+            <Picker.Item label="direct" value="direct" />
+          </Picker>
+          <Text>location:</Text>
+          <Picker
+            selectedValue={location}
+            onValueChange={(itemValue) => {
+              setLocation(itemValue);
+            }}
+          >
+            <Picker.Item label="indoor" value="indoor" />
+            <Picker.Item label="outdoor" value="outdoor" />
+          </Picker>
+          <Text>
+            watering frequency: <Text style={styles.optional}>optional</Text>
+          </Text>
+          <TextInput
+            onChangeText={(freq) => {
+              setWaterFreq(freq);
+            }}
+            style={styles.input}
+            placeholder={'e.g. once a week'}
+          />
+
+          <Text>
+            soil:<Text style={styles.optional}>optional</Text>
+          </Text>
+          <TextInput
+            onChangeText={(soil) => {
+              setSoil(soil);
+            }}
+            style={styles.input}
+            placeholder={'e.g. peat'}
+          />
+          <Button
+            title={'add new plant'}
+            onPress={submitPlant}
+            style={styles.button}
+          >
+            add new plant
+          </Button>
+        </ScrollView>
+      </View>
+    );
+  }
 }
 
 export default NewPlantEntry;

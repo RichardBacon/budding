@@ -61,9 +61,30 @@ export const getPlantById = (plant_id) => {
   });
 };
 
-export const patchPlantById = (plant_id) => {
+export const patchPlantById = (
+  plant_id,
+  plant_name,
+  plant_type,
+  soil,
+  sunlight,
+  location,
+  watering_freq,
+  plant_variety,
+  pot_height,
+) => {
+  console.log(
+    plant_id,
+    plant_name,
+    plant_type,
+    soil,
+    sunlight,
+    location,
+    watering_freq,
+    plant_variety,
+    pot_height,
+  );
   return axios
-    .get(`${baseURL}/plants/${plant_id}`, {
+    .patch(`${baseURL}/plants/${plant_id}`, {
       plant_name,
       plant_type,
       soil,
@@ -71,7 +92,7 @@ export const patchPlantById = (plant_id) => {
       location,
       watering_freq,
       plant_variety,
-      pot_height, // should you be able to change pot height without measuring plant?
+      pot_height,
     })
     .then(({ data }) => {
       return data.plant;

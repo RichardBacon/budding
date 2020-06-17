@@ -15,6 +15,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Garden from './components/garden/Garden';
 import Profile from './components/Profile';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
+import GardenNavigator from './components/garden/GardenNavigator';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -22,7 +23,7 @@ function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator barStyle={styles.bottomNav}>
-        <Tab.Screen name="garden" component={Garden} />
+        <Tab.Screen name="garden" component={GardenNavigator} />
         <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
         <Tab.Screen name="profile" component={Profile} />
       </Tab.Navigator>
