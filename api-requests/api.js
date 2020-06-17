@@ -22,10 +22,12 @@ export const postUser = (username, name, avatar_url, password) => {
     });
 };
 
-export const getPlantsByUserId = (user_id) => {
-  return axios.get(`${baseURL}/users/${user_id}/plants`).then(({ data }) => {
-    return data.plants;
-  });
+export const getPlantsByUserId = (user_id, order) => {
+  return axios
+    .get(`${baseURL}/users/${user_id}/plants`, { params: { order: order } })
+    .then(({ data }) => {
+      return data.plants;
+    });
 };
 
 export const postPlant = (

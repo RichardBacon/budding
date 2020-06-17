@@ -9,6 +9,7 @@ import {
   Button,
   SafeAreaView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { SearchBar } from 'react-native-elements';
@@ -20,126 +21,63 @@ import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 
 function Garden() {
-  const [selectedValue, setSelectedValue] = useState('uk');
-  const [snaps, setSnaps] = useState([
-    {
-      created_at: '2014-11-16T12:21:54.171Z',
-      height: 10,
-      no_leaves: 4,
-      plant_id: 8,
-      plant_uri:
-        'https://cdn.discordapp.com/attachments/718422373522735155/722409976949375046/image0.jpg',
-      snapshot_id: 11,
-      plant_name: 'plantName8',
-      snapshot_count: '1',
-    },
-  ]);
+  const [selectedValue, setSelectedValue] = useState('desc');
+  const [snaps, setSnaps] = useState([]);
+  const [loading, isLoading] = useState(true);
+  const [order, changeOrder] = useState('desc');
 
   // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
     const user_id = 1;
-    api.getPlantsByUserId(user_id).then((plants) => {
-      // console.log(plants);
-      const arr = plants.map((plant) => {
+    const { value } = order;
+    api.getPlantsByUserId(user_id, value).then((plants) => {
+      const snapShotArr = plants.map((plant) => {
         const { plant_id, plant_name, snapshot_count } = plant;
         return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-          // console.log(snaps);
-          // [{}, {}]
           let newObj = { plant_name, snapshot_count, ...snap[0] };
           let newArr = [];
           newArr.push(newObj);
           return newArr;
-          // console.log(newObj, '<--- obj');
-          // arr.push(newObj);
-          // end goal - is to setSnaps(array_of_newObj)
         });
       });
-      Promise.all(arr).then((obj) => {
-        const newObj = obj.flat();
+      Promise.all(snapShotArr).then((snapshots) => {
+        const newObj = snapshots.flat();
         setSnaps(newObj);
-        // console.log(obj.flat());
       });
     });
-  }, []);
+  }, [order]);
 
-  // current plant object
-
-  // {
-  //   "created_at": "2014-11-10T17:28:34.171Z",
-  //   "location": "inside",
-  //   "plant_id": 2,
-  //   "plant_name": "plantName2",
-  //   "plant_type": "vegetable",
-  //   "plant_variety": "tomato",
-  //   "pot_height": "10.00",
-  //   "snapshot_count": "2",
-  //   "soil": "soil1",
-  //   "sunlight": "indirect",
-  //   "user_id": 1,
-  //   "watering_freq": "twice a day",
-  // }
-
-  // current snapshot object
-
-  // {
-  //   created_at: '2014-11-16T12:21:54.171Z',
-  //   height: 10,
-  //   no_leaves: 4,
-  //   plant_id: 6,
-  //   plant_uri: 'https://cdn.discordapp.com/attachments/718422373522735155/722409976949375046/image0.jpg',
-  //   snapshot_id: 9,
-  // }
-
-  // result we want
-
-  // {
-  //   created_at: '2014-11-16T12:21:54.171Z',
-  //   height: 10,
-  //   no_leaves: 4,
-  //   plant_id: 6,
-  //   plant_uri: 'https://cdn.discordapp.com/attachments/718422373522735155/722409976949375046/image0.jpg',
-  //   snapshot_id: 9,
-  //   snapshot_count: 4,
-  //   plant_name: 'missPlant'
-  // }
-
-  // const queries = [api.getSnapshotsByPlantId(plant_id)];
-  // Promise.all(queries).then((snap) => {
-  //   console.log(snap);
-  // });
+  // if (loading)
+  //   return (
+  //     <View style={[styles.container, styles.horizontal]}>
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //       <ActivityIndicator size="small" color="#00ff00" />
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //       <ActivityIndicator size="small" color="#00ff00" />
+  //     </View>
+  //   );
 
   return (
     <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
       <Plant width={120} height={40} fill="green" />
       <Text>My Garden</Text>
-      <SearchBar placeholder="search-plants" value={'plants'} />
+      {/* <SearchBar placeholder="search-plants" value={'plants'} /> */}
       <View style={styles.heroContainer}>
         <DropDownPicker
           items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
+            { label: 'New', value: 'desc' },
+            { label: 'Old', value: 'asc' },
           ]}
           defaultValue={selectedValue}
           containerStyle={{ height: 40 }}
           style={styles.dropDown}
           dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => setSelectedValue(item)}
+          onChangeItem={(item) => changeOrder(item)}
         />
         <DropDownPicker
           items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
-          ]}
-          defaultValue={selectedValue}
-          containerStyle={{ height: 40 }}
-          style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => setSelectedValue(item)}
-        />
-        <DropDownPicker
-          items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
+            { label: 'New', value: 'desc' },
+            { label: 'Old', value: 'desc' },
           ]}
           defaultValue={selectedValue}
           containerStyle={{ height: 40 }}
@@ -158,35 +96,21 @@ function Garden() {
             <View>
               <View style={styles.plantContainer}>
                 <TouchableOpacity style={styles.image}>
-                  <View>
-                    <Text></Text>
-                  </View>
+                  <View></View>
                   <Image
                     source={{ uri: item.plant_uri }}
                     style={styles.image}
+                    onLoad={isLoading(false)}
                   />
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('tutorial', {
-                      openImagePickerAsync: openImagePickerAsync,
-                    })
-                  }
-                >
-                  <Image
-                    source={{ uri: item.plant_uri }}
-                    style={styles.image}
-                  ></Image>
-                </TouchableOpacity> */}
               </View>
               <View style={styles.plant_view}>
                 <View style={styles.plant_left_view}>
                   <Text style={styles.plantName}>{item.plant_name}</Text>
                   <Text style={styles.plantStats}>{item.height}</Text>
-                  <Text style={styles.plantStats}>{item.no_leaves}</Text>
                 </View>
                 <View style={styles.plant_right_view}>
-                  <Text style={styles.plantStats}>{item.no_leaves}</Text>
+                  <Text style={styles.plantStats}>{item.snapshot_count}</Text>
                 </View>
               </View>
             </View>
