@@ -77,6 +77,14 @@ function NewPlantEntry({ route, navigation }) {
         return api.postSnapshot(plantId, postResponse.location, plantHeight);
       })
       .then((response) => {
+        isLoading(false);
+        setPlantName('');
+        setType('vegetable');
+        setVariety('');
+        setWaterFreq('');
+        setSoil('');
+        setSunlight('indirect');
+        setLocation('indoor');
         navigation.navigate('garden');
       })
       .catch((err) => console.log(err));
