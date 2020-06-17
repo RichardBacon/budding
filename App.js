@@ -21,21 +21,25 @@ import Login from './components/Login';
 const Tab = createBottomTabNavigator();
 
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        tabBarOptions={{ activeTintColor: 'white', style: styles.bottomNav }}
-        initialRouteName="login"
-      >
-        <Tab.Screen
-          name="login"
-          component={Login}
-          options={{ tabBarVisible: false }}
-        />
-        <Tab.Screen name="garden" component={GardenNavigator} />
-        <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <>
+      {!loggedIn && <Login setLoggedIn={setLoggedIn} />}
+      {loggedIn && (
+        <NavigationContainer>
+          <Tab.Navigator
+            tabBarOptions={{
+              activeTintColor: 'white',
+              style: styles.bottomNav,
+            }}
+          >
+            <Tab.Screen name="garden" component={GardenNavigator} />
+            <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      )}
+    </>
   );
 }
 
