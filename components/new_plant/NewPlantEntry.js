@@ -26,8 +26,7 @@ function NewPlantEntry({ route, navigation }) {
   const [location, setLocation] = useState('indoor');
   const [loading, isLoading] = useState(false);
 
-  const { image, potHeight, plantHeight } = route.params;
-
+  const { resizedImage, potHeight, plantHeight } = route.params;
   let plantId = '';
 
   const submitPlant = () => {
@@ -52,7 +51,7 @@ function NewPlantEntry({ route, navigation }) {
       const name = shortid.generate();
 
       const file = {
-        uri: image,
+        uri: resizedImage,
         name,
         type: 'image/jpg',
       };
@@ -117,7 +116,7 @@ function NewPlantEntry({ route, navigation }) {
           <Image
             style={styles.logo}
             source={{
-              uri: image,
+              uri: resizedImage,
             }}
           />
           <Text style={styles.titleText}>{plantName}</Text>
