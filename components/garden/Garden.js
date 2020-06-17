@@ -11,9 +11,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
 import { SearchBar } from 'react-native-elements';
-import DropDownPicker from 'react-native-dropdown-picker';
 import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
@@ -25,24 +25,28 @@ function Garden() {
   const [snaps, setSnaps] = useState([]);
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
+  const [plant_type, changeType] = useState(null);
 
   // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
     const user_id = 1;
     console.log(order);
     console.log(sort_by);
-    api.getPlantsByUserId(user_id, order, sort_by).then((plants) => {
-      const snapShotArr = plants.map((plant) => {
-        const { plant_id, plant_name, snapshot_count } = plant;
-        return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-          return { plant_name, snapshot_count, ...snap[0] };
+    api
+      .getPlantsByUserId(user_id, order, sort_by, plant_type)
+      .then((plants) => {
+        const snapShotArr = plants.map((plant) => {
+          console.log(plant);
+          const { plant_id, plant_name, snapshot_count } = plant;
+          return api.getSnapshotsByPlantId(plant_id).then((snap) => {
+            return { plant_name, snapshot_count, ...snap[0] };
+          });
+        });
+        Promise.all(snapShotArr).then((snapshots) => {
+          setSnaps(snapshots);
         });
       });
-      Promise.all(snapShotArr).then((snapshots) => {
-        setSnaps(snapshots);
-      });
-    });
-  }, [order, sort_by]);
+  }, [order, sort_by, plant_type]);
 
   // if (loading)
   //   return (
@@ -65,7 +69,7 @@ function Garden() {
     }
   };
 
-  const toggOrder = (data) => {
+  const toggleOrder = (data) => {
     if (data === 'desc') {
       changeOrder('desc');
       changeSort('created_at');
@@ -82,27 +86,33 @@ function Garden() {
       <Text>My Garden</Text>
       {/* <SearchBar placeholder="search-plants" value={'plants'} /> */}
       <View style={styles.heroContainer}>
-        <DropDownPicker
+        <RNPickerSelect
+          onValueChange={(value) => toggleOrder(value)}
+          placeholder={{}}
           items={[
             { label: 'newest', value: 'desc' },
             { label: 'oldest', value: 'asc' },
           ]}
-          defaultValue={sort_by.value}
-          containerStyle={{ height: 40 }}
-          style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => toggOrder(item.value)}
         />
-        <DropDownPicker
+        <RNPickerSelect
+          onValueChange={(value) => toggleSortBy(value)}
+          placeholder={{ label: 'sort by' }}
           items={[
             { label: 'most snaps', value: 'most snaps' },
             { label: 'least snaps', value: 'least snaps' },
           ]}
-          defaultValue={order.value}
-          containerStyle={{ height: 40 }}
-          style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => toggleSortBy(item.value)}
+        />
+        <RNPickerSelect
+          onValueChange={(value) => changeType(value)}
+          placeholder={{ label: 'all plants' }}
+          items={[
+            { label: 'garden', value: 'garden' },
+            { label: 'vegetable', value: 'vegetable' },
+            { label: 'fruit', value: 'fruit' },
+            { label: 'herb', value: 'herb' },
+            { label: 'houseplant', value: 'houseplant' },
+            { label: 'succulent', value: 'succulent' },
+          ]}
         />
       </View>
       <View style={styles.container}>
@@ -156,7 +166,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   dropDown: {
-    width: 75,
+    width: 100,
   },
   plantContainer: {
     justifyContent: 'flex-end',
