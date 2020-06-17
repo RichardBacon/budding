@@ -12,9 +12,9 @@ import {
 } from 'react-native';
 import * as api from '../../api-requests/api';
 import TimeAgo from 'react-native-timeago';
+import SnapshotCarousel from './SnapshotCarousel';
 
 function PlantPage(props) {
-  console.log(props);
   const {
     plant_id,
     plant_uri,
@@ -23,8 +23,9 @@ function PlantPage(props) {
     snapshot_count,
     created_at,
   } = props.route.params.item;
+
   const [plant, addPlantData] = useState([]);
-  const [snapshots, addSnapshotData] = useState(null);
+  const [snapshots, addSnapshotData] = useState(undefined);
   const [loading, isLoading] = useState(true);
 
   useEffect(() => {
@@ -35,12 +36,9 @@ function PlantPage(props) {
     Promise.all(promises).then((plantSnaps) => {
       addPlantData(plantSnaps[0]);
       addSnapshotData(plantSnaps[1]);
-      console.log(plantSnaps[0]);
     });
   }, []);
 
-  // const plantData = console.log('snapshots ---->', snapshots[0].plant_uri);
-  // plant_name, plant_variety
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -59,7 +57,7 @@ function PlantPage(props) {
           <View style={styles.plant_info_left_view}>
             <Text>height: {height}cm</Text>
             <Text>
-              snapped: <TimeAgo time={created_at} />
+              latest snap: <TimeAgo time={created_at} />
             </Text>
             <Text>soil: {plant.soil}</Text>
             <Text>sunlight: {plant.sunlight}</Text>
@@ -75,6 +73,7 @@ function PlantPage(props) {
       <View>
         <Text>recent snapshots</Text>
       </View>
+      {snapshots && <SnapshotCarousel snapshots={snapshots} />}
       <TouchableOpacity style={styles.button}></TouchableOpacity>
     </ScrollView>
   );
