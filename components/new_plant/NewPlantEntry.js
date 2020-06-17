@@ -9,6 +9,7 @@ import {
   Button,
   Picker,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as api from '../../api-requests/api';
 const { options } = require('../../s3-config.js');
@@ -37,57 +38,75 @@ function NewPlantEntry({ route, navigation }) {
 
     isLoading(true);
 
-    const name = shortid.generate();
+    //check plantName was minimum length 1
+    //check variety minimum length 3
+    if (plantName.length < 1 || variety.length < 3) {
+      Alert.alert(
+        'Input field error',
+        'Name must be between 1 and 25 characters, variety must be between 3 and 25 characters',
+        [{ text: 'Got it' }],
+      );
+      isLoading(false);
+      return;
+    } else {
+      const name = shortid.generate();
 
-    const file = {
-      uri: image,
-      name,
-      type: 'image/jpg',
-    };
+      const file = {
+        uri: image,
+        name,
+        type: 'image/jpg',
+      };
 
-    api
-      .postPlant(
-        1,
-        plantName,
-        type,
-        soil,
-        sunlight,
-        location,
-        waterFreq,
-        variety,
-        potHeight,
-      )
-      .then((plant) => {
-        plantId = plant.plant_id;
-        return RNS3.put(file, options);
-      })
-      .then((response) => {
-        console.log('status: ', response.status);
-        if (response.status === 201) {
-          console.log('body: ', response.body);
-          const { postResponse } = response.body;
-          return postResponse;
-        } else {
-          console.log('error message: ', response.text);
-          navigation.navigate('new plant');
-          // navigates back to new plant page if there is an error
-        }
-      })
-      .then((postResponse) => {
-        return api.postSnapshot(plantId, postResponse.location, plantHeight);
-      })
-      .then((response) => {
-        isLoading(false);
-        setPlantName('');
-        setType('vegetable');
-        setVariety('');
-        setWaterFreq('');
-        setSoil('');
-        setSunlight('indirect');
-        setLocation('indoor');
-        navigation.navigate('garden');
-      })
-      .catch((err) => console.log(err));
+      api
+        .postPlant(
+          1,
+          plantName,
+          type,
+          soil,
+          sunlight,
+          location,
+          waterFreq,
+          variety,
+          potHeight,
+        )
+        .then((plant) => {
+          plantId = plant.plant_id;
+          return RNS3.put(file, options);
+        })
+        .then((response) => {
+          console.log('status: ', response.status);
+          if (response.status === 201) {
+            console.log('body: ', response.body);
+            const { postResponse } = response.body;
+            return postResponse;
+          } else {
+            // navigates back to new plant page if there is an error
+            Alert.alert('Error', 'Problem uploading photo. Please try again.');
+            isLoading(false);
+            console.log('error message: ', response.text);
+            navigation.navigate('new plant');
+          }
+        })
+        .then((postResponse) => {
+          return api.postSnapshot(plantId, postResponse.location, plantHeight);
+        })
+        .then(() => {
+          isLoading(false);
+          setPlantName('');
+          setType('vegetable');
+          setVariety('');
+          setWaterFreq('');
+          setSoil('');
+          setSunlight('indirect');
+          setLocation('indoor');
+          navigation.navigate('garden');
+        })
+        .catch((err) => {
+          Alert.alert('Error', `${err}`);
+          isLoading(false);
+          console.log(err);
+        });
+    }
   };
 
   if (loading) return <ActivityIndicator />;
@@ -105,6 +124,7 @@ function NewPlantEntry({ route, navigation }) {
 
           <Text>plant name:</Text>
           <TextInput
+            maxLength={25}
             onChangeText={(plantName) => {
               setPlantName(plantName);
             }}
@@ -127,6 +147,7 @@ function NewPlantEntry({ route, navigation }) {
           </Picker>
           <Text>variety: </Text>
           <TextInput
+            maxLength={25}
             onChangeText={(variety) => {
               setVariety(variety);
             }}
