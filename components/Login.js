@@ -1,36 +1,18 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Button, Modal } from 'react-native';
 
-const Login = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
+const Login = (props) => {
   return (
     <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-        }}
-      >
-        <Button
-          title="Close Modal"
-          onPress={() => {
-            setModalVisible(!modalVisible);
-          }}
-        />
-
-        <Text>Login</Text>
-      </Modal>
-
-      <Text>Initial page</Text>
+      <Text>Login Page</Text>
       <Button
-        title="Show Modal"
+        title="Login"
         onPress={() => {
+          props.logIn({ user_id: 1, username: 'robert_plant' });
           // send request to getuser
           // if response is successful, setsmodalVisible to false
           //setModalVisible(true);
-          navigation.navigate('garden');
+          // navigation.navigate('garden');
         }}
       />
     </View>
