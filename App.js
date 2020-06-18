@@ -23,7 +23,8 @@ const Tab = createBottomTabNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator barStyle={styles.bottomNav}
+      <Tab.Navigator
+        barStyle={styles.bottomNav}
         tabBarOptions={{ activeTintColor: 'white', style: styles.bottomNav }}
         initialRouteName="login"
       >
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bottomNav: {
-    backgroundColor: '#52875a',
+    backgroundColor: '#355a3a',
     color: 'white',
   },
 });

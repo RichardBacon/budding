@@ -31,7 +31,7 @@ function NewPlantHome(props) {
       />
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('measure plant', {
+          navigation.navigate('new snapshot', {
             image: selectedImage.localUri,
           })
         }

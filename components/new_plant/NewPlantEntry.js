@@ -27,6 +27,7 @@ function NewPlantEntry({ route, navigation }) {
   const [loading, isLoading] = useState(false);
 
   const { resizedImage, potHeight, plantHeight } = route.params;
+  console.log(plantHeight);
   let plantId = '';
 
   const submitPlant = () => {

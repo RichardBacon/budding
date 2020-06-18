@@ -16,18 +16,17 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import { set } from 'react-native-reanimated';
 
 function MeasureFunction({ route, navigation }) {
-  const { image } = route.params;
+  const { image, potHeight } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
-  const [height, setPlantHeight] = useState(null);
+  const height = useRef(null);
   const pressCount = useRef(0);
   const pan = useRef(new Animated.ValueXY()).current;
   const [showCalculateButton, setShow] = useState(false);
   const [resizedImage, setImage] = useState('');
 
   useEffect(() => {
-    console.log(image);
     const runEffect = async () => {
       const resized = await ImageManipulator.manipulateAsync(image, [
         { resize: { width: 600 } },
@@ -66,21 +65,29 @@ function MeasureFunction({ route, navigation }) {
   ).current;
 
   const calculateDistance = () => {
-    console.log(pan.y);
-    const potHeight = 12;
-    const unit = (bottomPotClick - topPotClick) / potHeight;
-    let plantHeight = (topPotClick - topPlantClick) / unit;
-    setPlantHeight(plantHeight);
-    console.log(bottomPotClick, topPotClick, topPlantClick);
-    // plantHeight = plantHeight * (1 + 0.15)
+    const promise = new Promise((resolve, reject) => {
+      const unit = (bottomPotClick - topPotClick) / potHeight;
+      let plantHeight = (topPotClick - topPlantClick) / unit;
+      height.current = plantHeight;
+      console.log(height.current);
+      console.log(bottomPotClick, topPotClick, topPlantClick);
+      // plantHeight = plantHeight * (1 + 0.15)
 
-    // console.log(bottomPotClick, topPotClick, topPlantClick);
-    console.log(plantHeight + 'CM  ----PLANT HEIGHT');
+      // console.log(bottomPotClick, topPotClick, topPlantClick);
+      console.log(plantHeight + 'CM  ----PLANT HEIGHT');
+    }).then(navNextPage());
+  };
+
+  const navNextPage = () => {
+    navigation.navigate('new plant entry', {
+      resizedImage: image,
+      potHeight,
+      plantHeight: height.current,
+    });
   };
 
   const addMarker = () => {
     const { _value } = pan.y;
-    console.log(pan);
     if (pressCount.current === 0) {
       pressCount.current++;
       setBottomPotClick(_value);
@@ -137,15 +144,9 @@ function MeasureFunction({ route, navigation }) {
         <View style={styles.horizontal_line} />
         <View style={styles.vertical_line} />
       </Animated.View>
-      <Button
-        title={'submit'}
-        onPress={navigation.navigate('new plant entry', plantInfo)}
-      />
       {
         // image, s3 link, plant measurements, pot measurement
       }
-      <Button title={'reset'} onPress={resetMeasure} />
-      <Button title={'calculate'} onPress={calculateDistance} />
       {!showCalculateButton && (
         <TouchableOpacity onPress={addMarker} style={styles.top_button}>
           <Text style={styles.buttonText}>{`add ${

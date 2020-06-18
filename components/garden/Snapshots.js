@@ -81,7 +81,6 @@ function Snapshots(props) {
           }}
         />
       )}
-
       <Text>all snapshots</Text>
       <View style={styles.container}>
         <FlatGrid
