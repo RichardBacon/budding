@@ -25,3 +25,11 @@ exports.formatArray = (arrayToChange, lookUpObj, lookUpObj2) => {
   });
   return formatOriginalArray2;
 };
+
+exports.getDayMonth = (dateToFormat) => {
+  const words = dateToFormat.split('T');
+  const dayMonthYear = words[0].split('-');
+  const dayMonth = [dayMonthYear[2], dayMonthYear[1]].join('/');
+  // console.log(dayMonth);
+  return dayMonth;
+};

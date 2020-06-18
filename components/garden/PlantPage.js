@@ -15,6 +15,7 @@ import TimeAgo from 'react-native-timeago';
 import SnapshotCarousel from './SnapshotCarousel';
 
 function PlantPage(props) {
+  const { navigation } = props;
   const {
     plant_id,
     plant_uri,
@@ -88,13 +89,12 @@ function PlantPage(props) {
       {snapshots && <SnapshotCarousel snapshots={snapshots} />}
       <TouchableOpacity
         style={(styles.button, { backgroundColor: '#fdbe39' })}
-        // Needs updating with the all snapshots page, when that's built
-
-        // onPress={() =>
-        //   navigation.navigate('plant page', {
-        //     item,
-        //   })
-        // }
+        onPress={() =>
+          navigation.navigate('all snapshots', {
+            snapshots,
+            plant_name,
+          })
+        }
       >
         <Text style={styles.buttonText}>all snapshots </Text>
       </TouchableOpacity>

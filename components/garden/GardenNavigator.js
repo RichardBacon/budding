@@ -3,7 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Garden from './Garden';
 import PlantPage from './PlantPage';
 import EditPlant from './EditPlant';
-
+import Snapshots from './Snapshots';
+import Test from './Test';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,8 @@ function GardenNavigator() {
         component={PlantPage}
       />
       <Stack.Screen name="edit plant" component={EditPlant} />
+      <Stack.Screen name="all snapshots" component={Snapshots} />
+      <Stack.Screen name="test page" component={Test} />
     </Stack.Navigator>
   );
 }
