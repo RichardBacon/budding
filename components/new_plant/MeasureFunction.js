@@ -144,6 +144,16 @@ function MeasureFunction({ route, navigation }) {
         <View style={styles.horizontal_line} />
         <View style={styles.vertical_line} />
       </Animated.View>
+      <Button
+        title="view tutorial"
+        onPress={() => {
+          navigation.navigate('tutorial');
+        }}
+      />
+      <Button
+        title={'submit'}
+        onPress={navigation.navigate('new plant entry', plantInfo)}
+      />
       {
         // image, s3 link, plant measurements, pot measurement
       }

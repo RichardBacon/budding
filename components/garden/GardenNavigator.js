@@ -8,7 +8,7 @@ import Test from './Test';
 
 const Stack = createStackNavigator();
 
-function GardenNavigator() {
+function GardenNavigator({ userId }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -19,13 +19,15 @@ function GardenNavigator() {
       }}
       initialRouteName="garden"
     >
-      <Stack.Screen name="garden" component={Garden} />
-
       <Stack.Screen
         options={{ headerShown: false }}
         name="plant page"
         component={PlantPage}
       />
+      {/* <Stack.Screen name="garden" component={Garden} /> */}
+      <Stack.Screen name="garden">
+        {(navigation) => <Garden {...navigation} userId={userId} />}
+      </Stack.Screen>
       <Stack.Screen name="edit plant" component={EditPlant} />
       <Stack.Screen name="all snapshots" component={Snapshots} />
       <Stack.Screen name="test page" component={Test} />

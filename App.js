@@ -1,42 +1,71 @@
 // import 'react-native-gesture-handler';
-import * as React from 'react';
-import {
-  Animated,
-  View,
-  StyleSheet,
-  PanResponder,
-  Text,
-  Image,
-  Button,
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Garden from './components/garden/Garden';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 import GardenNavigator from './components/garden/GardenNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './components/Login';
+import Profile from './components/Profile';
 
 const Tab = createBottomTabNavigator();
 
 function App() {
+  const [userId, setUserId] = useState(1);
+  const [username, setUsername] = useState('robert_plant');
+  const [name, setName] = useState(null);
+
+  const logIn = (Id, user, fullName) => {
+    setUserId(Id);
+    setUsername(user);
+    setName(fullName);
+  };
+
+  const logOut = () => {
+    setUserId(null);
+  };
+
+  const userInfo = {
+    userId,
+    username,
+    name,
+  };
+
+  // if user isn't logged in, displays login component
+  // if user is logged in, navigates to garden page, passing userId down through garden navigator
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        barStyle={styles.bottomNav}
-        tabBarOptions={{ activeTintColor: 'white', style: styles.bottomNav }}
-        initialRouteName="login"
-      >
-        <Tab.Screen
-          name="login"
-          component={Login}
-          options={{ tabBarVisible: false }}
-        />
-        <Tab.Screen name="garden" component={GardenNavigator} />
-        <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <>
+      {!userId && <Login logIn={logIn} />}
+      {userId && (
+        <>
+          <NavigationContainer>
+            <Tab.Navigator
+              tabBarOptions={{
+                activeTintColor: 'white',
+                style: styles.bottomNav,
+              }}
+            >
+              <Tab.Screen name="garden">
+                {(navigation) => (
+                  <GardenNavigator {...navigation} userId={userId} />
+                )}
+              </Tab.Screen>
+              <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
+              <Tab.Screen name="profile">
+                {(navigation) => (
+                  <Profile
+                    {...navigation}
+                    userInfo={userInfo}
+                    logOut={logOut}
+                  />
+                )}
+              </Tab.Screen>
+            </Tab.Navigator>
+          </NavigationContainer>
+        </>
+      )}
+    </>
   );
 }
 
@@ -52,5 +81,8 @@ const styles = StyleSheet.create({
   bottomNav: {
     backgroundColor: '#355a3a',
     color: 'white',
+  },
+  userName: {
+    marginTop: 50,
   },
 });

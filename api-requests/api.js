@@ -14,9 +14,9 @@ export const getUserByUsername = (username) => {
   });
 };
 
-export const postUser = (username, name, avatar_url, password) => {
+export const postUser = (username, name) => {
   return axios
-    .post(`${baseURL}/users/`, { username, name, avatar_url, password })
+    .post(`${baseURL}/users/`, { username, name })
     .then(({ data }) => {
       return data.user;
     });
@@ -76,17 +76,6 @@ export const patchPlantById = (
   plant_variety,
   pot_height,
 ) => {
-  console.log(
-    plant_id,
-    plant_name,
-    plant_type,
-    soil,
-    sunlight,
-    location,
-    watering_freq,
-    plant_variety,
-    pot_height,
-  );
   return axios
     .patch(`${baseURL}/plants/${plant_id}`, {
       plant_name,
