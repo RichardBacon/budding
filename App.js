@@ -1,19 +1,34 @@
 // import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 import GardenNavigator from './components/garden/GardenNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './components/Login';
+import Profile from './components/Profile';
 
 const Tab = createBottomTabNavigator();
 
 function App() {
-  const [userId, setUserId] = React.useState(null);
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [name, setName] = useState(null);
 
-  const logIn = (newUserId) => {
-    setUserId(newUserId);
+  const logIn = (Id, user, fullName) => {
+    setUserId(Id);
+    setUsername(user);
+    setName(fullName);
+  };
+
+  const logOut = () => {
+    setUserId(null);
+  };
+
+  const userInfo = {
+    userId,
+    username,
+    name,
   };
 
   // if user isn't logged in, displays login component
@@ -37,6 +52,15 @@ function App() {
                 )}
               </Tab.Screen>
               <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
+              <Tab.Screen name="profile">
+                {(navigation) => (
+                  <Profile
+                    {...navigation}
+                    userInfo={userInfo}
+                    logOut={logOut}
+                  />
+                )}
+              </Tab.Screen>
             </Tab.Navigator>
           </NavigationContainer>
         </>

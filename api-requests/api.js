@@ -76,17 +76,6 @@ export const patchPlantById = (
   plant_variety,
   pot_height,
 ) => {
-  console.log(
-    plant_id,
-    plant_name,
-    plant_type,
-    soil,
-    sunlight,
-    location,
-    watering_freq,
-    plant_variety,
-    pot_height,
-  );
   return axios
     .patch(`${baseURL}/plants/${plant_id}`, {
       plant_name,

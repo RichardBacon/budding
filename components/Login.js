@@ -31,9 +31,9 @@ const Login = (props) => {
 
       api
         .getUserByUsername(username)
-        .then((user) => {
+        .then(({ user_id, username, name }) => {
           //setLoading(false);
-          props.logIn(user.user_id);
+          props.logIn(user_id, username, name);
         })
         .catch((err) => {
           Alert.alert('Error', `Username not found`);
