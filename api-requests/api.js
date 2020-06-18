@@ -8,8 +8,8 @@ export const getUsers = () => {
   });
 };
 
-export const getUserById = (user_id) => {
-  return axios.get(`${baseURL}/users/${user_id}`).then(({ data }) => {
+export const getUserByUsername = (username) => {
+  return axios.get(`${baseURL}/users/${username}`).then(({ data }) => {
     return data.user;
   });
 };
@@ -37,8 +37,8 @@ export const postPlant = (
   plant_name,
   plant_type,
   soil,
-  direct_sunlight,
-  inside,
+  sunlight,
+  location,
   watering_freq,
   plant_variety,
   pot_height,
@@ -48,8 +48,8 @@ export const postPlant = (
       plant_name,
       plant_type,
       soil,
-      direct_sunlight,
-      inside,
+      sunlight,
+      location,
       watering_freq,
       plant_variety,
       pot_height,
@@ -65,14 +65,35 @@ export const getPlantById = (plant_id) => {
   });
 };
 
-export const patchPlantById = (plant_id) => {
+export const patchPlantById = (
+  plant_id,
+  plant_name,
+  plant_type,
+  soil,
+  sunlight,
+  location,
+  watering_freq,
+  plant_variety,
+  pot_height,
+) => {
+  console.log(
+    plant_id,
+    plant_name,
+    plant_type,
+    soil,
+    sunlight,
+    location,
+    watering_freq,
+    plant_variety,
+    pot_height,
+  );
   return axios
-    .get(`${baseURL}/plants/${plant_id}`, {
+    .patch(`${baseURL}/plants/${plant_id}`, {
       plant_name,
       plant_type,
       soil,
-      direct_sunlight,
-      inside,
+      sunlight,
+      location,
       watering_freq,
       plant_variety,
       pot_height,
@@ -94,19 +115,11 @@ export const getSnapshotsByPlantId = (plant_id) => {
     });
 };
 
-export const postSnapshot = (
-  plant_id,
-  plant_uri,
-  no_leaves,
-  height,
-  created_at,
-) => {
+export const postSnapshot = (plant_id, plant_uri, height) => {
   return axios
     .post(`${baseURL}/plants/${plant_id}/snapshots`, {
       plant_uri,
-      no_leaves,
       height,
-      created_at,
     })
     .then(({ data }) => {
       return data.snap;

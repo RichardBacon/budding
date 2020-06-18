@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,34 +12,26 @@ import {
   Alert,
 } from 'react-native';
 import * as api from '../../api-requests/api';
-const { options } = require('../../s3-config.js');
-const shortid = require('shortid');
-import { RNS3 } from 'react-native-s3-upload';
 
-function NewPlantEntry({ route, navigation }) {
-  const [plantName, setPlantName] = useState('');
-  const [type, setType] = useState('vegetable');
-  const [variety, setVariety] = useState('');
-  const [waterFreq, setWaterFreq] = useState('');
-  const [soil, setSoil] = useState('');
-  const [sunlight, setSunlight] = useState('indirect');
-  const [location, setLocation] = useState('indoor');
+function EditPlant({ route, navigation }) {
+  const [plantName, setPlantName] = useState(null);
+  const [type, setType] = useState(null);
+  const [variety, setVariety] = useState(null);
+  const [potHeight, setPotHeight] = useState(null);
+  const [waterFreq, setWaterFreq] = useState(null);
+  const [soil, setSoil] = useState(null);
+  const [sunlight, setSunlight] = useState(null);
+  const [location, setLocation] = useState(null);
   const [loading, isLoading] = useState(false);
 
-  const { resizedImage, potHeight, plantHeight } = route.params;
-  let plantId = '';
+  //NEED TO TAKE PLANT ID AND CURRENT VALUES OFF OFF ROUTE.PARAMS, USE THESE TO SET STATE
 
-  const submitPlant = () => {
-    // POST request to postPlant
-    // upload to s3 bucket
-    // POST request to postSnapshot using plant_id received from postPlant
-    // navigate to garden page AFTER has posted (.then)
-
+  const updatePlant = () => {
     isLoading(true);
-
-    //check plantName was minimum length 1
-    //check variety minimum length 3
-    if (plantName.length < 1 || variety.length < 3) {
+    if (
+      (plantName && plantName.length < 1) ||
+      (variety && variety.length < 3)
+    ) {
       Alert.alert(
         'Input field error',
         'Name must be between 1 and 25 characters, variety must be between 3 and 25 characters',
@@ -48,16 +40,8 @@ function NewPlantEntry({ route, navigation }) {
       isLoading(false);
       return;
     } else {
-      const name = shortid.generate();
-
-      const file = {
-        uri: resizedImage,
-        name,
-        type: 'image/jpg',
-      };
-
       api
-        .postPlant(
+        .patchPlantById(
           1,
           plantName,
           type,
@@ -68,37 +52,9 @@ function NewPlantEntry({ route, navigation }) {
           variety,
           potHeight,
         )
-        .then((plant) => {
-          plantId = plant.plant_id;
-          return RNS3.put(file, options);
-        })
-        .then((response) => {
-          console.log('status: ', response.status);
-          if (response.status === 201) {
-            console.log('body: ', response.body);
-            const { postResponse } = response.body;
-            return postResponse;
-          } else {
-            // navigates back to new plant page if there is an error
-            Alert.alert('Error', 'Problem uploading photo. Please try again.');
-            isLoading(false);
-            console.log('error message: ', response.text);
-            navigation.navigate('new plant');
-          }
-        })
-        .then((postResponse) => {
-          return api.postSnapshot(plantId, postResponse.location, plantHeight);
-        })
         .then(() => {
           isLoading(false);
-          setPlantName('');
-          setType('vegetable');
-          setVariety('');
-          setWaterFreq('');
-          setSoil('');
-          setSunlight('indirect');
-          setLocation('indoor');
-          navigation.navigate('garden');
+          // navigation.navigate(''); // NAVIGATE TO INDIVIDUAL PLANT PAGE
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);
@@ -111,19 +67,14 @@ function NewPlantEntry({ route, navigation }) {
   if (loading) return <ActivityIndicator />;
   else {
     return (
-      <View style={styles.view}>
+      <View styles={styles.view}>
         <ScrollView contentContainerStyle={styles.container}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: resizedImage,
-            }}
-          />
-          <Text style={styles.titleText}>{plantName}</Text>
-
+          <Text>
+            Input any information you'd like to change. You can leave any fields
+            you do not wish to update blank.
+          </Text>
           <Text>plant name:</Text>
           <TextInput
-            maxLength={25}
             onChangeText={(plantName) => {
               setPlantName(plantName);
             }}
@@ -137,6 +88,7 @@ function NewPlantEntry({ route, navigation }) {
               setType(itemValue);
             }}
           >
+            <Picker.Item label="" value={null} />
             <Picker.Item label="vegetable" value="vegetable" />
             <Picker.Item label="fruit" value="fruit" />
             <Picker.Item label="herb" value="herb" />
@@ -146,15 +98,21 @@ function NewPlantEntry({ route, navigation }) {
           </Picker>
           <Text>variety: </Text>
           <TextInput
-            maxLength={25}
             onChangeText={(variety) => {
               setVariety(variety);
             }}
             style={styles.input}
             placeholder={'e.g. bell pepper'}
           />
-          <Text>plant height: {plantHeight}cm</Text>
-          <Text>pot height: {potHeight}cm</Text>
+          <Text>plant height: 15cm</Text>
+          <Text>pot height: {potHeight}10cm</Text>
+          <TextInput
+            onChangeText={(potHeight) => {
+              setPotHeight(potHeight);
+            }}
+            style={styles.input}
+            placeholder={'e.g. 10'}
+          />
           <Text>sunlight:</Text>
           <Picker
             selectedValue={sunlight}
@@ -162,6 +120,7 @@ function NewPlantEntry({ route, navigation }) {
               setSunlight(itemValue);
             }}
           >
+            <Picker.Item label="" value={null} />
             <Picker.Item label="indirect" value="indirect" />
             <Picker.Item label="direct" value="direct" />
           </Picker>
@@ -172,6 +131,7 @@ function NewPlantEntry({ route, navigation }) {
               setLocation(itemValue);
             }}
           >
+            <Picker.Item label="" value={null} />
             <Picker.Item label="indoor" value="indoor" />
             <Picker.Item label="outdoor" value="outdoor" />
           </Picker>
@@ -197,19 +157,18 @@ function NewPlantEntry({ route, navigation }) {
             placeholder={'e.g. peat'}
           />
           <Button
-            title={'add new plant'}
-            onPress={submitPlant}
+            title={'update plant'}
+            onPress={updatePlant}
             style={styles.button}
-          >
-            add new plant
-          </Button>
+          />
         </ScrollView>
       </View>
     );
   }
 }
 
-export default NewPlantEntry;
+export default EditPlant;
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,

@@ -13,19 +13,27 @@ import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Garden from './components/garden/Garden';
-import Profile from './components/Profile';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 import GardenNavigator from './components/garden/GardenNavigator';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Login from './components/Login';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator barStyle={styles.bottomNav}>
+      <Tab.Navigator barStyle={styles.bottomNav}
+        tabBarOptions={{ activeTintColor: 'white', style: styles.bottomNav }}
+        initialRouteName="login"
+      >
+        <Tab.Screen
+          name="login"
+          component={Login}
+          options={{ tabBarVisible: false }}
+        />
         <Tab.Screen name="garden" component={GardenNavigator} />
         <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
-        <Tab.Screen name="profile" component={Profile} />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -42,5 +50,6 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     backgroundColor: '#52875a',
+    color: 'white',
   },
 });

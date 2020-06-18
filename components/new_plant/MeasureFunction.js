@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Animated,
   View,
@@ -11,9 +11,8 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { RNS3 } from 'react-native-s3-upload';
-const shortid = require('shortid');
-const { options } = require('../../s3-config.js');
+
+import * as ImageManipulator from 'expo-image-manipulator';
 import { set } from 'react-native-reanimated';
 
 function MeasureFunction({ route, navigation }) {
@@ -25,6 +24,18 @@ function MeasureFunction({ route, navigation }) {
   const pressCount = useRef(0);
   const pan = useRef(new Animated.ValueXY()).current;
   const [showCalculateButton, setShow] = useState(false);
+  const [resizedImage, setImage] = useState('');
+
+  useEffect(() => {
+    console.log(image);
+    const runEffect = async () => {
+      const resized = await ImageManipulator.manipulateAsync(image, [
+        { resize: { width: 600 } },
+      ]);
+      setImage(resized.uri);
+    };
+    runEffect();
+  }, []);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -92,7 +103,7 @@ function MeasureFunction({ route, navigation }) {
   };
 
   const plantInfo = {
-    image,
+    resizedImage,
     height,
     plantHeight: 7,
     potHeight: 12.5,
@@ -113,7 +124,6 @@ function MeasureFunction({ route, navigation }) {
         // onTouchStart={this.handleTouch}
         style={styles.logo}
         source={{
-          // uri: 'https://i.ibb.co/hR0hV9h/Plant.png',
           uri: image,
         }}
       />
@@ -129,7 +139,7 @@ function MeasureFunction({ route, navigation }) {
       </Animated.View>
       <Button
         title={'submit'}
-        onPress={() => navigation.navigate('new plant entry', plantInfo)}
+        onPress={navigation.navigate('new plant entry', plantInfo)}
       />
       {
         // image, s3 link, plant measurements, pot measurement
