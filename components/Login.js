@@ -18,6 +18,7 @@ const Login = (props) => {
   const [newName, setNewName] = useState('');
 
   const getUserData = () => {
+    console.log('inside getUserData');
     if (username.length < 4) {
       Alert.alert(
         'Input field error',
@@ -34,11 +35,16 @@ const Login = (props) => {
         .then(({ user_id, username, name }) => {
           //setLoading(false);
           props.logIn(user_id, username, name);
+          return api.getPlantsByUserId(user_id);
+        })
+        .then((plants) => {
+          console.log('fetched plants');
+          props.plantUpdate(plants);
         })
         .catch((err) => {
           Alert.alert('Error', `Username not found`);
           setLoading(false);
-          console.log(err);
+          console.log(err, '<---- err');
         });
     }
   };

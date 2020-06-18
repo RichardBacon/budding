@@ -83,13 +83,14 @@ function NewPlantEntry({ route, navigation }) {
             Alert.alert('Error', 'Problem uploading photo. Please try again.');
             isLoading(false);
             console.log('error message: ', response.text);
-            navigation.navigate('new plant');
           }
         })
         .then((postResponse) => {
+          console.log('after s3 upload', postResponse);
           return api.postSnapshot(plantId, postResponse.location, plantHeight);
         })
         .then(() => {
+          console.log('before navigation');
           isLoading(false);
           setPlantName('');
           setType('vegetable');

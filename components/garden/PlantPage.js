@@ -67,17 +67,17 @@ function PlantPage(props) {
             <Text>type: {plant.plant_type}</Text>
             <Text>water: {plant.watering_freq}</Text>
             <Text>location: {plant.location}</Text>
+            <Text>pot height: {plant.pot_height}</Text>
           </View>
         </View>
         <TouchableOpacity
           // Needs updating with the new snapshot page, when that's built
 
-          // onPress={() =>
-          //   navigation.navigate('plant page', {
-          //     item,
-          //   })
-          // }
-
+          onPress={() =>
+            navigation.navigate('plant page', {
+              item,
+            })
+          }
           style={styles.button}
         >
           <Text style={styles.buttonText}>new snapshot </Text>

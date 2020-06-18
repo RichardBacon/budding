@@ -11,9 +11,10 @@ import Profile from './components/Profile';
 const Tab = createBottomTabNavigator();
 
 function App() {
-  const [userId, setUserId] = useState(1);
-  const [username, setUsername] = useState('robert_plant');
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState('');
   const [name, setName] = useState(null);
+  const [userPlants, setPlants] = useState(null);
 
   const logIn = (Id, user, fullName) => {
     setUserId(Id);
@@ -23,6 +24,11 @@ function App() {
 
   const logOut = () => {
     setUserId(null);
+  };
+
+  const plantUpdate = (plants) => {
+    console.log(plants, '<--- inside plantUpdate');
+    setPlants(plants);
   };
 
   const userInfo = {
@@ -36,8 +42,8 @@ function App() {
 
   return (
     <>
-      {!userId && <Login logIn={logIn} />}
-      {userId && (
+      {!userId && <Login logIn={logIn} plantUpdate={plantUpdate} />}
+      {userPlants && (
         <>
           <NavigationContainer>
             <Tab.Navigator
@@ -48,7 +54,7 @@ function App() {
             >
               <Tab.Screen name="garden">
                 {(navigation) => (
-                  <GardenNavigator {...navigation} userId={userId} />
+                  <GardenNavigator {...navigation} userId={userPlants} />
                 )}
               </Tab.Screen>
               <Tab.Screen name="new plant" component={PlantOptionsNavigator} />

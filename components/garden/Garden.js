@@ -22,32 +22,42 @@ import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
 
 function Garden({ userId, navigation }) {
+  // for some reason I have to send it as userId for it to pick it up on the destructuring?! It won't let me send it named as anything else. Maybe Expo being silly
+  console.log('inside garden');
   const [sort_by, changeSort] = useState('created_at');
   const [snaps, setSnaps] = useState([]);
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
   const [plant_type, changeType] = useState(null);
+  const [plants, setPlants] = useState(userId);
 
   useEffect(() => {
-    api
-      .getPlantsByUserId(userId, order, sort_by, plant_type)
-      .then((plants) => {
-        const snapShotArr = plants.map((plant) => {
-          const { plant_id, plant_name, snapshot_count } = plant;
+    const runEffect = async () => {
+      console.log('inside runEffect');
+      const snaps = plants.map((plant) => {
+        const { plant_id, plant_name, snapshot_count } = plant;
 
-          return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-            return { plant_name, snapshot_count, ...snap[0] };
+        return api
+          .getSnapshotsByPlantId(plant_id)
+          .then((snap) => {
+            return {
+              plant_name,
+              snapshot_count,
+              ...snap[0],
+            };
+          })
+          .catch((err) => {
+            console.log(err);
+            Alert.alert('Error', `${err}`);
+            setLoading(false);
           });
-        });
-
-        Promise.all(snapShotArr).then((snapshots) => {
-          setSnaps(snapshots);
-          isLoading(false);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
       });
+      const gotSnaps = await Promise.all(snaps);
+      console.log(gotSnaps, '<----- snaps');
+      setSnaps(gotSnaps);
+      isLoading(false);
+    };
+    runEffect();
   }, [order, sort_by, plant_type]);
 
   if (loading)
@@ -87,28 +97,62 @@ function Garden({ userId, navigation }) {
           onValueChange={(value) => toggleOrder(value)}
           placeholder={{}}
           items={[
-            { label: 'newest', value: 'desc' },
-            { label: 'oldest', value: 'asc' },
+            {
+              label: 'newest',
+              value: 'desc',
+            },
+            {
+              label: 'oldest',
+              value: 'asc',
+            },
           ]}
         />
         <RNPickerSelect
           onValueChange={(value) => toggleSortBy(value)}
-          placeholder={{ label: 'sort by' }}
+          placeholder={{
+            label: 'sort by',
+          }}
           items={[
-            { label: 'most snaps', value: 'most snaps' },
-            { label: 'least snaps', value: 'least snaps' },
+            {
+              label: 'most snaps',
+              value: 'most snaps',
+            },
+            {
+              label: 'least snaps',
+              value: 'least snaps',
+            },
           ]}
         />
         <RNPickerSelect
           onValueChange={(value) => changeType(value)}
-          placeholder={{ label: 'all plants' }}
+          placeholder={{
+            label: 'all plants',
+          }}
           items={[
-            { label: 'garden', value: 'garden' },
-            { label: 'vegetable', value: 'vegetable' },
-            { label: 'fruit', value: 'fruit' },
-            { label: 'herb', value: 'herb' },
-            { label: 'houseplant', value: 'houseplant' },
-            { label: 'succulent', value: 'succulent' },
+            {
+              label: 'garden',
+              value: 'garden',
+            },
+            {
+              label: 'vegetable',
+              value: 'vegetable',
+            },
+            {
+              label: 'fruit',
+              value: 'fruit',
+            },
+            {
+              label: 'herb',
+              value: 'herb',
+            },
+            {
+              label: 'houseplant',
+              value: 'houseplant',
+            },
+            {
+              label: 'succulent',
+              value: 'succulent',
+            },
           ]}
         />
       </View>
@@ -141,7 +185,9 @@ function Garden({ userId, navigation }) {
                   style={styles.image}
                 >
                   <Image
-                    source={{ uri: item.plant_uri }}
+                    source={{
+                      uri: item.plant_uri,
+                    }}
                     style={styles.image}
                     onLoad={isLoading(false)}
                   />

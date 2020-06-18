@@ -13,9 +13,11 @@ import {
 import Pot from '../../assets/pot_measure.svg';
 
 function NewSnapshotPage(props) {
-  const [potHeight, setPotHeight] = useState(0);
+  const [potHeight, setPotHeight] = useState(image.pot_height);
   const { navigation } = props;
   const { image } = props.route.params;
+
+  // pass pot height down as a prop, set this as state, and have in input box when loads
 
   return (
     <View
@@ -33,6 +35,7 @@ function NewSnapshotPage(props) {
         <TextInput
           keyboardType="numeric"
           returnKeyType="done"
+          value={potHeight}
           onChangeText={(height) => {
             setPotHeight(height);
           }}
