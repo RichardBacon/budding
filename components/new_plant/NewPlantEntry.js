@@ -29,14 +29,14 @@ function NewPlantEntry({ route, navigation }) {
   const { resizedImage, potHeight, plantHeight } = route.params;
   let plantId = '';
 
-  const submitPlant = () => {
-    // POST request to postPlant
-    // upload to s3 bucket
-    // POST request to postSnapshot using plant_id received from postPlant
-    // navigate to garden page AFTER has posted (.then)
+  // renders new plant form, everything but soil and water frequency required
+  // upon pressing 'add new plant' button, sends POST request to our database
+  // once our POST request is successful, uploads to s3 bucket
+  // uses response from s3 which details the image location in the bucket
+  // posts this image location to snapshots in our database
+  // navigates to garden page after image is posted to snapshots
 
-    //check plantName was minimum length 1
-    //check variety minimum length 3
+  const submitPlant = () => {
     if (plantName.length < 1 || variety.length < 3) {
       Alert.alert(
         'Input field error',

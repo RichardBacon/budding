@@ -24,7 +24,11 @@ function EditPlant({ route, navigation }) {
   const [location, setLocation] = useState(null);
   const [loading, isLoading] = useState(false);
 
-  //NEED TO TAKE PLANT ID AND CURRENT VALUES OFF OFF ROUTE.PARAMS, USE THESE TO SET STATE
+  //NEED TO TAKE PLANT ID OFF ROUTE PARAMS
+  //IF WANT TO CHANGE SO INPUT FIELDS DEFAULT TO CURRENT INFO, NEED TO PASS DOWN PLANT INFO
+
+  // loads input form which initially has all empty fields - user is only required to enter information for sections they want to update. The rest can be left blank.
+  // sends PATCH request to our database, and navigates back to individual plant page (NEED TO SET THIS NAVIGATION UP)
 
   const updatePlant = () => {
     isLoading(true);

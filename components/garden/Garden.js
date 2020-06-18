@@ -29,17 +29,24 @@ function Garden({ userId, navigation }) {
   const [plant_type, changeType] = useState(null);
 
   useEffect(() => {
-    api.getPlantsByUserId(userId, order, sort_by, plant_type).then((plants) => {
-      const snapShotArr = plants.map((plant) => {
-        const { plant_id, plant_name, snapshot_count } = plant;
-        return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-          return { plant_name, snapshot_count, ...snap[0] };
+    api
+      .getPlantsByUserId(userId, order, sort_by, plant_type)
+      .then((plants) => {
+        const snapShotArr = plants.map((plant) => {
+          const { plant_id, plant_name, snapshot_count } = plant;
+
+          return api.getSnapshotsByPlantId(plant_id).then((snap) => {
+            return { plant_name, snapshot_count, ...snap[0] };
+          });
         });
+
+        Promise.all(snapShotArr).then((snapshots) => {
+          setSnaps(snapshots);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      Promise.all(snapShotArr).then((snapshots) => {
-        setSnaps(snapshots);
-      });
-    });
   }, [order, sort_by, plant_type]);
 
   // if (loading)

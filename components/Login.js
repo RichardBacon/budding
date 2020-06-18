@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   Button,
-  Modal,
   TextInput,
   ActivityIndicator,
   Alert,
@@ -73,6 +72,9 @@ const Login = (props) => {
     }
   };
 
+  // displays login and sign up option
+  // when sign up button pressed, displays input boxes and a submit button, which then posts the new user info and immediately logs them in, taking them to garden page
+
   if (loading) return <ActivityIndicator />;
   else
     return (
@@ -85,16 +87,7 @@ const Login = (props) => {
           style={styles.input}
           placeholder={'username'}
         />
-        <Button
-          title="Login"
-          onPress={
-            getUserData
-            // send request to getuser
-            // if response is successful, setsmodalVisible to false
-            //setModalVisible(true);
-            // navigation.navigate('garden');
-          }
-        />
+        <Button title="Login" onPress={getUserData} />
         <Text>Not got an account? Sign up here</Text>
         {!signingUp && (
           <Button title="Sign up" onPress={() => setSignUp(true)} />
@@ -119,11 +112,6 @@ const Login = (props) => {
           />
         )}
         {signingUp && <Button title="submit" onPress={createUser} />}
-
-        {
-          // button that said sign up
-          // when click, changes in something state, which will show an input box and a 'create account' button
-        }
       </View>
     );
 };

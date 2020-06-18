@@ -1,18 +1,7 @@
 // import 'react-native-gesture-handler';
 import * as React from 'react';
-import {
-  Animated,
-  View,
-  StyleSheet,
-  PanResponder,
-  Text,
-  Image,
-  Button,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Garden from './components/garden/Garden';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 import GardenNavigator from './components/garden/GardenNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -26,6 +15,9 @@ function App() {
   const logIn = (newUserId) => {
     setUserId(newUserId);
   };
+
+  // if user isn't logged in, displays login component
+  // if user is logged in, navigates to garden page, passing userId down through garden navigator
 
   return (
     <>
