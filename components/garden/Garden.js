@@ -42,6 +42,7 @@ function Garden({ userId, navigation }) {
 
         Promise.all(snapShotArr).then((snapshots) => {
           setSnaps(snapshots);
+          isLoading(false);
         });
       })
       .catch((err) => {
@@ -49,15 +50,12 @@ function Garden({ userId, navigation }) {
       });
   }, [order, sort_by, plant_type]);
 
-  // if (loading)
-  //   return (
-  //     <View style={[styles.container, styles.horizontal]}>
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //       <ActivityIndicator size="small" color="#00ff00" />
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //       <ActivityIndicator size="small" color="#00ff00" />
-  //     </View>
-  //   );
+  if (loading)
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
 
   const toggleSortBy = (data) => {
     if (data === 'most snaps') {
@@ -115,6 +113,17 @@ function Garden({ userId, navigation }) {
         />
       </View>
       <View style={styles.container}>
+        {snaps.length === 0 && (
+          <>
+            <Text>you don't have any plants! get growing!</Text>
+            <Button
+              title="add new plant"
+              onPress={() => {
+                navigation.navigate('new plant');
+              }}
+            />
+          </>
+        )}
         <FlatGrid
           itemDimension={130}
           data={snaps}
