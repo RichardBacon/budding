@@ -5,7 +5,6 @@ import Carousel from 'react-native-snap-carousel';
 import TimeAgo from 'react-native-timeago';
 
 export default function SnapshotCarousel({ snapshots }) {
-  console.log(snapshots);
   const carousel = React.useRef(null);
   const [carouselItems, setCarouselItems] = React.useState(snapshots);
   const [activeIndex, setIndex] = React.useState(0);

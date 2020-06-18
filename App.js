@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bottomNav: {
-    backgroundColor: '#52875a',
+    backgroundColor: '#355a3a',
     color: 'white',
   },
   userName: {

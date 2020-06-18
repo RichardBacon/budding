@@ -27,6 +27,7 @@ function NewPlantEntry({ route, navigation }) {
   const [loading, isLoading] = useState(false);
 
   const { resizedImage, potHeight, plantHeight } = route.params;
+  console.log(plantHeight);
   let plantId = '';
 
   // renders new plant form, everything but soil and water frequency required
