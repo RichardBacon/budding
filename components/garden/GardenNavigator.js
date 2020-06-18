@@ -17,7 +17,7 @@ function GardenNavigator() {
           height: 55,
         },
       }}
-      initialRouteName="test page"
+      initialRouteName="garden"
     >
       <Stack.Screen name="garden" component={Garden} />
 

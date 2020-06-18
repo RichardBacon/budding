@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-import { View, Item } from 'react-native';
-import { Picker } from '@react-native-community/picker';
+import { View, Item, Picker } from 'react-native';
+// import { Picker } from '@react-native-community/picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 function Test() {
-  const [value, setValue] = React.useState('key1');
+  const [value, setValue] = React.useState('uk');
 
   return (
-    <Picker
-      selectedValue={value}
-      onValueChange={(v) => setValue(v)}
-      mode="dropdown"
-    >
-      <Item label="hello" value="key0" />
-      <Item label="world" value="key1" />
-    </Picker>
+    <DropDownPicker
+      items={[
+        { label: 'UK', value: 'uk' },
+        { label: 'France', value: 'france' },
+      ]}
+      defaultValue={value}
+      containerStyle={{ height: 40 }}
+      style={{ backgroundColor: '#fafafa' }}
+      dropDownStyle={{ backgroundColor: '#fafafa' }}
+      // onChangeItem={(item) =>
+      //   this.setState({
+      //     country: item.value,
+      //   })
+      // }
+    />
   );
 }
 
