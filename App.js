@@ -21,20 +21,17 @@ import Login from './components/Login';
 const Tab = createBottomTabNavigator();
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [user, setUser] = React.useState(null);
+  const [userId, setUserId] = React.useState(null);
 
-  const logIn = (loggedInUser) => {
-    setLoggedIn(true);
-    setUser(loggedInUser);
+  const logIn = (newUserId) => {
+    setUserId(newUserId);
   };
 
   return (
     <>
-      {!loggedIn && <Login logIn={logIn} />}
-      {loggedIn && (
+      {!userId && <Login logIn={logIn} />}
+      {userId && (
         <>
-          <Text style={styles.userName}>{user.username}</Text>
           <NavigationContainer>
             <Tab.Navigator
               tabBarOptions={{
@@ -42,7 +39,11 @@ function App() {
                 style: styles.bottomNav,
               }}
             >
-              <Tab.Screen name="garden" component={GardenNavigator} />
+              <Tab.Screen name="garden">
+                {(navigation) => (
+                  <GardenNavigator {...navigation} userId={userId} />
+                )}
+              </Tab.Screen>
               <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
             </Tab.Navigator>
           </NavigationContainer>

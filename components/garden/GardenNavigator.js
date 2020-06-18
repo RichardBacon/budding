@@ -5,7 +5,7 @@ import EditPlant from './EditPlant';
 
 const Stack = createStackNavigator();
 
-function GardenNavigator() {
+function GardenNavigator({ userId }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -16,7 +16,10 @@ function GardenNavigator() {
       }}
       initialRouteName="garden"
     >
-      <Stack.Screen name="garden" component={Garden} />
+      {/* <Stack.Screen name="garden" component={Garden} /> */}
+      <Stack.Screen name="garden">
+        {(navigation) => <Garden {...navigation} userId={userId} />}
+      </Stack.Screen>
       <Stack.Screen name="edit plant" component={EditPlant} />
     </Stack.Navigator>
   );

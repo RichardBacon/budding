@@ -16,7 +16,7 @@ import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
 
-function Garden({ navigation }) {
+function Garden({ userId }) {
   const [plants, setPlants] = useState([
     {
       // plant data
