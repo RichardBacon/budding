@@ -8,8 +8,8 @@ export const getUsers = () => {
   });
 };
 
-export const getUserById = (user_id) => {
-  return axios.get(`${baseURL}/users/${user_id}`).then(({ data }) => {
+export const getUserByUsername = (username) => {
+  return axios.get(`${baseURL}/users/${username}`).then(({ data }) => {
     return data.user;
   });
 };
