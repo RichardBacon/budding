@@ -20,6 +20,7 @@ import Plant from '../../assets/plant.svg';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
+import { Picker } from '@react-native-community/picker';
 
 function Garden({ navigation }) {
   const [sort_by, changeSort] = useState('created_at');
@@ -82,6 +83,14 @@ function Garden({ navigation }) {
     <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
       <Text>My Garden</Text>
       <View style={styles.heroContainer}>
+        <Picker
+          selectedValue={'sort by'}
+          style={{ height: 50, width: 100 }}
+          onValueChange={(itemValue, itemIndex) => toggleOrder(itemValue)}
+        >
+          <Picker.Item label="newest" value="desc" />
+          <Picker.Item label="oldest" value="asc" />
+        </Picker>
         <RNPickerSelect
           onValueChange={(value) => toggleOrder(value)}
           placeholder={{}}
