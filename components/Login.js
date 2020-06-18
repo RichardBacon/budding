@@ -14,10 +14,11 @@ import * as api from '../api-requests/api';
 const Login = (props) => {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
+  const [signingUp, setSignUp] = useState(false);
+  const [newUsername, setNewUsername] = useState('');
+  const [newName, setNewName] = useState('');
 
   const getUserData = () => {
-    setLoading(true);
-
     if (username.length < 4) {
       Alert.alert(
         'Input field error',
@@ -27,14 +28,45 @@ const Login = (props) => {
       setLoading(false);
       return;
     } else {
+      setLoading(true);
+
       api
         .getUserByUsername(username)
         .then((user) => {
-          setLoading(false);
-          props.logIn(user.user_id, '<--- response');
+          //setLoading(false);
+          props.logIn(user.user_id);
         })
         .catch((err) => {
           Alert.alert('Error', `Username not found`);
+          setLoading(false);
+          console.log(err);
+        });
+    }
+  };
+
+  const createUser = () => {
+    if (newUsername.length < 4 || newName.length < 4) {
+      Alert.alert(
+        'Input field error',
+        'Username must be 4 or more characters, name must be between 4 and 25 characters',
+        [{ text: 'Got it' }],
+      );
+      setLoading(false);
+      return;
+    } else {
+      setLoading(true);
+
+      api
+        .postUser(newUsername, newName)
+        .then(({ username }) => {
+          return api.getUserByUsername(username);
+        })
+        .then((user) => {
+          //setLoading(false);
+          props.logIn(user.user_id);
+        })
+        .catch((err) => {
+          Alert.alert('Error', `${err}`);
           setLoading(false);
           console.log(err);
         });
@@ -63,6 +95,35 @@ const Login = (props) => {
             // navigation.navigate('garden');
           }
         />
+        <Text>Not got an account? Sign up here</Text>
+        {!signingUp && (
+          <Button title="Sign up" onPress={() => setSignUp(true)} />
+        )}
+        {signingUp && (
+          <TextInput
+            onChangeText={(newUsername) => {
+              setNewUsername(newUsername);
+            }}
+            style={styles.input}
+            placeholder={'new username'}
+          />
+        )}
+        {signingUp && (
+          <TextInput
+            onChangeText={(newName) => {
+              setNewName(newName);
+            }}
+            style={styles.input}
+            placeholder={'full name'}
+            maxLength={25}
+          />
+        )}
+        {signingUp && <Button title="submit" onPress={createUser} />}
+
+        {
+          // button that said sign up
+          // when click, changes in something state, which will show an input box and a 'create account' button
+        }
       </View>
     );
 };
