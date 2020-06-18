@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
-import { SearchBar } from 'react-native-elements';
 import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
