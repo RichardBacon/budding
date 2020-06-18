@@ -35,8 +35,6 @@ function NewPlantEntry({ route, navigation }) {
     // POST request to postSnapshot using plant_id received from postPlant
     // navigate to garden page AFTER has posted (.then)
 
-    isLoading(true);
-
     //check plantName was minimum length 1
     //check variety minimum length 3
     if (plantName.length < 1 || variety.length < 3) {
@@ -48,6 +46,7 @@ function NewPlantEntry({ route, navigation }) {
       isLoading(false);
       return;
     } else {
+      isLoading(true);
       const name = shortid.generate();
 
       const file = {

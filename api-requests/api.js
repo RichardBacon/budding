@@ -14,9 +14,9 @@ export const getUserByUsername = (username) => {
   });
 };
 
-export const postUser = (username, name, avatar_url, password) => {
+export const postUser = (username, name) => {
   return axios
-    .post(`${baseURL}/users/`, { username, name, avatar_url, password })
+    .post(`${baseURL}/users/`, { username, name })
     .then(({ data }) => {
       return data.user;
     });

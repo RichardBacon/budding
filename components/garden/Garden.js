@@ -21,29 +21,25 @@ import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
 
-function Garden({ navigation }) {
+function Garden({ userId, navigation }) {
   const [sort_by, changeSort] = useState('created_at');
   const [snaps, setSnaps] = useState([]);
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
   const [plant_type, changeType] = useState(null);
 
-  // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
   useEffect(() => {
-    const user_id = 1;
-    api
-      .getPlantsByUserId(user_id, order, sort_by, plant_type)
-      .then((plants) => {
-        const snapShotArr = plants.map((plant) => {
-          const { plant_id, plant_name, snapshot_count } = plant;
-          return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-            return { plant_name, snapshot_count, ...snap[0] };
-          });
-        });
-        Promise.all(snapShotArr).then((snapshots) => {
-          setSnaps(snapshots);
+    api.getPlantsByUserId(userId, order, sort_by, plant_type).then((plants) => {
+      const snapShotArr = plants.map((plant) => {
+        const { plant_id, plant_name, snapshot_count } = plant;
+        return api.getSnapshotsByPlantId(plant_id).then((snap) => {
+          return { plant_name, snapshot_count, ...snap[0] };
         });
       });
+      Promise.all(snapShotArr).then((snapshots) => {
+        setSnaps(snapshots);
+      });
+    });
   }, [order, sort_by, plant_type]);
 
   // if (loading)

@@ -21,21 +21,35 @@ import Login from './components/Login';
 const Tab = createBottomTabNavigator();
 
 function App() {
+  const [userId, setUserId] = React.useState(null);
+
+  const logIn = (newUserId) => {
+    setUserId(newUserId);
+  };
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator barStyle={styles.bottomNav}
-        tabBarOptions={{ activeTintColor: 'white', style: styles.bottomNav }}
-        initialRouteName="login"
-      >
-        <Tab.Screen
-          name="login"
-          component={Login}
-          options={{ tabBarVisible: false }}
-        />
-        <Tab.Screen name="garden" component={GardenNavigator} />
-        <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <>
+      {!userId && <Login logIn={logIn} />}
+      {userId && (
+        <>
+          <NavigationContainer>
+            <Tab.Navigator
+              tabBarOptions={{
+                activeTintColor: 'white',
+                style: styles.bottomNav,
+              }}
+            >
+              <Tab.Screen name="garden">
+                {(navigation) => (
+                  <GardenNavigator {...navigation} userId={userId} />
+                )}
+              </Tab.Screen>
+              <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </>
+      )}
+    </>
   );
 }
 
@@ -51,5 +65,8 @@ const styles = StyleSheet.create({
   bottomNav: {
     backgroundColor: '#52875a',
     color: 'white',
+  },
+  userName: {
+    marginTop: 50,
   },
 });
