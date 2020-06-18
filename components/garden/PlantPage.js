@@ -68,13 +68,36 @@ function PlantPage(props) {
             <Text>location: {plant.location}</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.button}></TouchableOpacity>
+        <TouchableOpacity
+          // Needs updating with the new snapshot page, when that's built
+
+          // onPress={() =>
+          //   navigation.navigate('plant page', {
+          //     item,
+          //   })
+          // }
+
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>new snapshot </Text>
+        </TouchableOpacity>
       </View>
       <View>
         <Text>recent snapshots</Text>
       </View>
       {snapshots && <SnapshotCarousel snapshots={snapshots} />}
-      <TouchableOpacity style={styles.button}></TouchableOpacity>
+      <TouchableOpacity
+        style={(styles.button, { backgroundColor: '#fdbe39' })}
+        // Needs updating with the all snapshots page, when that's built
+
+        // onPress={() =>
+        //   navigation.navigate('plant page', {
+        //     item,
+        //   })
+        // }
+      >
+        <Text style={styles.buttonText}>all snapshots </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -116,6 +139,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 5,
     marginBottom: 10,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: '#fff',
   },
 });
 
