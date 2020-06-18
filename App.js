@@ -23,7 +23,7 @@ const Tab = createBottomTabNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
+      <Tab.Navigator barStyle={styles.bottomNav}
         tabBarOptions={{ activeTintColor: 'white', style: styles.bottomNav }}
         initialRouteName="login"
       >

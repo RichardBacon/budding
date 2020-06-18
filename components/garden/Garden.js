@@ -8,250 +8,144 @@ import {
   Image,
   Button,
   SafeAreaView,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
 import { SearchBar } from 'react-native-elements';
-import DropDownPicker from 'react-native-dropdown-picker';
 import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
 import Plant from '../../assets/plant.svg';
+import GlobalStyles from '../../styles/GlobalStyles';
+import { makeRefObj, formatArray } from '../../utils/utils';
+import TimeAgo from 'react-native-timeago';
 
 function Garden({ navigation }) {
-  const [plants, setPlants] = useState([
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      // plant data
-      plant_id: 4,
-      plant_name: 'plantName4',
-      created_at: '2018-11-15T12:21:54.173Z',
-      snapshot_count: '2',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-    {
-      plant_id: 4,
-      plant_name: 'plantName4',
-      snapshot_count: '6',
-      created_at: '2014-11-16T12:21:54.171Z',
-      snapshot_id: 1,
-      // snapshot data
-      uri:
-        'https://watchandlearn.scholastic.com/content/dam/classroom-magazines/watchandlearn/videos/animals-and-plants/plants/what-are-plants-/english/wall-2018-whatareplantsmp4.transform/content-tile-large/image.png',
-      no_leaves: 4,
-      snapshot_id: 1,
-      height: 10,
-    },
-  ]);
-  const [selectedValue, setSelectedValue] = useState('uk');
-  const [snapshots, setSnapshots] = useState();
+  const [sort_by, changeSort] = useState('created_at');
+  const [snaps, setSnaps] = useState([]);
+  const [loading, isLoading] = useState(true);
+  const [order, changeOrder] = useState('desc');
+  const [plant_type, changeType] = useState(null);
 
-  //  <Logo width={120} height={40} />
+  // an array displaying plant cards containing plant name, uri, height, snapshot count, most recent snapshot (most recent entry)
+  useEffect(() => {
+    const user_id = 1;
+    api
+      .getPlantsByUserId(user_id, order, sort_by, plant_type)
+      .then((plants) => {
+        const snapShotArr = plants.map((plant) => {
+          const { plant_id, plant_name, snapshot_count } = plant;
+          return api.getSnapshotsByPlantId(plant_id).then((snap) => {
+            return { plant_name, snapshot_count, ...snap[0] };
+          });
+        });
+        Promise.all(snapShotArr).then((snapshots) => {
+          setSnaps(snapshots);
+        });
+      });
+  }, [order, sort_by, plant_type]);
 
-  // useEffect(() => {
-  //   api.getPlantsByUserId(1).then((plants) => {
-  //     const { name } = plants;
-  //     setPlants(plants);
-  //   });
-  // });
+  // if (loading)
+  //   return (
+  //     <View style={[styles.container, styles.horizontal]}>
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //       <ActivityIndicator size="small" color="#00ff00" />
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //       <ActivityIndicator size="small" color="#00ff00" />
+  //     </View>
+  //   );
+
+  const toggleSortBy = (data) => {
+    if (data === 'most snaps') {
+      changeOrder('desc');
+      changeSort('snapshot_count');
+    }
+    if (data === 'least snaps') {
+      changeOrder('asc');
+      changeSort('snapshot_count');
+    }
+  };
+
+  const toggleOrder = (data) => {
+    if (data === 'desc') {
+      changeOrder('desc');
+      changeSort('created_at');
+    }
+    if (data === 'asc') {
+      changeOrder('asc');
+      changeSort('created_at');
+    }
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Plant width={120} height={40} fill="green" />
+    <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
       <Text>My Garden</Text>
-      <SearchBar placeholder="search-plants" value={'plants'} />
       <View style={styles.heroContainer}>
-        <DropDownPicker
+        <RNPickerSelect
+          onValueChange={(value) => toggleOrder(value)}
+          placeholder={{}}
           items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
+            { label: 'newest', value: 'desc' },
+            { label: 'oldest', value: 'asc' },
           ]}
-          defaultValue={selectedValue}
-          containerStyle={{ height: 40 }}
-          style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => setSelectedValue(item)}
         />
-        <DropDownPicker
+        <RNPickerSelect
+          onValueChange={(value) => toggleSortBy(value)}
+          placeholder={{ label: 'sort by' }}
           items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
+            { label: 'most snaps', value: 'most snaps' },
+            { label: 'least snaps', value: 'least snaps' },
           ]}
-          defaultValue={selectedValue}
-          containerStyle={{ height: 40 }}
-          style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => setSelectedValue(item)}
         />
-        <DropDownPicker
+        <RNPickerSelect
+          onValueChange={(value) => changeType(value)}
+          placeholder={{ label: 'all plants' }}
           items={[
-            { label: 'UK', value: 'uk' },
-            { label: 'France', value: 'france' },
+            { label: 'garden', value: 'garden' },
+            { label: 'vegetable', value: 'vegetable' },
+            { label: 'fruit', value: 'fruit' },
+            { label: 'herb', value: 'herb' },
+            { label: 'houseplant', value: 'houseplant' },
+            { label: 'succulent', value: 'succulent' },
           ]}
-          defaultValue={selectedValue}
-          containerStyle={{ height: 40 }}
-          style={styles.dropDown}
-          dropDownStyle={{ backgroundColor: '#fafafa' }}
-          onChangeItem={(item) => setSelectedValue(item)}
         />
       </View>
       <View style={styles.container}>
         <FlatGrid
           itemDimension={130}
-          data={plants}
+          data={snaps}
           style={styles.gridView}
           spacing={10}
           renderItem={({ item }) => (
             <View>
               <View style={styles.plantContainer}>
-                <Image source={{ uri: item.uri }} style={styles.image}></Image>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('plant page', {
+                      item,
+                    })
+                  }
+                  style={styles.image}
+                >
+                  <Image
+                    source={{ uri: item.plant_uri }}
+                    style={styles.image}
+                    onLoad={isLoading(false)}
+                  />
+                </TouchableOpacity>
               </View>
               <View style={styles.plant_view}>
                 <View style={styles.plant_left_view}>
                   <Text style={styles.plantName}>{item.plant_name}</Text>
-                  <Text style={styles.plantStats}>{item.height}</Text>
-                  <Text style={styles.plantStats}>{item.no_leaves}</Text>
+                  <TimeAgo time={item.created_at} />
+                  <View>
+                    <Plant width={120} height={40} fill="green" />
+                    <Text style={styles.plantStats}>{item.height}</Text>
+                  </View>
                 </View>
                 <View style={styles.plant_right_view}>
-                  <Text style={styles.plantStats}>{item.no_leaves}</Text>
+                  <Text style={styles.plantStats}>{item.snapshot_count}</Text>
                 </View>
               </View>
             </View>
@@ -278,7 +172,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   dropDown: {
-    width: 75,
+    width: 100,
   },
   plantContainer: {
     justifyContent: 'flex-end',
@@ -318,3 +212,5 @@ const styles = StyleSheet.create({
 });
 
 export default Garden;
+
+//  <Logo width={120} height={40} />
