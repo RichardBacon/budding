@@ -13,10 +13,9 @@ import {
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
-import { SearchBar } from 'react-native-elements';
 import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
-import Plant from '../../assets/plant.svg';
+// import Plant from '../../assets/plant.svg';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
@@ -152,7 +151,7 @@ function Garden({ userId, navigation }) {
                   <Text style={styles.plantName}>{item.plant_name}</Text>
                   <TimeAgo time={item.created_at} />
                   <View>
-                    <Plant width={120} height={40} fill="green" />
+                    {/* <Plant width={120} height={40} fill="green" /> */}
                     <Text style={styles.plantStats}>{item.height}</Text>
                   </View>
                 </View>
