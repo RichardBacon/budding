@@ -15,7 +15,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
 import * as api from '../../api-requests/api';
 import * as svg from 'react-native-svg';
-import Plant from '../../assets/plant.svg';
+// import Plant from '../../assets/plant.svg';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
@@ -127,37 +127,37 @@ function Garden({ userId, navigation }) {
             style={styles.gridView}
             spacing={10}
             renderItem={({ item }) => (
-              <View>
-                <View style={styles.plantContainer}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('plant page', {
-                        item,
-                      })
-                    }
+            <View>
+              <View style={styles.plantContainer}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('plant page', {
+                      item,
+                    })
+                  }
+                  style={styles.image}
+                >
+                  <Image
+                    source={{ uri: item.plant_uri }}
                     style={styles.image}
-                  >
-                    <Image
-                      source={{ uri: item.plant_uri }}
-                      style={styles.image}
-                      onLoad={isLoading(false)}
-                    />
-                  </TouchableOpacity>
+                    onLoad={isLoading(false)}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.plant_view}>
+                <View style={styles.plant_left_view}>
+                  <Text style={styles.plantName}>{item.plant_name}</Text>
+                  <TimeAgo time={item.created_at} />
+                  <View>
+                    {/* <Plant width={120} height={40} fill="green" /> */}
+                    <Text style={styles.plantStats}>{item.height}</Text>
+                  </View>
                 </View>
-                <View style={styles.plant_view}>
-                  <View style={styles.plant_left_view}>
-                    <Text style={styles.plantName}>{item.plant_name}</Text>
-                    <TimeAgo time={item.created_at} />
-                    <View>
-                      <Plant width={120} height={40} fill="green" />
-                      <Text style={styles.plantStats}>{item.height}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.plant_right_view}>
-                    <Text style={styles.plantStats}>{item.snapshot_count}</Text>
-                  </View>
+                <View style={styles.plant_right_view}>
+                  <Text style={styles.plantStats}>{item.snapshot_count}</Text>
                 </View>
               </View>
+            </View>
             )}
           />
         </View>
