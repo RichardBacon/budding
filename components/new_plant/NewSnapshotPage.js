@@ -41,11 +41,13 @@ function NewSnapshotPage(props) {
           style={styles.input}
           placeholder={'0'}
           placeholderTextColor="white"
+          maxLength={4}
         />
         <Text style={styles.cm_text}> cm</Text>
       </View>
       <TouchableOpacity
         onPress={() => {
+          //const potHeightRounded = potHeight.toFixed(1);
           navigation.navigate('measure plant', {
             plantId,
             potHeight,

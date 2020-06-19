@@ -98,7 +98,11 @@ function NewPlantEntry({ route, navigation }) {
           setSoil('');
           setSunlight('indirect');
           setLocation('indoor');
-          navigation.navigate('garden');
+          Alert.alert(
+            'Plant added',
+            'Great! You can now view your plant in your garden!',
+          );
+          navigation.navigate('new plant');
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);

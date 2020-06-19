@@ -11,6 +11,7 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -46,7 +47,7 @@ function MeasureFunction({ route, navigation }) {
         { resize: { width: 600 } },
       ]);
       setImage(resized.uri);
-      isLoading(true);
+      isLoading(false);
     };
     runEffect();
   }, []);
@@ -181,67 +182,70 @@ function MeasureFunction({ route, navigation }) {
     potHeight: 12.5,
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.headingText}>
-        {pressCount.current === 0
-          ? `Place your first marker at the bottom of the pot`
-          : pressCount.current === 1
-          ? `Place your second marker at the top of the pot`
-          : pressCount.current === 2
-          ? `Place your third marker at the top of the plant`
-          : `Confirm your measurements`}
-      </Text>
-      <Image
-        // onTouchStart={this.handleTouch}
-        style={styles.logo}
-        source={{
-          uri: resizedImage,
-        }}
-      />
-      <Animated.View
-        style={{
-          transform: [{ translateX: pan.x }, { translateY: pan.y }],
-        }}
-        {...panResponder.panHandlers}
-      >
-        <View style={styles.oval} />
-        <View style={styles.horizontal_line} />
-        <View style={styles.vertical_line} />
-      </Animated.View>
-      <Button
-        title="view tutorial"
-        onPress={() => {
-          navigation.navigate('tutorial');
-        }}
-      />
-      {
-        // image, s3 link, plant measurements, pot measurement
-      }
-      {!showCalculateButton && (
-        <TouchableOpacity onPress={addMarker} style={styles.top_button}>
-          <Text style={styles.buttonText}>{`add ${
-            pressCount.current === 0
-              ? 'first'
-              : pressCount.current === 1
-              ? 'second'
-              : 'third'
-          } marker`}</Text>
-        </TouchableOpacity>
-      )}
-      {showCalculateButton && (
-        <TouchableOpacity
-          onPress={calculateDistance}
-          style={styles.top_button_select}
+  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
+  else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headingText}>
+          {pressCount.current === 0
+            ? `Place your first marker at the bottom of the pot`
+            : pressCount.current === 1
+            ? `Place your second marker at the top of the pot`
+            : pressCount.current === 2
+            ? `Place your third marker at the top of the plant`
+            : `Confirm your measurements`}
+        </Text>
+        <Image
+          // onTouchStart={this.handleTouch}
+          style={styles.logo}
+          source={{
+            uri: resizedImage,
+          }}
+        />
+        <Animated.View
+          style={{
+            transform: [{ translateX: pan.x }, { translateY: pan.y }],
+          }}
+          {...panResponder.panHandlers}
         >
-          <Text style={styles.buttonText}>calculate</Text>
+          <View style={styles.oval} />
+          <View style={styles.horizontal_line} />
+          <View style={styles.vertical_line} />
+        </Animated.View>
+        <Button
+          title="view tutorial"
+          onPress={() => {
+            navigation.navigate('tutorial');
+          }}
+        />
+        {
+          // image, s3 link, plant measurements, pot measurement
+        }
+        {!showCalculateButton && (
+          <TouchableOpacity onPress={addMarker} style={styles.top_button}>
+            <Text style={styles.buttonText}>{`add ${
+              pressCount.current === 0
+                ? 'first'
+                : pressCount.current === 1
+                ? 'second'
+                : 'third'
+            } marker`}</Text>
+          </TouchableOpacity>
+        )}
+        {showCalculateButton && (
+          <TouchableOpacity
+            onPress={calculateDistance}
+            style={styles.top_button_select}
+          >
+            <Text style={styles.buttonText}>calculate</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+          <Text style={styles.buttonText}>reset</Text>
         </TouchableOpacity>
-      )}
-      <TouchableOpacity onPress={resetMeasure} style={styles.button}>
-        <Text style={styles.buttonText}>reset</Text>
-      </TouchableOpacity>
-    </View>
-  );
+      </View>
+    );
+  }
 }
 
 export default MeasureFunction;
