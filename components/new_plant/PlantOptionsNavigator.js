@@ -9,7 +9,16 @@ import TutorialNavigator from '../tutorial/TutorialNavigator';
 
 const Stack = createStackNavigator();
 
-function PlantOptionsNavigator() {
+function PlantOptionsNavigator({ route }) {
+  let plantId;
+  let potHeight;
+
+  if (route.params) {
+    const { plant_id, pot_height } = route.params;
+    plantId = plant_id;
+    potHeight = pot_height;
+  }
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -20,7 +29,16 @@ function PlantOptionsNavigator() {
       }}
       initialRouteName="new plant"
     >
-      <Stack.Screen name="new plant" component={NewPlantHome} />
+      <Stack.Screen name="new plant">
+        {(navigation) => (
+          <NewPlantHome
+            {...navigation}
+            plant_id={plantId}
+            pot_height={potHeight}
+          />
+        )}
+      </Stack.Screen>
+      {/* <Stack.Screen name="new plant" component={NewPlantHome} plantInfo={route.params.plant_id}/> */}
       <Stack.Screen name="tutorial" component={TutorialNavigator} />
       <Stack.Screen name="measure plant" component={MeasureFunction} />
       <Stack.Screen name="new plant entry" component={NewPlantEntry} />

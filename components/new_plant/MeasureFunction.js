@@ -10,13 +10,19 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import * as ImageManipulator from 'expo-image-manipulator';
 import { set } from 'react-native-reanimated';
+import * as api from '../../api-requests/api';
+const { options } = require('../../s3-config.js');
+const shortid = require('shortid');
+import { RNS3 } from 'react-native-s3-upload';
 
 function MeasureFunction({ route, navigation }) {
-  const { image, potHeight } = route.params;
+  const { image, potHeight, plantId } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
@@ -25,6 +31,15 @@ function MeasureFunction({ route, navigation }) {
   const pan = useRef(new Animated.ValueXY()).current;
   const [showCalculateButton, setShow] = useState(false);
   const [resizedImage, setImage] = useState('');
+  const [plantHeight, setPlantHeight] = useState(null);
+  const [loading, isLoading] = useState(true);
+
+  const name = shortid.generate();
+  const file = {
+    uri: resizedImage,
+    name,
+    type: 'image/jpg',
+  };
 
   useEffect(() => {
     const runEffect = async () => {
@@ -32,6 +47,7 @@ function MeasureFunction({ route, navigation }) {
         { resize: { width: 600 } },
       ]);
       setImage(resized.uri);
+      isLoading(false);
     };
     runEffect();
   }, []);
@@ -65,11 +81,11 @@ function MeasureFunction({ route, navigation }) {
   ).current;
 
   const calculateDistance = () => {
+    // sets height
     const promise = new Promise((resolve, reject) => {
       const unit = (bottomPotClick - topPotClick) / potHeight;
       let plantHeight = (topPotClick - topPlantClick) / unit;
-      height.current = plantHeight;
-      console.log(height.current);
+      height.current = plantHeight.toFixed(1);
       console.log(bottomPotClick, topPotClick, topPlantClick);
       // plantHeight = plantHeight * (1 + 0.15)
 
@@ -79,11 +95,61 @@ function MeasureFunction({ route, navigation }) {
   };
 
   const navNextPage = () => {
-    navigation.navigate('new plant entry', {
-      resizedImage: image,
-      potHeight,
-      plantHeight: height.current,
-    });
+    isLoading(true);
+    // if there's a plantId, send a patch request, then navigate to individual plant page
+    // if not, go to new plant entry
+    // NEED TO SEND PHOTO TO S3
+    if (plantId) {
+      return api
+        .patchPlantById(
+          plantId,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          potHeight,
+        )
+        .then((response) => {
+          console.log(response, '<--- after patch request');
+        })
+        .then(() => {
+          return RNS3.put(file, options);
+        })
+        .then((response) => {
+          console.log(plantId, resizedImage, height.current);
+          // if response is good, do post snapshot
+          // if not, alert an error
+          if (response.status === 201) {
+            console.log('body: ', response.body);
+            const { location } = response.body.postResponse;
+            console.log(location);
+            return api.postSnapshot(plantId, location, height.current);
+          } else {
+            // stays on measure function page if there is an error and gives an alert
+            Alert.alert('Error', 'Problem uploading photo. Please try again.');
+            isLoading(false);
+            console.log('error message: ', response.text);
+          }
+        })
+        .then((response) => {
+          console.log(response, '<--- after post request');
+          navigation.push('garden');
+        })
+        .catch((err) => {
+          console.log(err);
+          Alert.alert('Error', `${err}`);
+          isLoading(false);
+        });
+    } else {
+      navigation.navigate('new plant entry', {
+        resizedImage,
+        potHeight,
+        plantHeight: height.current,
+      });
+    }
   };
 
   const addMarker = () => {
@@ -116,71 +182,70 @@ function MeasureFunction({ route, navigation }) {
     potHeight: 12.5,
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.headingText}>
-        {pressCount.current === 0
-          ? `Place your first marker at the bottom of the pot`
-          : pressCount.current === 1
-          ? `Place your second marker at the top of the pot`
-          : pressCount.current === 2
-          ? `Place your third marker at the top of the plant`
-          : `Confirm your measurements`}
-      </Text>
-      <Image
-        // onTouchStart={this.handleTouch}
-        style={styles.logo}
-        source={{
-          uri: image,
-        }}
-      />
-      <Animated.View
-        style={{
-          transform: [{ translateX: pan.x }, { translateY: pan.y }],
-        }}
-        {...panResponder.panHandlers}
-      >
-        <View style={styles.oval} />
-        <View style={styles.horizontal_line} />
-        <View style={styles.vertical_line} />
-      </Animated.View>
-      <Button
-        title="view tutorial"
-        onPress={() => {
-          navigation.navigate('tutorial');
-        }}
-      />
-      <Button
-        title={'submit'}
-        onPress={navigation.navigate('new plant entry', plantInfo)}
-      />
-      {
-        // image, s3 link, plant measurements, pot measurement
-      }
-      {!showCalculateButton && (
-        <TouchableOpacity onPress={addMarker} style={styles.top_button}>
-          <Text style={styles.buttonText}>{`add ${
-            pressCount.current === 0
-              ? 'first'
-              : pressCount.current === 1
-              ? 'second'
-              : 'third'
-          } marker`}</Text>
-        </TouchableOpacity>
-      )}
-      {showCalculateButton && (
-        <TouchableOpacity
-          onPress={calculateDistance}
-          style={styles.top_button_select}
+  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
+  else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headingText}>
+          {pressCount.current === 0
+            ? `Place your first marker at the bottom of the pot`
+            : pressCount.current === 1
+            ? `Place your second marker at the top of the pot`
+            : pressCount.current === 2
+            ? `Place your third marker at the top of the plant`
+            : `Confirm your measurements`}
+        </Text>
+        <Image
+          // onTouchStart={this.handleTouch}
+          style={styles.logo}
+          source={{
+            uri: resizedImage,
+          }}
+        />
+        <Animated.View
+          style={{
+            transform: [{ translateX: pan.x }, { translateY: pan.y }],
+          }}
+          {...panResponder.panHandlers}
         >
-          <Text style={styles.buttonText}>calculate</Text>
+          <View style={styles.oval} />
+          <View style={styles.horizontal_line} />
+          <View style={styles.vertical_line} />
+        </Animated.View>
+        <Button
+          title="view tutorial"
+          onPress={() => {
+            navigation.navigate('tutorial');
+          }}
+        />
+        {
+          // image, s3 link, plant measurements, pot measurement
+        }
+        {!showCalculateButton && (
+          <TouchableOpacity onPress={addMarker} style={styles.top_button}>
+            <Text style={styles.buttonText}>{`add ${
+              pressCount.current === 0
+                ? 'first'
+                : pressCount.current === 1
+                ? 'second'
+                : 'third'
+            } marker`}</Text>
+          </TouchableOpacity>
+        )}
+        {showCalculateButton && (
+          <TouchableOpacity
+            onPress={calculateDistance}
+            style={styles.top_button_select}
+          >
+            <Text style={styles.buttonText}>calculate</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={resetMeasure} style={styles.button}>
+          <Text style={styles.buttonText}>reset</Text>
         </TouchableOpacity>
-      )}
-      <TouchableOpacity onPress={resetMeasure} style={styles.button}>
-        <Text style={styles.buttonText}>reset</Text>
-      </TouchableOpacity>
-    </View>
-  );
+      </View>
+    );
+  }
 }
 
 export default MeasureFunction;
