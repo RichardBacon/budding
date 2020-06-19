@@ -16,8 +16,9 @@ import {
 import * as api from '../../api-requests/api';
 import TimeAgo from 'react-native-timeago';
 import SnapshotCarousel from './SnapshotCarousel';
-// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import PlantHeightIcon from '../../assets/icons/plant_height_plant_page.svg';
+import CreatedAtIcon from '../../assets/icons/latest_snap_plant_page.svg';
+import PotHeightIcon from '../../assets/icons/pot_height_plant_page.svg';
 import SoilIcon from '../../assets/icons/soil_type_plant_page.svg';
 import SunIcon from '../../assets/icons/sunlight_plant_page.svg';
 import PlantTypeIcon from '../../assets/icons/plant_type_page.svg';
@@ -26,11 +27,6 @@ import LocationIcon from '../../assets/icons/indoor_vs_outdoor_plant_page.svg';
 import * as Font from 'expo-font';
 
 function PlantPage(props) {
-  let [fontsLoaded] = useFonts({
-    'Inter-Black': require('../../assets/fonts/Inter-Black.otf'),
-    'Inter-SemiBoldItalic':
-      'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
-  });
   const { navigation } = props;
   const {
     plant_id,
@@ -50,10 +46,10 @@ function PlantPage(props) {
     const promises = [
       api.getPlantById(plant_id),
       api.getSnapshotsByPlantId(plant_id),
-      useFonts({
-        'Inter-Black': require('../../assets/fonts/Inter-Black.otf'),
-        'Inter-SemiBoldItalic':
-          'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
+      Font.loadAsync({
+        'Inter-Black': require('../../assets/fonts/Arciform.otf'),
+        // 'Inter-SemiBoldItalic':
+        //   'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
       }),
     ];
     Promise.all(promises).then((plantSnaps) => {
@@ -62,13 +58,6 @@ function PlantPage(props) {
       loadFont(false);
     });
   }, []);
-
-  function useFonts(fontMap) {
-    (async () => {
-      await Font.loadAsync(fontMap);
-    })();
-    return [fontsLoaded];
-  }
 
   let ScreenHeight = Dimensions.get('window').height;
 
@@ -90,7 +79,7 @@ function PlantPage(props) {
           />
         </View>
       )}
-      {fontLoading && (
+      {!fontLoading && (
         <View>
           <View style={styles.container}>
             <Image
@@ -106,12 +95,18 @@ function PlantPage(props) {
           <View style={styles.background_plate}>
             <Text style={styles.name_text}>{plant_name}</Text>
             <Text style={styles.type_text}>{plant.plant_variety}</Text>
-            <TimeAgo time={plant.created_at} style={styles.timeago_text} />
             <View style={styles.plant_info_view}>
               <View style={styles.plant_info_left_view}>
                 <View style={styles.plant_info_card}>
                   <PlantHeightIcon width={30} height={30} fill="green" />
                   <Text style={styles.plant_info_text}>height: {height}cm</Text>
+                </View>
+                <View style={styles.plant_info_card}>
+                  <CreatedAtIcon width={30} height={30} fill="green" />
+                  <TimeAgo
+                    time={plant.created_at}
+                    style={styles.plant_info_text}
+                  />
                 </View>
                 <View style={styles.plant_info_card}>
                   <SoilIcon width={30} height={30} fill="green" />
@@ -143,6 +138,13 @@ function PlantPage(props) {
 
                   <Text style={styles.plant_info_text}>
                     location: {plant.location}
+                  </Text>
+                </View>
+                <View style={styles.plant_info_card}>
+                  <PotHeightIcon width={30} height={30} fill="green" />
+
+                  <Text style={styles.plant_info_text}>
+                    pot height: {plant.pot_height}
                   </Text>
                 </View>
               </View>
@@ -200,8 +202,8 @@ const styles = StyleSheet.create({
   },
   name_text: {
     textAlign: 'center',
-    marginTop: 10,
-    fontSize: 30,
+    marginTop: 15,
+    fontSize: 40,
     fontWeight: 'bold',
     color: '#355a3a',
     fontFamily: 'Inter-Black',
