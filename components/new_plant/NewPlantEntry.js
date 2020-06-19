@@ -27,7 +27,6 @@ function NewPlantEntry({ route, navigation }) {
   const [loading, isLoading] = useState(false);
 
   const { resizedImage, potHeight, plantHeight } = route.params;
-  console.log(plantHeight);
   let plantId = '';
 
   // renders new plant form, everything but soil and water frequency required
@@ -79,7 +78,7 @@ function NewPlantEntry({ route, navigation }) {
             const { postResponse } = response.body;
             return postResponse;
           } else {
-            // navigates back to new plant page if there is an error
+            // stays on new plant page if there is an error and gives an alert
             Alert.alert('Error', 'Problem uploading photo. Please try again.');
             isLoading(false);
             console.log('error message: ', response.text);

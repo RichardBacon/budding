@@ -16,6 +16,7 @@ import SnapshotCarousel from './SnapshotCarousel';
 
 function PlantPage(props) {
   const { navigation } = props;
+
   const {
     plant_id,
     plant_uri,
@@ -23,11 +24,16 @@ function PlantPage(props) {
     plant_name,
     snapshot_count,
     created_at,
+    pot_height,
   } = props.route.params.item;
 
   const [plant, addPlantData] = useState([]);
   const [snapshots, addSnapshotData] = useState(undefined);
   const [loading, isLoading] = useState(true);
+
+  // send <name> on route params
+  // if statement saying if exists, set state to <name>
+  // useEffect will trigger when <name> changes
 
   useEffect(() => {
     const promises = [
@@ -73,11 +79,12 @@ function PlantPage(props) {
         <TouchableOpacity
           // Needs updating with the new snapshot page, when that's built
 
-          onPress={() =>
-            navigation.navigate('plant page', {
-              item,
-            })
-          }
+          onPress={() => {
+            navigation.navigate('plant navigator', {
+              plant_id,
+              pot_height: plant.pot_height,
+            });
+          }}
           style={styles.button}
         >
           <Text style={styles.buttonText}>new snapshot </Text>

@@ -10,13 +10,18 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 
 import * as ImageManipulator from 'expo-image-manipulator';
 import { set } from 'react-native-reanimated';
+import * as api from '../../api-requests/api';
+const { options } = require('../../s3-config.js');
+const shortid = require('shortid');
+import { RNS3 } from 'react-native-s3-upload';
 
 function MeasureFunction({ route, navigation }) {
-  const { image, potHeight } = route.params;
+  const { image, potHeight, plantId } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
@@ -25,6 +30,15 @@ function MeasureFunction({ route, navigation }) {
   const pan = useRef(new Animated.ValueXY()).current;
   const [showCalculateButton, setShow] = useState(false);
   const [resizedImage, setImage] = useState('');
+  const [plantHeight, setPlantHeight] = useState(null);
+  const [loading, isLoading] = useState(true);
+
+  const name = shortid.generate();
+  const file = {
+    uri: resizedImage,
+    name,
+    type: 'image/jpg',
+  };
 
   useEffect(() => {
     const runEffect = async () => {
@@ -32,6 +46,7 @@ function MeasureFunction({ route, navigation }) {
         { resize: { width: 600 } },
       ]);
       setImage(resized.uri);
+      isLoading(true);
     };
     runEffect();
   }, []);
@@ -65,11 +80,11 @@ function MeasureFunction({ route, navigation }) {
   ).current;
 
   const calculateDistance = () => {
+    // sets height
     const promise = new Promise((resolve, reject) => {
       const unit = (bottomPotClick - topPotClick) / potHeight;
       let plantHeight = (topPotClick - topPlantClick) / unit;
-      height.current = plantHeight;
-      console.log(height.current);
+      height.current = plantHeight.toFixed(1);
       console.log(bottomPotClick, topPotClick, topPlantClick);
       // plantHeight = plantHeight * (1 + 0.15)
 
@@ -79,11 +94,61 @@ function MeasureFunction({ route, navigation }) {
   };
 
   const navNextPage = () => {
-    navigation.navigate('new plant entry', {
-      resizedImage: image,
-      potHeight,
-      plantHeight: height.current,
-    });
+    isLoading(true);
+    // if there's a plantId, send a patch request, then navigate to individual plant page
+    // if not, go to new plant entry
+    // NEED TO SEND PHOTO TO S3
+    if (plantId) {
+      return api
+        .patchPlantById(
+          plantId,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          potHeight,
+        )
+        .then((response) => {
+          console.log(response, '<--- after patch request');
+        })
+        .then(() => {
+          return RNS3.put(file, options);
+        })
+        .then((response) => {
+          console.log(plantId, resizedImage, height.current);
+          // if response is good, do post snapshot
+          // if not, alert an error
+          if (response.status === 201) {
+            console.log('body: ', response.body);
+            const { location } = response.body.postResponse;
+            console.log(location);
+            return api.postSnapshot(plantId, location, height.current);
+          } else {
+            // stays on measure function page if there is an error and gives an alert
+            Alert.alert('Error', 'Problem uploading photo. Please try again.');
+            isLoading(false);
+            console.log('error message: ', response.text);
+          }
+        })
+        .then((response) => {
+          console.log(response, '<--- after post request');
+          navigation.push('garden');
+        })
+        .catch((err) => {
+          console.log(err);
+          Alert.alert('Error', `${err}`);
+          isLoading(false);
+        });
+    } else {
+      navigation.navigate('new plant entry', {
+        resizedImage,
+        potHeight,
+        plantHeight: height.current,
+      });
+    }
   };
 
   const addMarker = () => {
@@ -131,7 +196,7 @@ function MeasureFunction({ route, navigation }) {
         // onTouchStart={this.handleTouch}
         style={styles.logo}
         source={{
-          uri: image,
+          uri: resizedImage,
         }}
       />
       <Animated.View
@@ -149,10 +214,6 @@ function MeasureFunction({ route, navigation }) {
         onPress={() => {
           navigation.navigate('tutorial');
         }}
-      />
-      <Button
-        title={'submit'}
-        onPress={navigation.navigate('new plant entry', plantInfo)}
       />
       {
         // image, s3 link, plant measurements, pot measurement

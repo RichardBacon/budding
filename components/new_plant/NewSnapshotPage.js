@@ -13,11 +13,10 @@ import {
 import Pot from '../../assets/pot_measure.svg';
 
 function NewSnapshotPage(props) {
-  const [potHeight, setPotHeight] = useState(image.pot_height);
+  const { image, plant_id, pot_height } = props.route.params;
+  const [potHeight, setPotHeight] = useState(pot_height);
+  const [plantId, setPlantId] = useState(plant_id);
   const { navigation } = props;
-  const { image } = props.route.params;
-
-  // pass pot height down as a prop, set this as state, and have in input box when loads
 
   return (
     <View
@@ -48,6 +47,7 @@ function NewSnapshotPage(props) {
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('measure plant', {
+            plantId,
             potHeight,
             image,
           });
