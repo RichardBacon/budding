@@ -15,9 +15,15 @@ import * as ImagePicker from 'expo-image-picker';
 import uploadToAnonymousFilesAsync from 'anonymous-files';
 import logo from '../../assets/logo.png';
 
-function NewPlantHome({ navigation }) {
+function NewPlantHome({ plant_id, pot_height, navigation }) {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [imagePickerSelected, setPickerSelected] = React.useState(true);
+  const [potHeight, setPotHeight] = useState(pot_height);
+  const [plantId, setPlantId] = useState(plant_id);
+
+  // pass pot height down as a prop, set this as state, and have in input box when loads
+
+  // new snapshot button --> new plant page (take new photo, choose from library etc) --> back to individual plant page
 
   let launchCameraAsync = async () => {
     setPickerSelected(false);
@@ -31,7 +37,10 @@ function NewPlantHome({ navigation }) {
     if (pickerResult.cancelled === true) {
       return;
     }
-    setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+    setSelectedImage({
+      localUri: pickerResult.uri,
+      remoteUri: null,
+    });
     imagePickerScreen();
   };
 
@@ -53,15 +62,23 @@ function NewPlantHome({ navigation }) {
 
     if (Platform.OS === 'web') {
       let remoteUri = await uploadToAnonymousFilesAsync(pickerResult.uri);
-      setSelectedImage({ localUri: pickerResult.uri, remoteUri });
+      setSelectedImage({
+        localUri: pickerResult.uri,
+        remoteUri,
+      });
     } else {
-      setSelectedImage({ localUri: pickerResult.uri, remoteUri: null });
+      setSelectedImage({
+        localUri: pickerResult.uri,
+        remoteUri: null,
+      });
       imagePickerScreen();
     }
   };
 
   imagePickerScreen = () => {
     navigation.navigate('image picker', {
+      potHeight,
+      plantId,
       selectedImage: selectedImage,
       openImagePickerAsync: openImagePickerAsync,
       launchCameraAsync: launchCameraAsync,
@@ -70,7 +87,13 @@ function NewPlantHome({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('tutorial', {

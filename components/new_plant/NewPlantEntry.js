@@ -27,7 +27,6 @@ function NewPlantEntry({ route, navigation }) {
   const [loading, isLoading] = useState(false);
 
   const { resizedImage, potHeight, plantHeight } = route.params;
-  console.log(plantHeight);
   let plantId = '';
 
   // renders new plant form, everything but soil and water frequency required
@@ -79,17 +78,18 @@ function NewPlantEntry({ route, navigation }) {
             const { postResponse } = response.body;
             return postResponse;
           } else {
-            // navigates back to new plant page if there is an error
+            // stays on new plant page if there is an error and gives an alert
             Alert.alert('Error', 'Problem uploading photo. Please try again.');
             isLoading(false);
             console.log('error message: ', response.text);
-            navigation.navigate('new plant');
           }
         })
         .then((postResponse) => {
+          console.log('after s3 upload', postResponse);
           return api.postSnapshot(plantId, postResponse.location, plantHeight);
         })
         .then(() => {
+          console.log('before navigation');
           isLoading(false);
           setPlantName('');
           setType('vegetable');
@@ -98,7 +98,11 @@ function NewPlantEntry({ route, navigation }) {
           setSoil('');
           setSunlight('indirect');
           setLocation('indoor');
-          navigation.navigate('garden');
+          Alert.alert(
+            'Plant added',
+            'Great! You can now view your plant in your garden!',
+          );
+          navigation.navigate('new plant');
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);

@@ -19,6 +19,7 @@ import * as svg from 'react-native-svg';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
+import { useIsFocused } from '@react-navigation/native';
 
 function Garden({ userId, navigation }) {
   const [sort_by, changeSort] = useState('created_at');
@@ -26,6 +27,8 @@ function Garden({ userId, navigation }) {
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
   const [plant_type, changeType] = useState(null);
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     api
@@ -47,14 +50,7 @@ function Garden({ userId, navigation }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [order, sort_by, plant_type]);
-
-  if (loading)
-    return (
-      <View>
-        <ActivityIndicator size="large" color="#00ff00" />
-      </View>
-    );
+  }, [order, sort_by, plant_type, isFocused]);
 
   const toggleSortBy = (data) => {
     if (data === 'most snaps') {
@@ -78,57 +74,59 @@ function Garden({ userId, navigation }) {
     }
   };
 
-  return (
-    <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
-      <Text>My Garden</Text>
-      <View style={styles.heroContainer}>
-        <RNPickerSelect
-          onValueChange={(value) => toggleOrder(value)}
-          placeholder={{}}
-          items={[
-            { label: 'newest', value: 'desc' },
-            { label: 'oldest', value: 'asc' },
-          ]}
-        />
-        <RNPickerSelect
-          onValueChange={(value) => toggleSortBy(value)}
-          placeholder={{ label: 'sort by' }}
-          items={[
-            { label: 'most snaps', value: 'most snaps' },
-            { label: 'least snaps', value: 'least snaps' },
-          ]}
-        />
-        <RNPickerSelect
-          onValueChange={(value) => changeType(value)}
-          placeholder={{ label: 'all plants' }}
-          items={[
-            { label: 'garden', value: 'garden' },
-            { label: 'vegetable', value: 'vegetable' },
-            { label: 'fruit', value: 'fruit' },
-            { label: 'herb', value: 'herb' },
-            { label: 'houseplant', value: 'houseplant' },
-            { label: 'succulent', value: 'succulent' },
-          ]}
-        />
-      </View>
-      <View style={styles.container}>
-        {snaps.length === 0 && (
-          <>
-            <Text>you don't have any plants! get growing!</Text>
-            <Button
-              title="add new plant"
-              onPress={() => {
-                navigation.navigate('new plant');
-              }}
-            />
-          </>
-        )}
-        <FlatGrid
-          itemDimension={130}
-          data={snaps}
-          style={styles.gridView}
-          spacing={10}
-          renderItem={({ item }) => (
+  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
+  else {
+    return (
+      <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
+        <Text>My Garden</Text>
+        <View style={styles.heroContainer}>
+          <RNPickerSelect
+            onValueChange={(value) => toggleOrder(value)}
+            placeholder={{}}
+            items={[
+              { label: 'newest', value: 'desc' },
+              { label: 'oldest', value: 'asc' },
+            ]}
+          />
+          <RNPickerSelect
+            onValueChange={(value) => toggleSortBy(value)}
+            placeholder={{ label: 'sort by' }}
+            items={[
+              { label: 'most snaps', value: 'most snaps' },
+              { label: 'least snaps', value: 'least snaps' },
+            ]}
+          />
+          <RNPickerSelect
+            onValueChange={(value) => changeType(value)}
+            placeholder={{ label: 'all plants' }}
+            items={[
+              { label: 'garden', value: 'garden' },
+              { label: 'vegetable', value: 'vegetable' },
+              { label: 'fruit', value: 'fruit' },
+              { label: 'herb', value: 'herb' },
+              { label: 'houseplant', value: 'houseplant' },
+              { label: 'succulent', value: 'succulent' },
+            ]}
+          />
+        </View>
+        <View style={styles.container}>
+          {snaps.length === 0 && (
+            <>
+              <Text>you don't have any plants! get growing!</Text>
+              <Button
+                title="add new plant"
+                onPress={() => {
+                  navigation.navigate('new plant');
+                }}
+              />
+            </>
+          )}
+          <FlatGrid
+            itemDimension={130}
+            data={snaps}
+            style={styles.gridView}
+            spacing={10}
+            renderItem={({ item }) => (
             <View>
               <View style={styles.plantContainer}>
                 <TouchableOpacity
@@ -160,11 +158,12 @@ function Garden({ userId, navigation }) {
                 </View>
               </View>
             </View>
-          )}
-        />
-      </View>
-    </SafeAreaView>
-  );
+            )}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

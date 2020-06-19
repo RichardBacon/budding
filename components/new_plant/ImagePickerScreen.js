@@ -13,9 +13,11 @@ import {
 
 // navigation
 
-function NewPlantHome(props) {
+function ImagePickerScreen(props) {
   const { navigation } = props;
   const {
+    plantId,
+    potHeight,
     launchCameraAsync,
     openImagePickerAsync,
     selectedImage,
@@ -33,6 +35,8 @@ function NewPlantHome(props) {
         onPress={() =>
           navigation.navigate('new snapshot', {
             image: selectedImage.localUri,
+            pot_height: potHeight,
+            plant_id: plantId,
           })
         }
         style={styles.button}
@@ -91,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewPlantHome;
+export default ImagePickerScreen;

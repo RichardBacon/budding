@@ -28,6 +28,7 @@ import * as Font from 'expo-font';
 
 function PlantPage(props) {
   const { navigation } = props;
+
   const {
     plant_id,
     plant_uri,
@@ -35,12 +36,17 @@ function PlantPage(props) {
     plant_name,
     snapshot_count,
     created_at,
+    pot_height,
   } = props.route.params.item;
 
   const [plant, addPlantData] = useState([]);
   const [snapshots, addSnapshotData] = useState(undefined);
   const [loading, isLoading] = useState(true);
   const [fontLoading, loadFont] = useState(true);
+
+  // send <name> on route params
+  // if statement saying if exists, set state to <name>
+  // useEffect will trigger when <name> changes
 
   useEffect(() => {
     const promises = [
@@ -62,7 +68,7 @@ function PlantPage(props) {
   let ScreenHeight = Dimensions.get('window').height;
 
   return (
-    <ScrollView>
+      <ScrollView>
       {loading && (
         <View
           style={{
@@ -149,9 +155,17 @@ function PlantPage(props) {
                 </View>
               </View>
             </View>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.button_text}>new snapshot </Text>
-            </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('plant navigator', {
+              plant_id,
+              pot_height: plant.pot_height,
+            });
+          }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>new snapshot </Text>
+        </TouchableOpacity>
           </View>
           <View>
             <Text style={styles.recent_snaps}>recent snapshots</Text>

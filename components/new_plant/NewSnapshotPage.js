@@ -13,9 +13,10 @@ import {
 import Pot from '../../assets/pot_measure.svg';
 
 function NewSnapshotPage(props) {
-  const [potHeight, setPotHeight] = useState(0);
+  const { image, plant_id, pot_height } = props.route.params;
+  const [potHeight, setPotHeight] = useState(pot_height);
+  const [plantId, setPlantId] = useState(plant_id);
   const { navigation } = props;
-  const { image } = props.route.params;
 
   return (
     <View
@@ -33,18 +34,22 @@ function NewSnapshotPage(props) {
         <TextInput
           keyboardType="numeric"
           returnKeyType="done"
+          value={potHeight}
           onChangeText={(height) => {
             setPotHeight(height);
           }}
           style={styles.input}
           placeholder={'0'}
           placeholderTextColor="white"
+          maxLength={4}
         />
         <Text style={styles.cm_text}> cm</Text>
       </View>
       <TouchableOpacity
         onPress={() => {
+          //const potHeightRounded = potHeight.toFixed(1);
           navigation.navigate('measure plant', {
+            plantId,
             potHeight,
             image,
           });
