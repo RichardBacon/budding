@@ -47,7 +47,7 @@ function PlantPage(props) {
       api.getPlantById(plant_id),
       api.getSnapshotsByPlantId(plant_id),
       Font.loadAsync({
-        'Inter-Black': require('../../assets/fonts/Arciform.otf'),
+        'arciform': require('../../assets/fonts/Arciform.otf'),
         // 'Inter-SemiBoldItalic':
         //   'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
       }),
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     color: '#355a3a',
-    fontFamily: 'Inter-Black',
+    fontFamily: 'arciform',
   },
   type_text: {
     textAlign: 'center',
