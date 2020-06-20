@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Animated, StyleSheet, Easing, Text} from 'react-native';
 import Arrow from '../../assets/tutorials/part_2/arrow.svg'
 
-export default class Loop extends Component {
+export default class ArrowHead extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,8 +16,8 @@ export default class Loop extends Component {
     Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.startValue, {
-          toValue: 50,
-          duration: 500,
+          toValue: 80,
+          duration: 800,
           // delay: 1000
         }),
         Animated.timing(this.state.startValue, {
@@ -29,16 +29,6 @@ export default class Loop extends Component {
         // iterations: 4
       }
     ).start()
-    // Animated.loop(
-    //   Animated.spring(this.state.startValue, {
-    //     toValue: this.state.endValue,
-    //     // friction: 1,
-    //     // useNativeDriver: true,
-    //     easing: Easing.back(),
-    //     duration: this.state.duration
-    //   }),
-    //   {iterations: 1000},
-    // ).start();
   }
 
   render() {

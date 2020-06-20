@@ -18,7 +18,7 @@ function GardenNavigator({ userId, from }) {
           height: 55,
         },
       }}
-      initialRouteName="garden"
+      initialRouteName="test page"
     >
       <Stack.Screen
         options={{ headerShown: false }}

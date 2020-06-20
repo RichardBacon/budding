@@ -54,8 +54,6 @@ function PlantPage(props) {
       api.getSnapshotsByPlantId(plant_id),
       Font.loadAsync({
         'arciform': require('../../assets/fonts/Arciform.otf'),
-        // 'Inter-SemiBoldItalic':
-        //   'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
       }),
     ];
     Promise.all(promises).then((plantSnaps) => {
@@ -274,7 +272,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     justifyContent: 'center',
     alignSelf: 'center',
-    width: '83%',
+    width: '70%',
     height: 45,
   },
   button_text_new: {
