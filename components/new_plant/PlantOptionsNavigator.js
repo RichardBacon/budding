@@ -39,7 +39,11 @@ function PlantOptionsNavigator({ route }) {
         )}
       </Stack.Screen>
       {/* <Stack.Screen name="new plant" component={NewPlantHome} plantInfo={route.params.plant_id}/> */}
-      <Stack.Screen name="tutorial" component={TutorialNavigator} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="tutorial"
+        component={TutorialNavigator}
+      />
       <Stack.Screen name="measure plant" component={MeasureFunction} />
       <Stack.Screen name="new plant entry" component={NewPlantEntry} />
       <Stack.Screen name="image picker" component={ImagePickerScreen} />

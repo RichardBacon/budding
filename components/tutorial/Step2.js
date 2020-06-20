@@ -36,7 +36,7 @@ function Step1({ navigation }) {
     <ScrollView>
       {fontLoading && (
         <View style={styles.container}>
-          <Text style={styles.tutorial_heading}>measuring your pot</Text>
+          <Text style={styles.tutorial_heading}>2, measuring your pot</Text>
           <Text style={styles.tutorial_subheading}>
             we need your pot measurement to correctly calculate your plant's
             height
@@ -51,7 +51,7 @@ function Step1({ navigation }) {
             </View>
           </View>
           <Text style={styles.tutorial_subheading_2}>
-            then simply enter your height in the form below,{' '}
+            simply enter your height in the form below:{' '}
           </Text>
           <Text style={styles.tutorial_heading_2}>12cm</Text>
 
@@ -67,10 +67,10 @@ function Step1({ navigation }) {
           <TouchableOpacity
             style={[styles.button_back]}
             onPress={() => {
-              navigation.navigate('tutorial');
+              navigation.navigate('new plant');
             }}
           >
-            <Text style={styles.button_text_back}>back to tutorial home</Text>
+            <Text style={styles.button_text_back}>back to new plant page</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   section_1_container: {
+    borderRadius: 10,
     marginTop: 20,
     flexDirection: 'row',
     // alignItems: 'center',
