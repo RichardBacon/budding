@@ -96,10 +96,12 @@ function MeasureFunction({ route, navigation }) {
 
   const navNextPage = () => {
     isLoading(true);
+    console.log(plantId)
     // if there's a plantId, send a patch request, then navigate to individual plant page
     // if not, go to new plant entry
     // NEED TO SEND PHOTO TO S3
     if (plantId) {
+      
       return api
         .patchPlantById(
           plantId,
@@ -136,6 +138,7 @@ function MeasureFunction({ route, navigation }) {
         })
         .then((response) => {
           console.log(response, '<--- after post request');
+          Alert.alert('Successful', 'Snapshot added!')
           navigation.push('garden');
         })
         .catch((err) => {

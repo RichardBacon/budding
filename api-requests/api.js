@@ -88,13 +88,13 @@ export const patchPlantById = (
       plant_variety,
       pot_height,
     })
-    .then(({ data }) => {
-      return data.plant;
+    .then(({status, data: {plant}}) => {
+      return {status, plant}
     });
 };
 
 export const deletePlantById = (plant_id) => {
-  return axios.delete(`${baseURL}/plants/${plant_id}`);
+  return axios.delete(`${baseURL}/plants/${plant_id}`).then((response) => {return response})
 };
 
 export const getSnapshotsByPlantId = (plant_id) => {

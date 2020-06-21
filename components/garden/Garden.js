@@ -80,23 +80,45 @@ function Garden({ userId, navigation }) {
       <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
         <Text>My Garden</Text>
         <View style={styles.heroContainer}>
-          <RNPickerSelect
+        <RNPickerSelect
+            useNativeAndroidPickerStyle={false}
+            color={'green'}
             onValueChange={(value) => toggleOrder(value)}
             placeholder={{}}
             items={[
               { label: 'newest', value: 'desc' },
               { label: 'oldest', value: 'asc' },
             ]}
+            Icon={() => {
+              return (
+                <View
+                  style={{
+                    opacity: 0,
+                  }}
+                />
+              );
+            }}
           />
           <RNPickerSelect
+            useNativeAndroidPickerStyle={false}
             onValueChange={(value) => toggleSortBy(value)}
             placeholder={{ label: 'sort by' }}
             items={[
               { label: 'most snaps', value: 'most snaps' },
               { label: 'least snaps', value: 'least snaps' },
             ]}
+            Icon={() => {
+              return (
+                <View
+                  style={{
+                    opacity: 0,
+                  }}
+                />
+              );
+            }}
           />
           <RNPickerSelect
+            useNativeAndroidPickerStyle={false}
             onValueChange={(value) => changeType(value)}
             placeholder={{ label: 'all plants' }}
             items={[
@@ -107,6 +129,15 @@ function Garden({ userId, navigation }) {
               { label: 'houseplant', value: 'houseplant' },
               { label: 'succulent', value: 'succulent' },
             ]}
+            Icon={() => {
+              return (
+                <View
+                  style={{
+                    opacity: 0,
+                  }}
+                />
+              );
+            }}
           />
         </View>
         <View style={styles.container}>
