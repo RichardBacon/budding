@@ -15,7 +15,7 @@ function GardenNavigator({ userId, from }) {
       screenOptions={{
         headerBackTitle: 'back',
         headerStyle: {
-          height: 55,
+          height: 80,
         },
       }}
       initialRouteName="garden"

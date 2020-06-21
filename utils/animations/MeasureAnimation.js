@@ -11,11 +11,11 @@ import Arrow from '../../assets/tutorials/part_2/arrow.svg';
 import ArrowFlipped from '../../assets/tutorials/part_2/arrow_flipped.svg';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default class Loop extends Component {
+export default class MeasureAnimation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startValue: new Animated.Value(50),
+      startValue: new Animated.Value(57),
       endValue: 2,
       duration: 1000,
       button1: new Animated.Value(1),
@@ -28,11 +28,11 @@ export default class Loop extends Component {
     Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.startValue, {
-          toValue: 50,
+          toValue: 57,
           duration: 1000,
         }),
         Animated.timing(this.state.startValue, {
-          toValue: 25,
+          toValue: -39,
           duration: 1000,
         }),
         Animated.timing(this.state.button1, {
@@ -41,26 +41,26 @@ export default class Loop extends Component {
         }),
         Animated.timing(this.state.startValue, {
           delay: 1000,
-          toValue: 1,
+          toValue: -189,
           duration: 1000,
         }),
         Animated.timing(this.state.button2, {
           toValue: 0,
           duration: 1,
         }),
-        Animated.timing(this.state.startValue, {
+        Animated.timing(this.state.button1, {
           delay: 1000,
-          toValue: 50,
+          toValue: 1,
+          duration: 1,
+        }),
+        Animated.timing(this.state.button2, {
+          toValue: 1,
+          duration: 1,
+        }),
+        Animated.timing(this.state.startValue, {
+          toValue: 57,
           duration: 1000,
           opacity: 0.1,
-        }),
-        Animated.timing(this.state.button1, {
-          toValue: 1,
-          duration: 1,
-        }),
-        Animated.timing(this.state.button2, {
-          toValue: 1,
-          duration: 1,
         }),
       ]),
       {
@@ -108,45 +108,45 @@ export default class Loop extends Component {
               <Arrow height={30} width={30}></Arrow>
             </View>
           </View>
-          <View style={{ marginLeft: 145 }}>
-            <Animated.View
-              style={[
-                styles.button_next_2,
-                {
-                  opacity: this.state.button3,
-                },
-              ]}
-            >
-              <TouchableOpacity style={[styles.button_next_2]}>
-                <Text style={styles.button_text_step_2}>third marker</Text>
-              </TouchableOpacity>
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.button_next_2,
-                {
-                  opacity: this.state.button2,
-                },
-              ]}
-            >
-              <TouchableOpacity style={[styles.button_next_2]}>
-                <Text style={styles.button_text_step_2}>second marker</Text>
-              </TouchableOpacity>
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.button_next,
-                {
-                  opacity: this.state.button1,
-                },
-              ]}
-            >
-              <TouchableOpacity style={[styles.button_next]}>
-                <Text style={styles.button_text_step_2}>first marker</Text>
-              </TouchableOpacity>
-            </Animated.View>
-          </View>
         </Animated.View>
+        <View style={{ marginLeft: 135, marginTop: 90 }}>
+          <Animated.View
+            style={[
+              styles.button_next_2,
+              {
+                opacity: this.state.button3,
+              },
+            ]}
+          >
+            <TouchableOpacity style={[styles.button_next_2]}>
+              <Text style={styles.button_text_step_2}>third marker</Text>
+            </TouchableOpacity>
+          </Animated.View>
+          <Animated.View
+            style={[
+              styles.button_next_2,
+              {
+                opacity: this.state.button2,
+              },
+            ]}
+          >
+            <TouchableOpacity style={[styles.button_next_2]}>
+              <Text style={styles.button_text_step_2}>second marker</Text>
+            </TouchableOpacity>
+          </Animated.View>
+          <Animated.View
+            style={[
+              styles.button_next,
+              {
+                opacity: this.state.button1,
+              },
+            ]}
+          >
+            <TouchableOpacity style={[styles.button_next]}>
+              <Text style={styles.button_text_step_2}>first marker</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
       </View>
     );
   }
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', // width: 1,
     // justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: -10,
     // alignContent: 'center',
     // width: 100,
   },
