@@ -1,6 +1,6 @@
 // import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import PlantOptionsNavigator from './components/new_plant/PlantOptionsNavigator';
 import GardenNavigator from './components/garden/GardenNavigator';
@@ -13,9 +13,9 @@ const Tab = createBottomTabNavigator();
 // set all states to null to engage the login page
 
 function App() {
-  const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [name, setName] = useState(null);
+  const [userId, setUserId] = useState(1);
+  const [username, setUsername] = useState('robert_plant');
+  const [name, setName] = useState('Robert Plant');
 
   const logIn = (Id, user, fullName) => {
     setUserId(Id);
@@ -25,6 +25,7 @@ function App() {
 
   const logOut = () => {
     setUserId(null);
+    Alert.alert('Logged out', 'See you soon - in the meantime, keep growing!');
   };
 
   const userInfo = {
