@@ -54,7 +54,7 @@ function PlantPage(props) {
       api.getPlantById(plant_id),
       api.getSnapshotsByPlantId(plant_id),
       Font.loadAsync({
-        arciform: require('../../assets/fonts/Arciform.otf'),
+        'arciform': require('../../assets/fonts/Arciform.otf'),
       }),
     ];
     Promise.all(promises).then((plantSnaps) => {

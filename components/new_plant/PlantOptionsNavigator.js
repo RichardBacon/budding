@@ -27,7 +27,7 @@ function PlantOptionsNavigator({ route }) {
           height: 55,
         },
       }}
-      initialRouteName="new plant entry"
+      initialRouteName="new plant"
     >
       <Stack.Screen name="new plant">
         {(navigation) => (
