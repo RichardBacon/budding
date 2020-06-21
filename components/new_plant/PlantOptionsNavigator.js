@@ -45,7 +45,11 @@ function PlantOptionsNavigator({ route }) {
         component={TutorialNavigator}
       />
       <Stack.Screen name="measure plant" component={MeasureFunction} />
-      <Stack.Screen name="new plant entry" component={NewPlantEntry} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="new plant entry"
+        component={NewPlantEntry}
+      />
       <Stack.Screen name="image picker" component={ImagePickerScreen} />
       <Stack.Screen name="new snapshot" component={NewSnapshotPage} />
     </Stack.Navigator>
