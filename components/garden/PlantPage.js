@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import * as api from '../../api-requests/api';
 import TimeAgo from 'react-native-timeago';
@@ -53,7 +54,7 @@ function PlantPage(props) {
       api.getPlantById(plant_id),
       api.getSnapshotsByPlantId(plant_id),
       Font.loadAsync({
-        'arciform': require('../../assets/fonts/Arciform.otf'),
+        arciform: require('../../assets/fonts/Arciform.otf'),
       }),
     ];
     Promise.all(promises).then((plantSnaps) => {
@@ -66,7 +67,7 @@ function PlantPage(props) {
   let ScreenHeight = Dimensions.get('window').height;
 
   return (
-      <ScrollView>
+    <ScrollView>
       {loading && (
         <View
           style={{
@@ -107,12 +108,12 @@ function PlantPage(props) {
                 </View>
                 <View style={styles.plant_info_card}>
                   <CreatedAtIcon width={30} height={30} fill="green" />
-                  <Text style={styles.plant_info_text}>posted:
-
-                  <TimeAgo
-                    time={plant.created_at}
-                    style={styles.plant_info_text}
-                  />
+                  <Text style={styles.plant_info_text}>
+                    posted:
+                    <TimeAgo
+                      time={plant.created_at}
+                      style={styles.plant_info_text}
+                    />
                   </Text>
                 </View>
                 <View style={styles.plant_info_card}>
@@ -156,17 +157,17 @@ function PlantPage(props) {
                 </View>
               </View>
             </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('plant navigator', {
-              plant_id,
-              pot_height: plant.pot_height,
-            });
-          }}
-          style={styles.button}
-        >
-          <Text style={styles.button_text_new}>new snapshot </Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('plant navigator', {
+                  plant_id,
+                  pot_height: plant.pot_height,
+                });
+              }}
+              style={styles.button}
+            >
+              <Text style={styles.button_text_new}>new snapshot </Text>
+            </TouchableOpacity>
           </View>
           <View>
             <Text style={styles.recent_snaps}>recent snapshots</Text>
@@ -178,11 +179,54 @@ function PlantPage(props) {
               navigation.navigate('all snapshots', {
                 snapshots,
                 plant_name,
-                pot_height
+                pot_height,
               })
             }
           >
             <Text style={styles.button_text_all}>all snapshots </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              // Asks for confirmation to delete the plant
+              // If confirm, sends request to delete, if 204 response navigates back to garden
+              // If cancel, does nothing
+              Alert.alert(
+                `Delete ${plant_name}`,
+                `Are you sure you want to permanently delete ${plant_name}?`,
+                [
+                  {
+                    text: 'No, do not delete!',
+                    onPress: () => {
+                      console.log('deletion cancelled');
+                    },
+                  },
+                  {
+                    text: 'Yes, delete!',
+                    onPress: () => {
+                      api.deletePlantById(plant_id).then((response) => {
+                        if (response.status === 204) {
+                          Alert.alert(
+                            'Plant deleted!',
+                            `Successfully deleted ${plant_name}`,
+                          );
+                          navigation.navigate('garden');
+                          // plant name deleted
+                        } else {
+                          Alert.alert(
+                            'Unsuccessful',
+                            `Could not delete ${plant_name} - please try again`,
+                          );
+                          // deletion unsuccessful
+                        }
+                      });
+                    },
+                  },
+                ],
+              );
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>delete plant </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -279,13 +323,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#fff',
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   button_text_all: {
     fontSize: 25,
     color: '#fff',
     textAlign: 'center',
-    fontWeight: '300'
+    fontWeight: '300',
   },
   button_all: {
     backgroundColor: '#52875a',

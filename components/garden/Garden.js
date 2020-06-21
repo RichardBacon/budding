@@ -82,12 +82,22 @@ function Garden({ userId, navigation }) {
         <View style={styles.heroContainer}>
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
+            color={'green'}
             onValueChange={(value) => toggleOrder(value)}
             placeholder={{}}
             items={[
               { label: 'newest', value: 'desc' },
               { label: 'oldest', value: 'asc' },
             ]}
+            Icon={() => {
+              return (
+                <View
+                  style={{
+                    opacity: 0,
+                  }}
+                />
+              );
+            }}
           />
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
@@ -97,6 +107,15 @@ function Garden({ userId, navigation }) {
               { label: 'most snaps', value: 'most snaps' },
               { label: 'least snaps', value: 'least snaps' },
             ]}
+            Icon={() => {
+              return (
+                <View
+                  style={{
+                    opacity: 0,
+                  }}
+                />
+              );
+            }}
           />
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
@@ -110,6 +129,15 @@ function Garden({ userId, navigation }) {
               { label: 'houseplant', value: 'houseplant' },
               { label: 'succulent', value: 'succulent' },
             ]}
+            Icon={() => {
+              return (
+                <View
+                  style={{
+                    opacity: 0,
+                  }}
+                />
+              );
+            }}
           />
         </View>
         <View style={styles.container}>
