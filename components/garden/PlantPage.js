@@ -54,8 +54,6 @@ function PlantPage(props) {
       api.getSnapshotsByPlantId(plant_id),
       Font.loadAsync({
         'arciform': require('../../assets/fonts/Arciform.otf'),
-        // 'Inter-SemiBoldItalic':
-        //   'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
       }),
     ];
     Promise.all(promises).then((plantSnaps) => {
@@ -109,10 +107,13 @@ function PlantPage(props) {
                 </View>
                 <View style={styles.plant_info_card}>
                   <CreatedAtIcon width={30} height={30} fill="green" />
+                  <Text style={styles.plant_info_text}>posted:
+
                   <TimeAgo
                     time={plant.created_at}
                     style={styles.plant_info_text}
                   />
+                  </Text>
                 </View>
                 <View style={styles.plant_info_card}>
                   <SoilIcon width={30} height={30} fill="green" />
@@ -164,7 +165,7 @@ function PlantPage(props) {
           }}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>new snapshot </Text>
+          <Text style={styles.button_text_new}>new snapshot </Text>
         </TouchableOpacity>
           </View>
           <View>
@@ -177,10 +178,11 @@ function PlantPage(props) {
               navigation.navigate('all snapshots', {
                 snapshots,
                 plant_name,
+                pot_height
               })
             }
           >
-            <Text style={styles.button_text}>all snapshots </Text>
+            <Text style={styles.button_text_all}>all snapshots </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -208,8 +210,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
   },
   background_plate: {
-    marginLeft: '10%',
-    marginRight: '10%',
+    marginLeft: '5%',
+    marginRight: '5%',
     backgroundColor: '#e6e6e6',
     borderRadius: 25,
     marginBottom: 10,
@@ -227,6 +229,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 20,
     color: '#52875a',
+    fontFamily: 'arciform',
   },
   timeago_text: {
     textAlign: 'center',
@@ -236,7 +239,7 @@ const styles = StyleSheet.create({
   },
   plant_info_view: {
     paddingTop: 20,
-    paddingLeft: 10,
+    paddingLeft: '8%',
     paddingRight: 10,
     flexDirection: 'row',
     backgroundColor: 'white',
@@ -263,25 +266,32 @@ const styles = StyleSheet.create({
     paddingRight: 40,
   },
   button: {
-    backgroundColor: '#52875a',
+    backgroundColor: '#fdbe39',
     borderRadius: 5,
     marginBottom: 15,
     marginTop: 15,
     justifyContent: 'center',
     alignSelf: 'center',
-    width: '83%',
+    width: '70%',
     height: 45,
   },
-  button_text: {
+  button_text_new: {
     fontSize: 25,
     color: '#fff',
     textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  button_text_all: {
+    fontSize: 25,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '300'
   },
   button_all: {
-    backgroundColor: '#fdbe39',
+    backgroundColor: '#52875a',
     borderRadius: 5,
-    marginBottom: 15,
-    marginTop: 20,
+    marginBottom: 25,
+    marginTop: 25,
     justifyContent: 'center',
     alignSelf: 'center',
     width: '65%',
@@ -290,8 +300,11 @@ const styles = StyleSheet.create({
   recent_snaps: {
     textAlign: 'center',
     margin: 10,
-    fontSize: 20,
-    marginBottom: 20,
+    marginTop: 20,
+    fontSize: 25,
+    marginBottom: 25,
+    color: '#355a3a',
+    fontFamily: 'arciform',
   },
 });
 

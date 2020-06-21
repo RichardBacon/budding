@@ -94,21 +94,26 @@ function NewPlantHome({ plant_id, pot_height, navigation }) {
         justifyContent: 'center',
       }}
     >
+      <Image
+        style={{ width: 100, height: 100, marginBottom: 25 }}
+        source={require('../../assets/gifs/Shifter_V01.gif')}
+      />
+      <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
+        <Text style={styles.button_text}>Take a photo!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
+        <Text style={styles.button_text_tutorial}>pick from gallery</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('tutorial', {
             openImagePickerAsync: openImagePickerAsync,
           })
         }
-        style={styles.button}
+        style={styles.button_tutorial}
       >
-        <Text style={styles.buttonText}>tutorial</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>pick from gallery</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Take a photo!</Text>
+        <Text style={styles.button_text}>tutorial</Text>
       </TouchableOpacity>
     </View>
   );
@@ -135,13 +140,35 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#52875a',
-    padding: 20,
     borderRadius: 5,
     marginBottom: 10,
+    // marginTop: 5,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '65%',
+    height: 45,
   },
-  buttonText: {
-    fontSize: 20,
+  button_tutorial: {
+    backgroundColor: '#fdbe39',
+    borderRadius: 5,
+    marginBottom: 15,
+    marginTop: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '65%',
+    height: 45,
+  },
+  button_text: {
+    fontSize: 25,
     color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  button_text_tutorial: {
+    fontSize: 25,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '300',
   },
   thumbnail: {
     width: 300,

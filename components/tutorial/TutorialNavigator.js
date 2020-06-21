@@ -9,11 +9,37 @@ const Stack = createStackNavigator();
 
 function TutorialNavigator() {
   return (
-    <Stack.Navigator initialRouteName="tutorial">
-      <Stack.Screen name="tutorial" component={TutorialHome} />
-      <Stack.Screen name="step 1" component={Step1} />
-      <Stack.Screen name="step 2" component={Step2} />
-      <Stack.Screen name="step 3" component={Step3} />
+    <Stack.Navigator
+      screenOptions={{
+        headerBackTitle: 'back',
+        headerStyle: {
+          height: 150,
+        },
+      }}
+      initialRouteName="step 1"
+    >
+      {/* <Stack.Screen name="hello" component={TutorialHome} /> */}
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="step 1"
+        component={Step1}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="step 1"
+        component={Step1}
+        name="step 2"
+        component={Step2}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="step 1"
+        component={Step1}
+        name="step 2"
+        component={Step2}
+        name="step 3"
+        component={Step3}
+      />
     </Stack.Navigator>
   );
 }

@@ -10,6 +10,8 @@ import Profile from './components/Profile';
 
 const Tab = createBottomTabNavigator();
 
+// set all states to null to engage the login page
+
 function App() {
   const [userId, setUserId] = useState(1);
   const [username, setUsername] = useState('robert_plant');
