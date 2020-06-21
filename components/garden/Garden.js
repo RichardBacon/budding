@@ -27,7 +27,6 @@ function Garden({ userId, navigation }) {
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
   const [plant_type, changeType] = useState(null);
-  const [fontLoading, loadFont] = useState(true);
 
   const isFocused = useIsFocused();
   let ScreenHeight = Dimensions.get('window').height;
@@ -52,7 +51,6 @@ function Garden({ userId, navigation }) {
           Promise.all(snapShotArr).then((snapshots) => {
             setSnaps(snapshots);
             isLoading(false);
-            loadFont(false);
           });
         })
         .catch((err) => {
@@ -115,6 +113,9 @@ function Garden({ userId, navigation }) {
               { label: 'oldest', value: 'asc' },
             ]}
             style={pickerSelectStyles}
+            Icon={() => {
+              return <View style={pickerSelectStyles.sort_by_button} />;
+            }}
           />
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
@@ -125,6 +126,9 @@ function Garden({ userId, navigation }) {
               { label: 'least snaps', value: 'least snaps' },
             ]}
             style={pickerSelectStyles}
+            Icon={() => {
+              return <View style={pickerSelectStyles.sort_by_button} />;
+            }}
           />
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
@@ -139,6 +143,9 @@ function Garden({ userId, navigation }) {
               { label: 'succulent', value: 'succulent' },
             ]}
             style={pickerSelectStyles}
+            Icon={() => {
+              return <View style={pickerSelectStyles.sort_by_button} />;
+            }}
           />
         </View>
         <View style={styles.container}>
@@ -221,7 +228,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: '#355a3a',
     fontFamily: 'arciform',
-    marginTop: -20,
+    marginTop: 20,
   },
   grid_view: {
     marginTop: 5,
@@ -257,7 +264,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     alignItems: 'center',
     paddingTop: 7,
-    // TRY MAKING INTO A GRID
   },
   plant_name: {
     fontSize: 25,
@@ -293,7 +299,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 4,
-    color: 'black',
+    color: 'white',
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
@@ -304,7 +310,21 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: '#52875a',
     paddingHorizontal: 10,
+
     // paddingRight: 15, // to ensure the text is never behind the icon
+  },
+  sort_by_button: {
+    backgroundColor: 'transparent',
+    borderTopWidth: 35,
+    borderTopColor: 'transparent',
+    borderRightWidth: 50,
+    borderRightColor: 'transparent',
+    borderLeftWidth: 50,
+    borderLeftColor: 'transparent',
+    borderBottomWidth: 35,
+    borderBottomColor: 'transparent',
+    width: 20,
+    height: 20,
   },
 });
 

@@ -26,12 +26,24 @@ function GardenNavigator({ userId, from }) {
         component={PlantPage}
       />
       {/* <Stack.Screen name="garden" component={Garden} /> */}
-      <Stack.Screen name="garden">
+      <Stack.Screen name="garden" options={{ headerShown: false }}>
         {(navigation) => <Garden {...navigation} userId={userId} from={from} />}
       </Stack.Screen>
-      <Stack.Screen name="edit plant" component={EditPlant} />
-      <Stack.Screen name="all snapshots" component={Snapshots} />
-      <Stack.Screen name="plant navigator" component={PlantOptionsNavigator} />
+      <Stack.Screen
+        name="edit plant"
+        options={{ headerShown: false }}
+        component={EditPlant}
+      />
+      <Stack.Screen
+        name="all snapshots"
+        options={{ headerShown: false }}
+        component={Snapshots}
+      />
+      <Stack.Screen
+        name="plant navigator"
+        options={{ headerShown: false }}
+        component={PlantOptionsNavigator}
+      />
       <Stack.Screen name="test page" component={Test} />
     </Stack.Navigator>
   );
