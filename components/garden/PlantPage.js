@@ -234,6 +234,49 @@ function PlantPage(props) {
           >
             <Text style={styles.button_text_all}>all snapshots </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              // Asks for confirmation to delete the plant
+              // If confirm, sends request to delete, if 204 response navigates back to garden
+              // If cancel, does nothing
+              Alert.alert(
+                `Delete ${plant_name}`,
+                `Are you sure you want to permanently delete ${plant_name}?`,
+                [
+                  {
+                    text: 'No, do not delete!',
+                    onPress: () => {
+                      console.log('deletion cancelled');
+                    },
+                  },
+                  {
+                    text: 'Yes, delete!',
+                    onPress: () => {
+                      api.deletePlantById(plant_id).then((response) => {
+                        if (response.status === 204) {
+                          Alert.alert(
+                            'Plant deleted!',
+                            `Successfully deleted ${plant_name}`,
+                          );
+                          navigation.navigate('garden');
+                          // plant name deleted
+                        } else {
+                          Alert.alert(
+                            'Unsuccessful',
+                            `Could not delete ${plant_name} - please try again`,
+                          );
+                          // deletion unsuccessful
+                        }
+                      });
+                    },
+                  },
+                ],
+              );
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>delete plant </Text>
+          </TouchableOpacity>
         </View>
       )}
     </ScrollView>
