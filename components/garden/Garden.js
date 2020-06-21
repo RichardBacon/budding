@@ -81,6 +81,7 @@ function Garden({ userId, navigation }) {
         <Text>My Garden</Text>
         <View style={styles.heroContainer}>
           <RNPickerSelect
+            useNativeAndroidPickerStyle={false}
             onValueChange={(value) => toggleOrder(value)}
             placeholder={{}}
             items={[
@@ -89,6 +90,7 @@ function Garden({ userId, navigation }) {
             ]}
           />
           <RNPickerSelect
+            useNativeAndroidPickerStyle={false}
             onValueChange={(value) => toggleSortBy(value)}
             placeholder={{ label: 'sort by' }}
             items={[
@@ -97,6 +99,7 @@ function Garden({ userId, navigation }) {
             ]}
           />
           <RNPickerSelect
+            useNativeAndroidPickerStyle={false}
             onValueChange={(value) => changeType(value)}
             placeholder={{ label: 'all plants' }}
             items={[
@@ -127,37 +130,37 @@ function Garden({ userId, navigation }) {
             style={styles.gridView}
             spacing={10}
             renderItem={({ item }) => (
-            <View>
-              <View style={styles.plantContainer}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('plant page', {
-                      item,
-                    })
-                  }
-                  style={styles.image}
-                >
-                  <Image
-                    source={{ uri: item.plant_uri }}
+              <View>
+                <View style={styles.plantContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('plant page', {
+                        item,
+                      })
+                    }
                     style={styles.image}
-                    onLoad={isLoading(false)}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.plant_view}>
-                <View style={styles.plant_left_view}>
-                  <Text style={styles.plantName}>{item.plant_name}</Text>
-                  <TimeAgo time={item.created_at} />
-                  <View>
-                    {/* <Plant width={120} height={40} fill="green" /> */}
-                    <Text style={styles.plantStats}>{item.height}</Text>
+                  >
+                    <Image
+                      source={{ uri: item.plant_uri }}
+                      style={styles.image}
+                      onLoad={isLoading(false)}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.plant_view}>
+                  <View style={styles.plant_left_view}>
+                    <Text style={styles.plantName}>{item.plant_name}</Text>
+                    <TimeAgo time={item.created_at} />
+                    <View>
+                      {/* <Plant width={120} height={40} fill="green" /> */}
+                      <Text style={styles.plantStats}>{item.height}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.plant_right_view}>
+                    <Text style={styles.plantStats}>{item.snapshot_count}</Text>
                   </View>
                 </View>
-                <View style={styles.plant_right_view}>
-                  <Text style={styles.plantStats}>{item.snapshot_count}</Text>
-                </View>
               </View>
-            </View>
             )}
           />
         </View>

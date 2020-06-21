@@ -50,10 +50,12 @@ function Step1({ navigation }) {
               <Arrow></Arrow>
             </View>
           </View>
-          <Text style={styles.tutorial_subheading_2}>
-            simply enter your height in the form below:{' '}
-          </Text>
           <Text style={styles.tutorial_heading_2}>12cm</Text>
+
+          <Text style={styles.tutorial_subheading_2}>
+            simply enter your height in the form provided, we'll store your
+            pot's height for the next time you measure
+          </Text>
 
           <TouchableOpacity
             style={[styles.button_next]}
@@ -67,10 +69,10 @@ function Step1({ navigation }) {
           <TouchableOpacity
             style={[styles.button_back]}
             onPress={() => {
-              navigation.navigate('new plant');
+              navigation.navigate('step 1');
             }}
           >
-            <Text style={styles.button_text_back}>back to new plant page</Text>
+            <Text style={styles.button_text_back}>back to step 1 </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -82,7 +84,7 @@ export default Step1;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginTop: 60,
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingLeft: '5%',
     paddingRight: '5%',
-    paddingBottom: 15,
+    paddingTop: 25,
     color: 'blue',
     fontFamily: 'arciform',
     fontSize: 45,
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
     color: '#52875a',
     fontFamily: 'arciform',
     // marginBottom: 1,
-    width: '75%',
+    width: '65%',
   },
   tutorial_subheading_2: {
     textAlign: 'center',
@@ -178,11 +180,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#52875a',
     fontFamily: 'arciform',
-    marginBottom: 25,
-    width: '75%',
+    marginBottom: 15,
+    width: '65%',
   },
   button_next: {
-    backgroundColor: '#fdbe39',
+    backgroundColor: '#52875a',
     borderRadius: 5,
     // marginBottom: 15,
     marginTop: 20,

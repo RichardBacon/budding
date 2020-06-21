@@ -24,8 +24,22 @@ function TutorialNavigator() {
         name="step 1"
         component={Step1}
       />
-      <Stack.Screen name="step 2" component={Step2} />
-      <Stack.Screen name="step 3" component={Step3} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="step 1"
+        component={Step1}
+        name="step 2"
+        component={Step2}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="step 1"
+        component={Step1}
+        name="step 2"
+        component={Step2}
+        name="step 3"
+        component={Step3}
+      />
     </Stack.Navigator>
   );
 }

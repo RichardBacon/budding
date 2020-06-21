@@ -33,6 +33,8 @@ function Step1({ navigation }) {
     loadFonts();
   }, []);
 
+  let ScreenHeight = Dimensions.get('window').height;
+
   return (
     <ScrollView>
       {fontLoading && (
@@ -81,11 +83,11 @@ function Step1({ navigation }) {
           <View style={styles.section_3_container}>
             <Image
               style={styles.picture_image_left}
-              source={require('../../assets/tutorials/part_1/good_pic_1.jpg')}
+              source={require('../../assets/tutorials/part_1/bad_pic_1.jpg')}
             ></Image>
             <Image
               style={styles.picture_image_right}
-              source={require('../../assets/tutorials/part_1/good_pic_2.jpg')}
+              source={require('../../assets/tutorials/part_1/bad_pic_2.jpg')}
             ></Image>
           </View>
           <TouchableOpacity
@@ -115,10 +117,12 @@ export default Step1;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginTop: 60,
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
+    // height: ScreenHeight
+    // backgroundColor: 'white',
   },
   section_1_container: {
     marginTop: 20,
@@ -232,7 +236,7 @@ const styles = StyleSheet.create({
     marginLeft: '2.5%',
   },
   button_next: {
-    backgroundColor: '#fdbe39',
+    backgroundColor: '#52875a',
     borderRadius: 5,
     // marginBottom: 15,
     marginTop: 40,

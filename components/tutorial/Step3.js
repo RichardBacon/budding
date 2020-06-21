@@ -63,10 +63,10 @@ function Step1({ navigation }) {
           <TouchableOpacity
             style={[styles.button_back]}
             onPress={() => {
-              navigation.navigate('new plant');
+              navigation.navigate('step 2');
             }}
           >
-            <Text style={styles.button_text_back}>back to new plant page</Text>
+            <Text style={styles.button_text_back}>back to step 2</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -78,7 +78,7 @@ export default Step1;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginTop: 60,
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
