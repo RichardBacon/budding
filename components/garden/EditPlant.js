@@ -24,6 +24,8 @@ function EditPlant({ route, navigation }) {
   const [location, setLocation] = useState(null);
   const [loading, isLoading] = useState(false);
 
+  const { plant_id } = route.params;
+
   //NEED TO TAKE PLANT ID OFF ROUTE PARAMS
   //IF WANT TO CHANGE SO INPUT FIELDS DEFAULT TO CURRENT INFO, NEED TO PASS DOWN PLANT INFO
 
@@ -46,7 +48,7 @@ function EditPlant({ route, navigation }) {
     } else {
       api
         .patchPlantById(
-          1,
+          plant_id,
           plantName,
           type,
           soil,
@@ -56,9 +58,19 @@ function EditPlant({ route, navigation }) {
           variety,
           potHeight,
         )
-        .then(() => {
-          isLoading(false);
-          // navigation.navigate(''); // NAVIGATE TO INDIVIDUAL PLANT PAGE
+        .then(({ status, plant }) => {
+          if (status === 200) {
+            const { plant_name } = plant;
+            Alert.alert('Plant updated', `${plant_name} successfully updated!`);
+            isLoading(false);
+            navigation.navigate('garden');
+          } else {
+            Alert.alert(
+              'Update failed',
+              'Plant update failed. Please try again.',
+            );
+            isLoading(false);
+          }
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);

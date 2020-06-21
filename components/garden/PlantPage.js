@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import * as api from '../../api-requests/api';
 import TimeAgo from 'react-native-timeago';
@@ -43,10 +44,6 @@ function PlantPage(props) {
   const [snapshots, addSnapshotData] = useState(undefined);
   const [loading, isLoading] = useState(true);
   const [fontLoading, loadFont] = useState(true);
-
-  // send <name> on route params
-  // if statement saying if exists, set state to <name>
-  // useEffect will trigger when <name> changes
 
   useEffect(() => {
     const promises = [
@@ -158,6 +155,16 @@ function PlantPage(props) {
             </View>
             <TouchableOpacity
               onPress={() => {
+                navigation.navigate('edit plant', {
+                  plant_id,
+                });
+              }}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>edit plant </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
                 navigation.navigate('plant navigator', {
                   plant_id,
                   pot_height: plant.pot_height,
@@ -169,6 +176,49 @@ function PlantPage(props) {
             </TouchableOpacity>
           </View>
           <View>
+            <TouchableOpacity
+              onPress={() => {
+                // Asks for confirmation to delete the plant
+                // If confirm, sends request to delete, if 204 response navigates back to garden
+                // If cancel, does nothing
+                Alert.alert(
+                  `Delete ${plant_name}`,
+                  `Are you sure you want to permanently delete ${plant_name}?`,
+                  [
+                    {
+                      text: 'No, do not delete!',
+                      onPress: () => {
+                        console.log('deletion cancelled');
+                      },
+                    },
+                    {
+                      text: 'Yes, delete!',
+                      onPress: () => {
+                        api.deletePlantById(plant_id).then((response) => {
+                          if (response.status === 204) {
+                            Alert.alert(
+                              'Plant deleted!',
+                              `Successfully deleted ${plant_name}`,
+                            );
+                            navigation.navigate('garden');
+                            // plant name deleted
+                          } else {
+                            Alert.alert(
+                              'Unsuccessful',
+                              `Could not delete ${plant_name} - please try again`,
+                            );
+                            // deletion unsuccessful
+                          }
+                        });
+                      },
+                    },
+                  ],
+                );
+              }}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>delete plant </Text>
+            </TouchableOpacity>
             <Text style={styles.recent_snaps}>recent snapshots</Text>
           </View>
           {snapshots && <SnapshotCarousel snapshots={snapshots} />}

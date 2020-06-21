@@ -107,6 +107,7 @@ function Garden({ userId, navigation }) {
         <View style={styles.hero_container}>
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
+            color={'green'}
             onValueChange={(value) => toggleOrder(value)}
             placeholder={{}}
             items={[
