@@ -10,16 +10,16 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
 import * as api from '../../api-requests/api';
-import * as svg from 'react-native-svg';
-// import Plant from '../../assets/plant.svg';
 import GlobalStyles from '../../styles/GlobalStyles';
-import { makeRefObj, formatArray } from '../../utils/utils';
 import TimeAgo from 'react-native-timeago';
 import { useIsFocused } from '@react-navigation/native';
+import * as Font from 'expo-font';
+import CameraIcon from '../../assets/icons/camera_icon.svg';
 
 function Garden({ userId, navigation }) {
   const [sort_by, changeSort] = useState('created_at');
@@ -27,29 +27,38 @@ function Garden({ userId, navigation }) {
   const [loading, isLoading] = useState(true);
   const [order, changeOrder] = useState('desc');
   const [plant_type, changeType] = useState(null);
+  const [fontLoading, loadFont] = useState(true);
 
   const isFocused = useIsFocused();
+  let ScreenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
-    api
-      .getPlantsByUserId(userId, order, sort_by, plant_type)
-      .then((plants) => {
-        const snapShotArr = plants.map((plant) => {
-          const { plant_id, plant_name, snapshot_count } = plant;
-
-          return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-            return { plant_name, snapshot_count, ...snap[0] };
-          });
-        });
-
-        Promise.all(snapShotArr).then((snapshots) => {
-          setSnaps(snapshots);
-          isLoading(false);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+    let promise = new Promise((resolve, reject) => {
+      Font.loadAsync({
+        arciform: require('../../assets/fonts/Arciform.otf'),
       });
+    }).then(
+      api
+        .getPlantsByUserId(userId, order, sort_by, plant_type)
+        .then((plants) => {
+          const snapShotArr = plants.map((plant) => {
+            const { plant_id, plant_name, snapshot_count } = plant;
+
+            return api.getSnapshotsByPlantId(plant_id).then((snap) => {
+              return { plant_name, snapshot_count, ...snap[0] };
+            });
+          });
+
+          Promise.all(snapShotArr).then((snapshots) => {
+            setSnaps(snapshots);
+            isLoading(false);
+            loadFont(false);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        }),
+    );
   }, [order, sort_by, plant_type, isFocused]);
 
   const toggleSortBy = (data) => {
@@ -74,12 +83,28 @@ function Garden({ userId, navigation }) {
     }
   };
 
-  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
+  if (loading)
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: ScreenHeight,
+          backgroundColor: 'white',
+        }}
+      >
+        <Image
+          style={{ width: 100, height: 100, backgroundColor: 'white' }}
+          source={require('../../assets/gifs/Shifter_V01.gif')}
+        />
+      </View>
+    );
   else {
     return (
       <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
-        <Text>My Garden</Text>
-        <View style={styles.heroContainer}>
+        <Text style={styles.title}>my garden</Text>
+        <View style={styles.hero_container}>
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
             onValueChange={(value) => toggleOrder(value)}
@@ -88,6 +113,7 @@ function Garden({ userId, navigation }) {
               { label: 'newest', value: 'desc' },
               { label: 'oldest', value: 'asc' },
             ]}
+            style={pickerSelectStyles}
           />
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
@@ -97,6 +123,7 @@ function Garden({ userId, navigation }) {
               { label: 'most snaps', value: 'most snaps' },
               { label: 'least snaps', value: 'least snaps' },
             ]}
+            style={pickerSelectStyles}
           />
           <RNPickerSelect
             useNativeAndroidPickerStyle={false}
@@ -110,6 +137,7 @@ function Garden({ userId, navigation }) {
               { label: 'houseplant', value: 'houseplant' },
               { label: 'succulent', value: 'succulent' },
             ]}
+            style={pickerSelectStyles}
           />
         </View>
         <View style={styles.container}>
@@ -127,11 +155,11 @@ function Garden({ userId, navigation }) {
           <FlatGrid
             itemDimension={130}
             data={snaps}
-            style={styles.gridView}
+            style={styles.grid_view}
             spacing={10}
             renderItem={({ item }) => (
               <View>
-                <View style={styles.plantContainer}>
+                <View style={styles.plant_container}>
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('plant page', {
@@ -149,15 +177,31 @@ function Garden({ userId, navigation }) {
                 </View>
                 <View style={styles.plant_view}>
                   <View style={styles.plant_left_view}>
-                    <Text style={styles.plantName}>{item.plant_name}</Text>
-                    <TimeAgo time={item.created_at} />
+                    <Text style={styles.plant_name}>{item.plant_name}</Text>
+                    <Text style={styles.plant_stats}>
+                      <>last snapped: </>
+                      <TimeAgo
+                        time={item.created_at}
+                        style={styles.plant_stats_value}
+                      />
+                    </Text>
+
                     <View>
-                      {/* <Plant width={120} height={40} fill="green" /> */}
-                      <Text style={styles.plantStats}>{item.height}</Text>
+                      <Text style={styles.plant_stats}>
+                        <>plant height: </>
+                        <Text style={styles.plant_stats_value}>
+                          {item.height}cm
+                        </Text>
+                      </Text>
                     </View>
                   </View>
                   <View style={styles.plant_right_view}>
-                    <Text style={styles.plantStats}>{item.snapshot_count}</Text>
+                    <Text style={styles.plant_stats}>
+                      <>{item.snapshot_count} </>
+                      <View width={13} height={13} style={{ paddingTop: 2 }}>
+                        <CameraIcon width={13} height={13} fill="green" />
+                      </View>
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -170,48 +214,64 @@ function Garden({ userId, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  gridView: {
+  title: {
+    textAlign: 'center',
+    marginBottom: 10,
+    fontSize: 40,
+    color: '#355a3a',
+    fontFamily: 'arciform',
+    marginTop: -20,
+  },
+  grid_view: {
     marginTop: 5,
     flex: 1,
   },
-  heroContainer: {
+  hero_container: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
     zIndex: 2,
+    backgroundColor: '#dbdbdb',
+    paddingVertical: 10,
   },
   container: {
     flex: 2,
     zIndex: 1,
   },
-  dropDown: {
-    width: 100,
-  },
-  plantContainer: {
+  plant_container: {
     justifyContent: 'flex-end',
     borderRadius: 5,
     height: 250,
     borderColor: '#52875a',
     borderWidth: 1,
+    overflow: 'hidden',
   },
   plant_view: {
     flexDirection: 'row',
   },
   plant_left_view: {
-    flex: 2,
+    flex: 1,
   },
   plant_right_view: {
     textAlign: 'right',
+    alignItems: 'center',
+    paddingTop: 7,
+    // TRY MAKING INTO A GRID
   },
-  plantName: {
-    fontSize: 16,
-    color: '#52875a',
-    fontWeight: '900',
+  plant_name: {
+    fontSize: 25,
+    color: '#355a3a',
+    fontFamily: 'arciform',
   },
-  plantStats: {
+  plant_stats: {
     fontWeight: '600',
     fontSize: 12,
     color: '#52875a',
+  },
+  plant_stats_value: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    color: '#355a3a',
   },
   image: {
     flex: 1,
@@ -224,6 +284,27 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Garden;
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    borderWidth: 0.5,
+    borderRadius: 8,
+    color: 'white',
+    borderColor: 'gray',
+    backgroundColor: '#52875a',
+    paddingHorizontal: 10,
+    // paddingRight: 15, // to ensure the text is never behind the icon
+  },
+});
 
-//  <Logo width={120} height={40} />
+export default Garden;
