@@ -192,25 +192,32 @@ function Garden({ userId, navigation }) {
                 </View>
                 <View style={styles.plant_view}>
                   <View style={styles.plant_left_view}>
-                    <Text style={styles.plant_name}>{item.plant_name}</Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('plant page', {
+                          item,
+                        })
+                      }
+                    >
+                      <Text style={styles.plant_name}>{item.plant_name}</Text>
+                    </TouchableOpacity>
+
                     <Text style={styles.plant_stats}>
-                      <>last snapped: </>
+                      <>planted: </>
                       <TimeAgo
                         time={item.created_at}
                         style={styles.plant_stats_value}
                       />
                     </Text>
 
-                    <View>
-                      <Text style={styles.plant_stats}>
-                        <>plant height: </>
-                        <Text style={styles.plant_stats_value}>
-                          {item.height}cm
-                        </Text>
+                    <Text style={styles.plant_stats}>
+                      <>height: </>
+                      <Text style={styles.plant_stats_value}>
+                        {item.height}cm
                       </Text>
-                    </View>
+                    </Text>
                   </View>
-                  <View style={styles.plant_right_view}>
+                  <View style={styles.snapshot}>
                     <Text style={styles.plant_stats}>
                       <>{item.snapshot_count} </>
                       <View width={13} height={13} style={{ paddingTop: 2 }}>
@@ -262,15 +269,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   plant_view: {
-    flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 10,
+    // flexDirection: 'row',
   },
   plant_left_view: {
+    marginLeft: 3,
     flex: 1,
   },
-  plant_right_view: {
-    textAlign: 'right',
-    alignItems: 'center',
-    paddingTop: 7,
+  // plant_right_view: {
+  //   paddingRight: 5,
+  //   textAlign: 'right',
+  //   alignItems: 'center',
+  //   paddingTop: 2,
+  // },
+  snapshot: {
+    position: 'absolute',
+    marginLeft: '85%',
+    marginTop: -5,
   },
   plant_name: {
     fontSize: 25,
@@ -278,7 +294,8 @@ const styles = StyleSheet.create({
     fontFamily: 'arciform',
   },
   plant_stats: {
-    fontWeight: '600',
+    fontWeight: '400',
+    marginTop: 5,
     fontSize: 12,
     color: '#52875a',
   },
