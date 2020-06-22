@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   button_next: {
     position: 'absolute',
-    backgroundColor: '#52875a',
+    backgroundColor: 'white',
     borderRadius: 5,
     // marginLeft: 240,
     marginTop: 20,
@@ -214,8 +214,9 @@ const styles = StyleSheet.create({
   },
   button_next_2: {
     position: 'absolute',
-    backgroundColor: '#52875a',
+    backgroundColor: 'white',
     borderRadius: 5,
+    // border: 1,
     // marginLeft: 240,
     marginTop: 20,
     justifyContent: 'center',
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
   },
   button_text_step_2: {
     fontSize: 25,
-    color: '#fff',
+    color: '#52875a',
     textAlign: 'center',
     fontWeight: 'bold',
   },

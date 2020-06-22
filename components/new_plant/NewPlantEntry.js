@@ -174,6 +174,7 @@ function NewPlantEntry({ route, navigation }) {
             </Text>
             <Text style={styles.titleText}>{plantName}</Text>
           </View>
+
           <View>
             <View style={styles.input_text_container}>
               <Text style={styles.input_text}>plant name:</Text>
@@ -189,8 +190,10 @@ function NewPlantEntry({ route, navigation }) {
                 style={styles.input}
                 placeholder={'e.g. Plants Armstrong'}
               ></TextInput>
+              <View style={styles.input_line}></View>
             </View>
           </View>
+
           <View style={styles.input_section_2}>
             <View style={styles.input_text_container}>
               <Text style={styles.input_text}>plant type:</Text>
@@ -246,6 +249,7 @@ function NewPlantEntry({ route, navigation }) {
               />
             </View>
           </View>
+
           <View style={styles.input_section_2}>
             <View style={styles.input_text_container}>
               <Text style={styles.input_text}>variety:</Text>
@@ -263,6 +267,7 @@ function NewPlantEntry({ route, navigation }) {
               <View style={styles.input_line}></View>
             </View>
           </View>
+
           <View style={styles.input_section_2}>
             <View style={styles.input_text_container}>
               <Text style={styles.input_text}>sunlight:</Text>
@@ -365,16 +370,7 @@ function NewPlantEntry({ route, navigation }) {
               />
             </View>
           </View>
-          {/* <Text>location:</Text>
-        <Picker
-          selectedValue={location}
-          onValueChange={(itemValue) => {
-            setLocation(itemValue);
-          }}
-        >
-          <Picker.Item label="indoor" value="indoor" />
-          <Picker.Item label="outdoor" value="outdoor" />
-        </Picker> */}
+
           <View style={styles.input_section_2}>
             <View style={styles.input_text_container}>
               <Text style={styles.input_text}>
@@ -395,16 +391,7 @@ function NewPlantEntry({ route, navigation }) {
               <View style={styles.input_line}></View>
             </View>
           </View>
-          {/* <Text>
-          watering frequency: <Text style={styles.optional}>optional</Text>
-        </Text>
-        <TextInput
-          onChangeText={(freq) => {
-            setWaterFreq(freq);
-          }}
-          style={styles.input}
-          placeholder={'e.g. once a week'}
-        /> */}
+
           <View style={styles.input_section_2}>
             <View style={styles.input_text_container}>
               <Text style={styles.input_text}>
@@ -462,9 +449,9 @@ const styles = StyleSheet.create({
   //   // margin: 50,
   // },
   titleText: {
-    height: 30,
-    // marginTop: 10,
-    marginBottom: 40,
+    // height: 30,
+    marginTop: 10,
+    marginBottom: 10,
     fontSize: 40,
     color: '#355a3a',
 
@@ -474,11 +461,15 @@ const styles = StyleSheet.create({
     fontFamily: 'arciform',
   },
   subHeadingText: {
+    // textAlign: 'center',
     // marginTop: 10,
     marginBottom: 20,
     fontSize: 18,
     // lineHeight: 24,
     color: '#355a3a',
+    // width: '80%',
+    paddingLeft: '5%',
+    paddingRight: '5%',
     fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'arciform',

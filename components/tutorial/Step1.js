@@ -16,6 +16,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import HeroImage from '../../assets/tutorials/part_1/part_1_hero_image.svg';
 import AngleImage from '../../assets/tutorials/part_1/part_1_angle_of_plant.svg';
 import ImageSVG from '../../assets/tutorials/part_1/part_1_middle_of_plant_tutorial.svg';
+import PlantDistance from '../../assets/tutorials/part_1/part_1_plant_distance.svg';
+// import PlantDistance from '../../assets/tutorials/part_1/d.svg';
 
 import { auth } from 'firebase';
 
@@ -43,6 +45,15 @@ function Step1({ navigation }) {
           {/* <Text style={styles.tutorial_subheading}>choosing your picture</Text> */}
           <View style={styles.hero_container}>
             <HeroImage width={300} height={300}></HeroImage>
+          </View>
+          <View style={styles.section_1_2_container}>
+            <View styles={{ flex: 1 }}>
+              <PlantDistance width={170} height={250}></PlantDistance>
+            </View>
+            <Text style={[styles.tutorial_2_copy, { flex: 1 }]}>
+              Ensure your plant is positioned in the middle of the screen when
+              taking a photo.
+            </Text>
           </View>
           <View style={styles.section_1_container}>
             <Text style={[styles.tutorial_1_copy, { flex: 1 }]}>
@@ -134,6 +145,18 @@ const styles = StyleSheet.create({
     height: 250,
     paddingRight: '7.5%',
   },
+  section_1_2_container: {
+    marginTop: 20,
+    flexDirection: 'row',
+    height: 340,
+    alignItems: 'center',
+    width: '100%',
+    paddingBottom: '1%',
+    paddingTop: 10,
+    paddingLeft: '7.5%',
+    paddingRight: '5%',
+    backgroundColor: 'white',
+  },
   section_2_container: {
     marginTop: 20,
     flexDirection: 'row',
@@ -197,7 +220,7 @@ const styles = StyleSheet.create({
   },
   hero_container: {
     width: '100%',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     height: 330,
     justifyContent: 'center',
     alignItems: 'center',
