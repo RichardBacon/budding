@@ -29,7 +29,7 @@ function PlantOptionsNavigator({ route }) {
       }}
       initialRouteName="new plant"
     >
-      <Stack.Screen name="new plant">
+      <Stack.Screen options={{ headerShown: false }} name="new plant">
         {(navigation) => (
           <NewPlantHome
             {...navigation}
@@ -47,6 +47,7 @@ function PlantOptionsNavigator({ route }) {
       <Stack.Screen
         name="measure plant"
         options={{ headerShown: false }}
+        name="measure plant"
         component={MeasureFunction}
       />
       <Stack.Screen

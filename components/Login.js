@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import * as api from '../api-requests/api';
 import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { Asset } from 'expo-asset';
 
 const Login = (props) => {
   const [username, setUsername] = useState('');
@@ -24,11 +26,14 @@ const Login = (props) => {
   let ScreenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 4000);
     Font.loadAsync({
       arciform: require('../assets/fonts/Arciform.otf'),
       helvetica: require('../assets/fonts/HelveticaNeueLTCom-Roman.ttf'),
     }).then(() => {
-      setLoading(false);
+      // setLoading(false);
     });
   }, []);
 
@@ -124,16 +129,23 @@ const Login = (props) => {
           )}
           {loggingIn && (
             <TextInput
+              returnKeyType="done"
+              returnKeyLabel="Done"
+              placeholderTextColor={'white'}
               textAlign={'center'}
+              autoCapitalize="none"
               onChangeText={(username) => {
                 setUsername(username);
               }}
               style={styles.input}
-              placeholder={'username'}
+              placeholder={'enter username'}
             />
           )}
           {loggingIn && (
-            <TouchableOpacity style={styles.button} onPress={getUserData}>
+            <TouchableOpacity
+              style={styles.button_afterLogin}
+              onPress={getUserData}
+            >
               <Text style={styles.button_text}>login</Text>
             </TouchableOpacity>
           )}
@@ -187,9 +199,10 @@ export default Login;
 
 const styles = StyleSheet.create({
   centered_view: {
+    width: '100%',
     flex: 1,
     paddingTop: 50,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#52875a',
   },
@@ -199,6 +212,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   middle_buttons: {
+    width: '65%',
     flex: 1,
     justifyContent: 'center',
   },
@@ -209,10 +223,32 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 7,
     marginBottom: 10,
-    paddingHorizontal: 80,
+    // width: '65%',
+    // paddingHorizontal: 80,
   },
-  input: { fontFamily: 'helvetica', color: 'white', fontSize: 20 },
+  button_afterLogin: {
+    backgroundColor: '#fdbe39',
+    color: '#fdbe39',
+    padding: 20,
+    borderRadius: 5,
+    paddingVertical: 7,
+    marginBottom: 10,
+    // width: '65%',
+    // paddingHorizontal: 80,
+  },
+  input: {
+    fontFamily: 'helvetica',
+    color: 'white',
+    fontSize: 20,
+    marginBottom: 20,
+  },
   button_text: {
+    fontSize: 20,
+    color: '#52875a',
+    textAlign: 'center',
+    fontFamily: 'arciform',
+  },
+  button_text_after_login: {
     fontSize: 20,
     color: '#52875a',
     textAlign: 'center',

@@ -21,6 +21,7 @@ import TimeAgo from 'react-native-timeago';
 import PlantHeightIcon from '../../assets/icons/plant_height_snapshot_page.svg';
 import * as Font from 'expo-font';
 import * as api from '../../api-requests/api';
+import { Entypo } from '@expo/vector-icons';
 
 function Snapshots(props) {
   const { snapshots, plant_name, plant_id, potHeight } = props.route.params;
@@ -54,7 +55,7 @@ function Snapshots(props) {
     <SafeAreaView
       style={[GlobalStyles.droidSafeArea, { flex: 1, paddingBottom: 0 }]}
     >
-      <ScrollView style={{ marginBottom: 0 }}>
+      <ScrollView style={{ marginTop: 30 }}>
         {loading && (
           <View
             style={{
@@ -173,7 +174,7 @@ function Snapshots(props) {
                   <View style={styles.height_details}>
                     {/* <PlantHeightIcon width={25} height={25} fill="green" /> */}
                     <Text style={styles.height_pre_text}>
-                      plant height:
+                      plant height:{' '}
                       <Text style={styles.height_text}>{item.height}</Text>
                     </Text>
                   </View>
@@ -217,9 +218,7 @@ function Snapshots(props) {
                     }}
                     style={styles.delete_button}
                   >
-                    <Text style={styles.delete_button_text}>
-                      delete snapshot{' '}
-                    </Text>
+                    <Entypo name="cross" size={24} color="#9e5143" />
                   </TouchableOpacity>
                 )}
               </View>
@@ -237,6 +236,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 10,
+    marginTop: 20,
   },
   header_name: {
     textAlign: 'center',
@@ -337,14 +337,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   delete_button: {
-    backgroundColor: 'red',
-    borderRadius: 5,
-    marginBottom: 15,
-    marginTop: 15,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    width: '100%',
-    height: 45,
+    position: 'absolute',
+    marginTop: 255,
+    marginLeft: '87%',
   },
   button_text: {
     fontSize: 20,

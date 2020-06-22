@@ -110,7 +110,7 @@ function NewPlantEntry({ route, navigation }) {
             'Plant added',
             'Great! You can now view your plant in your garden!',
           );
-          navigation.navigate('new plant');
+          navigation.navigate('garden');
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);
@@ -557,10 +557,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderStyle: 'solid',
     padding: 11,
     borderRadius: 5,
-    // borderColor: 'green',
     backgroundColor: '#52875a',
-    // borderWidth: 1,
-    // textDecorationLine: 'underline',
     width: '80%',
     height: 50,
   },
@@ -572,10 +569,11 @@ const pickerSelectStyles = StyleSheet.create({
     borderStyle: 'solid',
     padding: 11,
     borderRadius: 5,
+
     // borderColor: 'green',
-    backgroundColor: '#52875a',
     // borderWidth: 1,
     // textDecorationLine: 'underline',
+    backgroundColor: '#52875a',
     width: '80%',
     height: 50,
   },
