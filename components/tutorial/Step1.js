@@ -46,16 +46,17 @@ function Step1({ navigation }) {
           <View style={styles.hero_container}>
             <HeroImage width={300} height={300}></HeroImage>
           </View>
-          <View style={styles.section_1_2_container}>
+
+          <View style={styles.section_2_container}>
             <View styles={{ flex: 1 }}>
-              <PlantDistance width={170} height={250}></PlantDistance>
+              <ImageSVG width={175} height={200}></ImageSVG>
             </View>
             <Text style={[styles.tutorial_2_copy, { flex: 1 }]}>
-              When taking a photo of your plant, ensure you are not taking the
-              photo too close, and that your plant and its pot are positioned in
-              the middle of the screen.
+              Position your phone midway between the top of the plant and the
+              bottom of the pot
             </Text>
           </View>
+
           <View style={styles.section_1_container}>
             <Text style={[styles.tutorial_1_copy, { flex: 1 }]}>
               Keep your phone at a 90 degree angle.
@@ -64,13 +65,15 @@ function Step1({ navigation }) {
               <AngleImage width={175} height={200}></AngleImage>
             </View>
           </View>
-          <View style={styles.section_2_container}>
+
+          <View style={styles.section_1_2_container}>
             <View styles={{ flex: 1 }}>
-              <ImageSVG width={175} height={200}></ImageSVG>
+              <PlantDistance width={170} height={250}></PlantDistance>
             </View>
             <Text style={[styles.tutorial_2_copy, { flex: 1 }]}>
-              Position your phone midway between the top of the plant and the
-              bottom of the pot.
+              When taking a photo of your plant, ensure you are not taking the
+              photo too close, and that your plant and its pot are positioned in
+              the middle of the screen.
             </Text>
           </View>
 
