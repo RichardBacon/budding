@@ -33,7 +33,7 @@ function Snapshots(props) {
   }, []);
 
   let ScreenHeight = Dimensions.get('window').height;
-  let ScreenWidth = Dimensions.get('window').width * 0.9;
+  let ScreenWidth = Dimensions.get('window').width * 0.915;
 
   const allDays = snapshots.map((snapshot) => {
     return getDayMonth(snapshot.created_at);
@@ -339,8 +339,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   background_plate: {
-    marginLeft: '5%',
-    marginRight: '5%',
+    marginLeft: '2%',
+    marginRight: '2%',
     backgroundColor: '#e6e6e6',
     borderRadius: 25,
     marginBottom: 10,
