@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
+  Alert,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { FlatGrid } from 'react-native-super-grid';
@@ -85,6 +86,49 @@ function Garden({ userId, navigation }) {
       changeOrder('asc');
       changeSort('created_at');
     }
+  };
+
+  const deletingPlant = (plant_name, plant_id) => {
+    // Asks for confirmation to delete the plant
+    // If confirm, sends request to delete, if 204 response navigates back to garden
+    // If cancel, does nothing
+    // Function is passed down into PlantPage so, once delete button is pressed, will set the garden state to 'loading' - otherwise, there are a couple of seconds where can still press on the plant before garden re-renders, which throws an error
+
+    console.log('deleting');
+    isLoading(true);
+    Alert.alert(
+      `Delete ${plant_name}`,
+      `Are you sure you want to permanently delete ${plant_name}?`,
+      [
+        {
+          text: 'No, do not delete!',
+          onPress: () => {
+            console.log('deletion cancelled');
+          },
+        },
+        {
+          text: 'Yes, delete!',
+          onPress: () => {
+            api.deletePlantById(plant_id).then((response) => {
+              if (response.status === 204) {
+                Alert.alert(
+                  'Plant deleted!',
+                  `Successfully deleted ${plant_name}`,
+                );
+                navigation.navigate('garden');
+                // plant name deleted
+              } else {
+                Alert.alert(
+                  'Unsuccessful',
+                  `Could not delete ${plant_name} - please try again`,
+                );
+                // deletion unsuccessful
+              }
+            });
+          },
+        },
+      ],
+    );
   };
 
   if (loading)
@@ -178,6 +222,7 @@ function Garden({ userId, navigation }) {
                     onPress={() =>
                       navigation.navigate('plant page', {
                         item,
+                        deletingPlant,
                       })
                     }
                     style={styles.image}

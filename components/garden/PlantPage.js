@@ -29,7 +29,8 @@ import EditIcon from '../../assets/icons/edit_plant_icon.svg';
 import * as Font from 'expo-font';
 
 function PlantPage(props) {
-  const { navigation } = props;
+  const { navigation, deletingPlant } = props.route.params;
+  console.log(deletingPlant);
 
   const {
     plant_id,
@@ -197,42 +198,7 @@ function PlantPage(props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              // Asks for confirmation to delete the plant
-              // If confirm, sends request to delete, if 204 response navigates back to garden
-              // If cancel, does nothing
-              Alert.alert(
-                `Delete ${plant_name}`,
-                `Are you sure you want to permanently delete ${plant_name}?`,
-                [
-                  {
-                    text: 'No, do not delete!',
-                    onPress: () => {
-                      console.log('deletion cancelled');
-                    },
-                  },
-                  {
-                    text: 'Yes, delete!',
-                    onPress: () => {
-                      api.deletePlantById(plant_id).then((response) => {
-                        if (response.status === 204) {
-                          Alert.alert(
-                            'Plant deleted!',
-                            `Successfully deleted ${plant_name}`,
-                          );
-                          navigation.navigate('garden');
-                          // plant name deleted
-                        } else {
-                          Alert.alert(
-                            'Unsuccessful',
-                            `Could not delete ${plant_name} - please try again`,
-                          );
-                          // deletion unsuccessful
-                        }
-                      });
-                    },
-                  },
-                ],
-              );
+              deletingPlant(plant_name, plant_id);
             }}
             style={styles.delete_button}
           >

@@ -9,6 +9,7 @@ import {
   Button,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Pot from '../../assets/pot_measure.svg';
 import PotHeightSVG from '../../assets/tutorials/part_2/pot_measure.svg';
@@ -85,12 +86,18 @@ function NewSnapshotPage(props) {
         <TouchableOpacity
           // disabled={true}
           onPress={() => {
-            //const potHeightRounded = potHeight.toFixed(1);
-            navigation.navigate('measure plant', {
-              plantId,
-              potHeight,
-              image,
-            });
+            if (!potHeight) {
+              Alert.alert(
+                'Pot height required',
+                'Please enter a pot height in centimetres - decimals are allowed',
+              );
+            } else {
+              navigation.navigate('measure plant', {
+                plantId,
+                potHeight,
+                image,
+              });
+            }
           }}
           style={styles.button_all}
         >

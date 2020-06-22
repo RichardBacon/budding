@@ -19,15 +19,17 @@ const shortid = require('shortid');
 import { RNS3 } from 'react-native-s3-upload';
 import RNPickerSelect from 'react-native-picker-select';
 import * as Font from 'expo-font';
+import { StackActions } from '@react-navigation/native';
+import { NavigationActions } from '@react-navigation/native';
 
 function NewPlantEntry({ route, navigation }) {
   const [plantName, setPlantName] = useState('');
-  const [type, setType] = useState('vegetable');
+  const [type, setType] = useState(null);
   const [variety, setVariety] = useState('');
   const [waterFreq, setWaterFreq] = useState('');
   const [soil, setSoil] = useState('');
-  const [sunlight, setSunlight] = useState('indirect');
-  const [location, setLocation] = useState('indoor');
+  const [sunlight, setSunlight] = useState(null);
+  const [location, setLocation] = useState(null);
   const [loading, isLoading] = useState(false);
   const [fontLoading, loadFont] = useState(true);
 
@@ -110,10 +112,13 @@ function NewPlantEntry({ route, navigation }) {
             'Plant added',
             'Great! You can now view your plant in your garden!',
           );
-          navigation.navigate('garden');
+          navigation.dispatch(StackActions.popToTop());
         })
         .catch((err) => {
-          Alert.alert('Error', `${err}`);
+          Alert.alert(
+            'Error',
+            `Please ensure you have filled in all required fields`,
+          );
           isLoading(false);
           console.log(err);
         });
@@ -136,236 +141,236 @@ function NewPlantEntry({ route, navigation }) {
 
   let ScreenHeight = Dimensions.get('window').height;
 
-  // if (loading) return <ActivityIndicator />;
-  // else {
-  return (
-    // <View style={styles.view}>
-    <ScrollView>
-      {loading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: ScreenHeight,
-            backgroundColor: 'white',
-          }}
-        >
-          <Image
-            style={{ width: 100, height: 100, backgroundColor: 'white' }}
-            source={require('../../assets/gifs/Shifter_V01.gif')}
-          />
-        </View>
-      )}
-      {!fontLoading && (
-        <View>
-          <View style={styles.container}>
+  if (loading) return <ActivityIndicator />;
+  else {
+    return (
+      // <View style={styles.view}>
+      <ScrollView>
+        {loading && (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: ScreenHeight,
+              backgroundColor: 'white',
+            }}
+          >
             <Image
-              style={styles.image}
-              onLoadEnd={() => isLoading(false)}
-              source={{
-                uri: resizedImage,
-              }}
+              style={{ width: 100, height: 100, backgroundColor: 'white' }}
+              source={require('../../assets/gifs/Shifter_V01.gif')}
             />
           </View>
-          <View style={styles.header_text_container}>
-            <Text style={styles.subHeadingText}>
-              enter your plant info below:
-            </Text>
-            <Text style={styles.titleText}>{plantName}</Text>
-          </View>
+        )}
+        {!fontLoading && (
           <View>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>plant name:</Text>
-            </View>
-            <View style={styles.input_container}>
-              <TextInput
-                returnKeyType="done"
-                returnKeyLabel="Done"
-                maxLength={25}
-                onChangeText={(plantName) => {
-                  setPlantName(plantName);
+            <View style={styles.container}>
+              <Image
+                style={styles.image}
+                onLoadEnd={() => isLoading(false)}
+                source={{
+                  uri: resizedImage,
                 }}
-                style={styles.input}
-                placeholder={'e.g. Plants Armstrong'}
-              ></TextInput>
-            </View>
-          </View>
-          <View style={styles.input_section_2}>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>plant type:</Text>
-            </View>
-            <View style={styles.input_container}>
-              <RNPickerSelect
-                // style={pickerSelectStyles}
-                // useNativeAndroidPickerStyle={false}
-                onValueChange={(value) => setType(value)}
-                placeholder={{
-                  label: 'select a plant type',
-                  // textAlign: 'centre',
-                }}
-                style={{
-                  ...pickerSelectStyles,
-                  iconContainer: {
-                    top: 20,
-                    right: 10,
-                  },
-                  placeholder: {
-                    color: 'white',
-                    fontSize: 18,
-                    fontWeight: '300',
-                    // textAlign: 'center',
-                  },
-                }}
-                Icon={() => {
-                  return (
-                    <View
-                      style={{
-                        marginLeft: -70,
-                        backgroundColor: 'transparent',
-                        borderTopWidth: 10,
-                        borderTopColor: 'white',
-                        borderRightWidth: 10,
-                        borderRightColor: 'transparent',
-                        borderLeftWidth: 10,
-                        borderLeftColor: 'transparent',
-                        width: 0,
-                        height: 0,
-                      }}
-                    />
-                  );
-                }}
-                items={[
-                  { label: 'garden', value: 'garden' },
-                  { label: 'vegetable', value: 'vegetable' },
-                  { label: 'fruit', value: 'fruit' },
-                  { label: 'herb', value: 'herb' },
-                  { label: 'houseplant', value: 'houseplant' },
-                  { label: 'succulent', value: 'succulent' },
-                ]}
               />
             </View>
-          </View>
-          <View style={styles.input_section_2}>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>variety:</Text>
+            <View style={styles.header_text_container}>
+              <Text style={styles.subHeadingText}>
+                finally, enter your plant info below:
+              </Text>
+              <Text style={styles.titleText}>{plantName}</Text>
             </View>
-            <View style={styles.input_container}>
-              <TextInput
-                returnKeyType="done"
-                maxLength={25}
-                onChangeText={(variety) => {
-                  setVariety(variety);
-                }}
-                style={styles.input}
-                placeholder={'e.g. bell pepper'}
-              ></TextInput>
-              <View style={styles.input_line}></View>
+            <View>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>plant name:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  returnKeyType="done"
+                  returnKeyLabel="Done"
+                  maxLength={25}
+                  onChangeText={(plantName) => {
+                    setPlantName(plantName);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. Plants Armstrong'}
+                ></TextInput>
+              </View>
             </View>
-          </View>
-          <View style={styles.input_section_2}>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>sunlight:</Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>plant type:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <RNPickerSelect
+                  // style={pickerSelectStyles}
+                  // useNativeAndroidPickerStyle={false}
+                  onValueChange={(value) => setType(value)}
+                  placeholder={{
+                    label: 'select a plant type',
+                    // textAlign: 'centre',
+                  }}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: 'white',
+                      fontSize: 18,
+                      fontWeight: '300',
+                      // textAlign: 'center',
+                    },
+                  }}
+                  Icon={() => {
+                    return (
+                      <View
+                        style={{
+                          marginLeft: -70,
+                          backgroundColor: 'transparent',
+                          borderTopWidth: 10,
+                          borderTopColor: 'white',
+                          borderRightWidth: 10,
+                          borderRightColor: 'transparent',
+                          borderLeftWidth: 10,
+                          borderLeftColor: 'transparent',
+                          width: 0,
+                          height: 0,
+                        }}
+                      />
+                    );
+                  }}
+                  items={[
+                    { label: 'garden', value: 'garden' },
+                    { label: 'vegetable', value: 'vegetable' },
+                    { label: 'fruit', value: 'fruit' },
+                    { label: 'herb', value: 'herb' },
+                    { label: 'houseplant', value: 'houseplant' },
+                    { label: 'succulent', value: 'succulent' },
+                  ]}
+                />
+              </View>
             </View>
-            <View style={styles.input_container}>
-              <RNPickerSelect
-                // style={pickerSelectStyles}
-                // useNativeAndroidPickerStyle={false}
-                onValueChange={(value) => setSunlight(value)}
-                placeholder={{
-                  label: 'select direct or indirect',
-                  // textAlign: 'centre',
-                }}
-                style={{
-                  ...pickerSelectStyles,
-                  iconContainer: {
-                    top: 20,
-                    right: 10,
-                  },
-                  placeholder: {
-                    color: 'white',
-                    fontSize: 18,
-                    fontWeight: '300',
-                    // textAlign: 'center',
-                  },
-                }}
-                Icon={() => {
-                  return (
-                    <View
-                      style={{
-                        marginLeft: -70,
-                        backgroundColor: 'transparent',
-                        borderTopWidth: 10,
-                        borderTopColor: 'white',
-                        borderRightWidth: 10,
-                        borderRightColor: 'transparent',
-                        borderLeftWidth: 10,
-                        borderLeftColor: 'transparent',
-                        width: 0,
-                        height: 0,
-                      }}
-                    />
-                  );
-                }}
-                items={[
-                  { label: 'indirect', value: 'indirect' },
-                  { label: 'direct', value: 'direct' },
-                ]}
-              />
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>variety:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  returnKeyType="done"
+                  maxLength={25}
+                  onChangeText={(variety) => {
+                    setVariety(variety);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. bell pepper'}
+                ></TextInput>
+                <View style={styles.input_line}></View>
+              </View>
             </View>
-          </View>
-          <View style={styles.input_section_2}>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>location:</Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>sunlight:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <RNPickerSelect
+                  // style={pickerSelectStyles}
+                  // useNativeAndroidPickerStyle={false}
+                  onValueChange={(value) => setSunlight(value)}
+                  placeholder={{
+                    label: 'select direct or indirect',
+                    // textAlign: 'centre',
+                  }}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: 'white',
+                      fontSize: 18,
+                      fontWeight: '300',
+                      // textAlign: 'center',
+                    },
+                  }}
+                  Icon={() => {
+                    return (
+                      <View
+                        style={{
+                          marginLeft: -70,
+                          backgroundColor: 'transparent',
+                          borderTopWidth: 10,
+                          borderTopColor: 'white',
+                          borderRightWidth: 10,
+                          borderRightColor: 'transparent',
+                          borderLeftWidth: 10,
+                          borderLeftColor: 'transparent',
+                          width: 0,
+                          height: 0,
+                        }}
+                      />
+                    );
+                  }}
+                  items={[
+                    { label: 'indirect', value: 'indirect' },
+                    { label: 'direct', value: 'direct' },
+                  ]}
+                />
+              </View>
             </View>
-            <View style={styles.input_container}>
-              <RNPickerSelect
-                // style={pickerSelectStyles}
-                // useNativeAndroidPickerStyle={false}
-                onValueChange={(value) => setLocation(value)}
-                placeholder={{
-                  label: 'select indoor or outdoor',
-                  // textAlign: 'centre',
-                }}
-                style={{
-                  ...pickerSelectStyles,
-                  iconContainer: {
-                    top: 20,
-                    right: 10,
-                  },
-                  placeholder: {
-                    color: 'white',
-                    fontSize: 18,
-                    fontWeight: '300',
-                    // textAlign: 'center',
-                  },
-                }}
-                Icon={() => {
-                  return (
-                    <View
-                      style={{
-                        marginLeft: -70,
-                        backgroundColor: 'transparent',
-                        borderTopWidth: 10,
-                        borderTopColor: 'white',
-                        borderRightWidth: 10,
-                        borderRightColor: 'transparent',
-                        borderLeftWidth: 10,
-                        borderLeftColor: 'transparent',
-                        width: 0,
-                        height: 0,
-                      }}
-                    />
-                  );
-                }}
-                items={[
-                  { label: 'indoor', value: 'indoor' },
-                  { label: 'outdoor', value: 'outdoor' },
-                ]}
-              />
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>location:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <RNPickerSelect
+                  // style={pickerSelectStyles}
+                  // useNativeAndroidPickerStyle={false}
+                  onValueChange={(value) => setLocation(value)}
+                  placeholder={{
+                    label: 'select indoor or outdoor',
+                    // textAlign: 'centre',
+                  }}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: 'white',
+                      fontSize: 18,
+                      fontWeight: '300',
+                      // textAlign: 'center',
+                    },
+                  }}
+                  Icon={() => {
+                    return (
+                      <View
+                        style={{
+                          marginLeft: -70,
+                          backgroundColor: 'transparent',
+                          borderTopWidth: 10,
+                          borderTopColor: 'white',
+                          borderRightWidth: 10,
+                          borderRightColor: 'transparent',
+                          borderLeftWidth: 10,
+                          borderLeftColor: 'transparent',
+                          width: 0,
+                          height: 0,
+                        }}
+                      />
+                    );
+                  }}
+                  items={[
+                    { label: 'indoor', value: 'indoor' },
+                    { label: 'outdoor', value: 'outdoor' },
+                  ]}
+                />
+              </View>
             </View>
-          </View>
-          {/* <Text>location:</Text>
+            {/* <Text>location:</Text>
         <Picker
           selectedValue={location}
           onValueChange={(itemValue) => {
@@ -375,27 +380,27 @@ function NewPlantEntry({ route, navigation }) {
           <Picker.Item label="indoor" value="indoor" />
           <Picker.Item label="outdoor" value="outdoor" />
         </Picker> */}
-          <View style={styles.input_section_2}>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>
-                watering frequency:{' '}
-                <Text style={styles.optional}>optional</Text>
-              </Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>
+                  watering frequency:{' '}
+                  <Text style={styles.optional}>optional</Text>
+                </Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  returnKeyType="done"
+                  maxLength={25}
+                  onChangeText={(freq) => {
+                    setWaterFreq(freq);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. once a week'}
+                ></TextInput>
+                <View style={styles.input_line}></View>
+              </View>
             </View>
-            <View style={styles.input_container}>
-              <TextInput
-                returnKeyType="done"
-                maxLength={25}
-                onChangeText={(freq) => {
-                  setWaterFreq(freq);
-                }}
-                style={styles.input}
-                placeholder={'e.g. once a week'}
-              ></TextInput>
-              <View style={styles.input_line}></View>
-            </View>
-          </View>
-          {/* <Text>
+            {/* <Text>
           watering frequency: <Text style={styles.optional}>optional</Text>
         </Text>
         <TextInput
@@ -405,32 +410,33 @@ function NewPlantEntry({ route, navigation }) {
           style={styles.input}
           placeholder={'e.g. once a week'}
         /> */}
-          <View style={styles.input_section_2}>
-            <View style={styles.input_text_container}>
-              <Text style={styles.input_text}>
-                soil type: <Text style={styles.optional}>optional</Text>
-              </Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>
+                  soil type: <Text style={styles.optional}>optional</Text>
+                </Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  returnKeyType="done"
+                  maxLength={25}
+                  onChangeText={(soil) => {
+                    setSoil(soil);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. peat'}
+                ></TextInput>
+                <View style={styles.input_line}></View>
+              </View>
             </View>
-            <View style={styles.input_container}>
-              <TextInput
-                returnKeyType="done"
-                maxLength={25}
-                onChangeText={(soil) => {
-                  setSoil(soil);
-                }}
-                style={styles.input}
-                placeholder={'e.g. peat'}
-              ></TextInput>
-              <View style={styles.input_line}></View>
-            </View>
+            <TouchableOpacity style={styles.button_all} onPress={submitPlant}>
+              <Text style={styles.button_text_all}>add new plant</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.button_all} onPress={submitPlant}>
-            <Text style={styles.button_text_all}>add new plant</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </ScrollView>
-  );
+        )}
+      </ScrollView>
+    );
+  }
 }
 
 export default NewPlantEntry;
@@ -479,7 +485,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     // lineHeight: 24,
     color: '#355a3a',
-    fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'arciform',
   },
@@ -498,7 +503,7 @@ const styles = StyleSheet.create({
   input_text: {
     fontSize: 18,
     color: '#355a3a',
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   input: {
     fontSize: 18,
@@ -514,6 +519,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 50,
   },
+
   input_line: {
     marginTop: -10,
     width: '75%',
@@ -534,7 +540,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#fff',
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
   button_all: {
     backgroundColor: '#fdbe39',

@@ -138,6 +138,7 @@ function MeasureFunction({ route, navigation }) {
         .then((response) => {
           console.log(response, '<--- after post request');
           Alert.alert('Successful', 'Snapshot added!');
+          isLoading(false);
           navigation.push('garden');
         })
         .catch((err) => {

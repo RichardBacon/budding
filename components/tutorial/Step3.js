@@ -16,8 +16,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import PotHeightSVG from '../../assets/tutorials/part_2/pot_measure_2.svg';
 import MeasureAnimation from '../../utils/animations/MeasureAnimation';
 
-import { auth } from 'firebase';
-
 function Step1({ navigation }) {
   const [fontLoading, loadFont] = useState(false);
   let ScreenWidth = Dimensions.get('window').width;
