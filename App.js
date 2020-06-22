@@ -8,8 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import GardenIcon from './assets/icons/garden_icon.svg';
+import { Entypo, Foundation, AntDesign } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +17,8 @@ const Tab = createBottomTabNavigator();
 function App() {
   const [userId, setUserId] = useState(1);
   const [username, setUsername] = useState('robert_plant');
-  const [name, setName] = useState('Robert Plant');
+  const [name, setName] = useState(null);
+  // to undo hardcode, set state back to id null and useState ''
 
   const logIn = (Id, user, fullName) => {
     setUserId(Id);
@@ -50,32 +50,26 @@ function App() {
               screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
-
+                  // size = 40;
                   if (route.name === 'garden') {
-                    iconName = focused
-                      ? 'ios-information-circle'
-                      : 'ios-information-circle-outline';
-                  } else if (route.name === 'garden') {
-                    iconName = focused ? 'ios-list-box' : 'ios-list';
+                    return <Entypo name="tree" size={size} color={color} />;
+                  } else if (route.name === 'new plant') {
+                    return (
+                      <Entypo
+                        // style={{ marginBottom: 2 }}
+                        name={'plus'}
+                        size={size}
+                        color={color}
+                      />
+                    );
+                  } else if (route.name === 'profile') {
+                    return <AntDesign name="user" size={size} color={color} />;
                   }
-
                   // You can return any component that you like here!
-                  return (
-                    <GardenIcon
-                      // name={iconName}
-                      width={20}
-                      height={20}
-                      // size={40}
-                      color={'white'}
-                    ></GardenIcon>
-                  );
                 },
               })}
               tabBarOptions={{
-                activeTintColor: 'tomato',
-                inactiveTintColor: 'gray',
-              }}
-              tabBarOptions={{
+                inactiveTintColor: '#52875a',
                 activeTintColor: 'white',
                 style: styles.bottomNav,
               }}
@@ -113,6 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bottomNav: {
+    paddingTop: 10,
     backgroundColor: '#355a3a',
     color: 'white',
   },

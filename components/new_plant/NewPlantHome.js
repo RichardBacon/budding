@@ -96,7 +96,7 @@ function NewPlantHome({ plant_id, pot_height, navigation }) {
     >
       <Image
         style={{ width: 100, height: 100, marginBottom: 25 }}
-        source={require('../../assets/gifs/Shifter_V01.gif')}
+        source={require('../../assets/gifs/Shifter_V01_static.gif')}
       />
       <TouchableOpacity onPress={launchCameraAsync} style={styles.button}>
         <Text style={styles.button_text}>Take a photo!</Text>

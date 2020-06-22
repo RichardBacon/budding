@@ -32,19 +32,26 @@ function Garden({ userId, navigation }) {
   let ScreenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
-    let promise = new Promise((resolve, reject) => {
-      Font.loadAsync({
-        arciform: require('../../assets/fonts/Arciform.otf'),
-      });
+    Font.loadAsync({
+      arciform: require('../../assets/fonts/Arciform.otf'),
     }).then(
       api
         .getPlantsByUserId(userId, order, sort_by, plant_type)
         .then((plants) => {
           const snapShotArr = plants.map((plant) => {
-            const { plant_id, plant_name, snapshot_count } = plant;
-
+            const { plant_id, plant_name, snapshot_count, created_at } = plant;
             return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-              return { plant_name, snapshot_count, ...snap[0] };
+              const { height, plant_id, plant_uri, snapshot_id } = snap[0];
+              console.log(snap[0]);
+              return {
+                plant_name,
+                snapshot_count,
+                created_at,
+                height,
+                plant_id,
+                plant_uri,
+                snapshot_id,
+              };
             });
           });
 
@@ -294,13 +301,13 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
+    borderWidth: 0.5,
+    borderRadius: 8,
     color: 'white',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    borderColor: 'gray',
+    backgroundColor: '#52875a',
+    paddingHorizontal: 20,
+    paddingVertical: 7.5,
   },
   inputAndroid: {
     fontSize: 16,
@@ -309,8 +316,8 @@ const pickerSelectStyles = StyleSheet.create({
     color: 'white',
     borderColor: 'gray',
     backgroundColor: '#52875a',
-    paddingHorizontal: 10,
-
+    paddingHorizontal: 20,
+    paddingVertical: 7.5,
     // paddingRight: 15, // to ensure the text is never behind the icon
   },
   sort_by_button: {
