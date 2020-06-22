@@ -3,22 +3,18 @@ import {
   Alert,
   View,
   StyleSheet,
-  PanResponder,
   Text,
   Image,
-  Button,
   Dimensions,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import Moment from 'react-moment';
 import { getDayMonth } from '../../utils/utils';
 import { FlatGrid } from 'react-native-super-grid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GlobalStyles from '../../styles/GlobalStyles';
 import TimeAgo from 'react-native-timeago';
-import PlantHeightIcon from '../../assets/icons/plant_height_snapshot_page.svg';
 import * as Font from 'expo-font';
 import * as api from '../../api-requests/api';
 import { Entypo } from '@expo/vector-icons';
@@ -31,14 +27,10 @@ function Snapshots(props) {
   const [fontLoading, loadFont] = useState(true);
 
   useEffect(() => {
-    let promise = new Promise((resolve, reject) => {
-      Font.loadAsync({
-        arciform: require('../../assets/fonts/Arciform.otf'),
-      });
+    Font.loadAsync({
+      arciform: require('../../assets/fonts/Arciform.otf'),
     }).then(loadFont(false));
   }, []);
-
-  console.log(loading);
 
   let ScreenHeight = Dimensions.get('window').height;
   let ScreenWidth = Dimensions.get('window').width * 0.9;
@@ -76,7 +68,9 @@ function Snapshots(props) {
         {snapshots.length === 1 && (
           <View style={styles.background_plate_blank}>
             <Text style={styles.header_name}>{plant_name}</Text>
-            <Text>Add new snapshots to reveal plant's chart progress</Text>
+            <Text style={styles.add_snaps}>
+              Add new snapshots to reveal plant's chart progress
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('plant navigator', {
@@ -86,7 +80,7 @@ function Snapshots(props) {
               }}
               style={styles.button}
             >
-              <Text style={styles.button_text_new}>new snapshot </Text>
+              <Text style={styles.button_text_new}>new snapshot</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -242,7 +236,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 15,
     fontSize: 40,
-    fontWeight: 'bold',
     color: '#355a3a',
     fontFamily: 'arciform',
   },
@@ -270,29 +263,20 @@ const styles = StyleSheet.create({
     marginRight: '2.5%',
   },
   container: {
-    flex: 2,
+    flex: 1,
     zIndex: 1,
+    overflow: 'hidden',
   },
   image: {
     flex: 1,
     height: undefined,
     width: undefined,
   },
-  plant_name: {
-    fontSize: 16,
-    color: '#52875a',
-    fontWeight: '900',
-  },
-  height: {
-    flex: 1,
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-  },
   timeAgo_text: {
     fontSize: 12,
-    color: '#52875a',
+    color: '#355a3a',
+    fontWeight: 'bold',
     marginTop: 10,
-    fontWeight: '800',
   },
   timeAgo_pre_text: {
     fontSize: 12,
@@ -301,9 +285,10 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   height_text: {
-    fontWeight: '600',
+    fontWeight: 'bold',
     fontSize: 12,
-    color: '#52875a',
+    color: '#355a3a',
+    fontWeight: 'bold',
     // paddingLeft: '5%',
   },
   height_pre_text: {
@@ -318,6 +303,7 @@ const styles = StyleSheet.create({
     height: 250,
     borderColor: '#52875a',
     borderWidth: 1,
+    overflow: 'hidden',
   },
   plant_details: {
     flex: 1,
@@ -394,6 +380,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  add_snaps: {
+    fontSize: 20,
+    color: '#52875a',
   },
 });
 
