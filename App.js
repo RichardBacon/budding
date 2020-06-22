@@ -15,6 +15,7 @@ const Tab = createBottomTabNavigator();
 // set all states to null to engage the login page
 
 function App() {
+  console.disableYellowBox = true;
   // const [userId, setUserId] = useState(null);
   // const [username, setUsername] = useState(null);
   const [userId, setUserId] = useState(null);

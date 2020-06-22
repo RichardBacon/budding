@@ -188,7 +188,7 @@ function Garden({ userId, navigation }) {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('plant navigator', { userId });
+                  navigation.navigate('plant navigator', { user_id: userId });
                 }}
                 style={styles.button}
               >

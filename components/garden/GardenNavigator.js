@@ -9,7 +9,10 @@ import PlantOptionsNavigator from '../new_plant/PlantOptionsNavigator';
 
 const Stack = createStackNavigator();
 
-function GardenNavigator({ userId, from }) {
+function GardenNavigator({ userId, from, route }) {
+  if (!userId) {
+    let userId = route.params.userId;
+  }
   return (
     <Stack.Navigator
       screenOptions={{
@@ -39,11 +42,12 @@ function GardenNavigator({ userId, from }) {
         options={{ headerShown: false }}
         component={Snapshots}
       />
-      <Stack.Screen
-        name="plant navigator"
-        options={{ headerShown: false }}
-        component={PlantOptionsNavigator}
-      />
+      <Stack.Screen name="plant navigator" options={{ headerShown: false }}>
+        {(navigation) => (
+          <PlantOptionsNavigator {...navigation} userId={userId} />
+        )}
+      </Stack.Screen>
+
       <Stack.Screen name="test page" component={Test} />
     </Stack.Navigator>
   );
