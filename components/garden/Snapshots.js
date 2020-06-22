@@ -33,7 +33,7 @@ function Snapshots(props) {
   }, []);
 
   let ScreenHeight = Dimensions.get('window').height;
-  let ScreenWidth = Dimensions.get('window').width * 0.9;
+  let ScreenWidth = Dimensions.get('window').width * 0.915;
 
   const allDays = snapshots.map((snapshot) => {
     return getDayMonth(snapshot.created_at);
@@ -47,179 +47,186 @@ function Snapshots(props) {
     <SafeAreaView
       style={[GlobalStyles.droidSafeArea, { flex: 1, paddingBottom: 0 }]}
     >
-      <ScrollView style={{ marginTop: 30 }}>
-        {loading && (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: ScreenHeight,
-              backgroundColor: 'white',
-            }}
-          >
-            <Image
-              style={{ width: 100, height: 100, backgroundColor: 'white' }}
-              source={require('../../assets/gifs/Shifter_V01.gif')}
-            />
-          </View>
-        )}
-
-        {snapshots.length === 1 && (
-          <View style={styles.background_plate_blank}>
-            <Text style={styles.header_name}>{plant_name}</Text>
-            <Text style={styles.add_snaps}>
-              Add new snapshots to reveal plant's chart progress
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('plant navigator', {
-                  plant_id,
-                  pot_height: potHeight,
-                });
-              }}
-              style={styles.button}
-            >
-              <Text style={styles.button_text_new}>new snapshot</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {snapshots.length > 1 && (
-          // <View style={{backgroundColor: '#52875a', marginLeft: 10, marginRight: 10, height: 250}}>
-          <View style={styles.background_plate}>
-            <View style={styles.header}>
-              <Text style={styles.header_name}>{plant_name}</Text>
-              <Text style={styles.header_progress}>growth progress chart</Text>
-            </View>
-            <View style={styles.plant_info_view}>
-              <LineChart
-                data={{
-                  labels: allDays,
-                  datasets: [
-                    {
-                      data: allHeights,
-                    },
-                  ],
-                }}
-                width={ScreenWidth} // from react-native
-                height={220}
-                yAxisSuffix="cm"
-                yAxisInterval={1} // optional, defaults to 1
-                chartConfig={{
-                  backgroundColor: '#e26a00',
-                  backgroundGradientFrom: '#52875a',
-                  backgroundGradientTo: '#52875a',
-                  backgroundGradientFromOpacity: 1,
-                  backgroundGradientToOpacity: 1,
-                  decimalPlaces: 1, // optional, defaults to 2dp
-                  color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
-                  labelColor: (opacity) => `rgba(255, 255, 255, ${opacity})`,
-                  style: {
-                    // borderRadius: 16,
-                    // marginRight: 10,
-                    borderBottomRightRadius: 10,
-                    borderBottomLeftRadius: 10,
-                  },
-                  propsForDots: {
-                    r: '4',
-                    strokeWidth: '5',
-                    color: '#fdbe39',
-                  },
-                }}
-                bezier
-                style={{
-                  paddingVertical: 15,
-                  backgroundColor: '#52875a',
-                  //  paddingHorizontal: 0,
-                  // padding: 10,
-                  // borderRadius: 15,
-                }}
-              />
-            </View>
-          </View>
-          // </View>
-        )}
-        <Text style={styles.header_snapshots}>snapshots</Text>
-        <View style={styles.container}>
-          <FlatGrid
-            itemDimension={130}
-            data={snapshots}
-            style={styles.grid_view}
-            spacing={10}
-            renderItem={({ item }) => (
-              <View>
-                <View style={styles.plant_container}>
+      <View style={styles.container}>
+        <FlatGrid
+          itemDimension={130}
+          data={snapshots}
+          style={styles.grid_view}
+          spacing={10}
+          ListHeaderComponent={
+            <>
+              {loading && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: ScreenHeight,
+                    backgroundColor: 'white',
+                  }}
+                >
                   <Image
-                    source={{ uri: item.plant_uri }}
-                    style={styles.image}
-                    onLoadEnd={isLoading(false)}
+                    style={{
+                      width: 100,
+                      height: 100,
+                      backgroundColor: 'white',
+                    }}
+                    source={require('../../assets/gifs/Shifter_V01.gif')}
                   />
                 </View>
-                <View style={styles.plant_details}>
-                  <Text style={styles.timeAgo_pre_text}>
-                    snapped:{' '}
-                    <TimeAgo
-                      time={item.created_at}
-                      style={styles.timeAgo_text}
-                    />
-                  </Text>
+              )}
 
-                  <View style={styles.height_details}>
-                    {/* <PlantHeightIcon width={25} height={25} fill="green" /> */}
-                    <Text style={styles.height_pre_text}>
-                      plant height:{' '}
-                      <Text style={styles.height_text}>{item.height}</Text>
-                    </Text>
-                  </View>
-                </View>
-                {snapshots.length > 1 && (
+              {snapshots.length === 1 && (
+                <View style={styles.background_plate_blank}>
+                  <Text style={styles.header_name}>{plant_name}</Text>
+                  <Text style={styles.add_snaps}>
+                    Add new snapshots to reveal plant's chart progress
+                  </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      Alert.alert(
-                        `Delete snapshot`,
-                        `Are you sure you want to permanently delete this snapshot?`,
-                        [
+                      navigation.navigate('plant navigator', {
+                        plant_id,
+                        pot_height: potHeight,
+                      });
+                    }}
+                    style={styles.button}
+                  >
+                    <Text style={styles.button_text_new}>new snapshot</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {snapshots.length > 1 && (
+                // <View style={{backgroundColor: '#52875a', marginLeft: 10, marginRight: 10, height: 250}}>
+                <View style={styles.background_plate}>
+                  <View style={styles.header}>
+                    <Text style={styles.header_name}>{plant_name}</Text>
+                    <Text style={styles.header_progress}>
+                      growth progress chart
+                    </Text>
+                  </View>
+                  <View style={styles.plant_info_view}>
+                    <LineChart
+                      data={{
+                        labels: allDays,
+                        datasets: [
                           {
-                            text: 'No, do not delete!',
-                            onPress: () => {
-                              console.log('deletion cancelled');
-                            },
-                          },
-                          {
-                            text: 'Yes, delete!',
-                            onPress: () => {
-                              api
-                                .deleteSnapshotById(item.snapshot_id)
-                                .then((response) => {
-                                  if (response.status === 204) {
-                                    Alert.alert(
-                                      'Snapshot deleted!',
-                                      `Successfully deleted snapshot`,
-                                    );
-                                    navigation.navigate('garden');
-                                  } else {
-                                    Alert.alert(
-                                      'Unsuccessful',
-                                      `Could not delete snapshot - please try again`,
-                                    );
-                                  }
-                                });
-                            },
+                            data: allHeights,
                           },
                         ],
-                      );
-                    }}
-                    style={styles.delete_button}
-                  >
-                    <Entypo name="cross" size={24} color="#9e5143" />
-                  </TouchableOpacity>
-                )}
+                      }}
+                      width={ScreenWidth} // from react-native
+                      height={220}
+                      yAxisSuffix="cm"
+                      yAxisInterval={1} // optional, defaults to 1
+                      chartConfig={{
+                        backgroundColor: '#e26a00',
+                        backgroundGradientFrom: '#52875a',
+                        backgroundGradientTo: '#52875a',
+                        backgroundGradientFromOpacity: 1,
+                        backgroundGradientToOpacity: 1,
+                        decimalPlaces: 1, // optional, defaults to 2dp
+                        color: (opacity = 0) =>
+                          `rgba(255, 255, 255, ${opacity})`,
+                        labelColor: (opacity) =>
+                          `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                          // borderRadius: 16,
+                          // marginRight: 10,
+                          borderBottomRightRadius: 10,
+                          borderBottomLeftRadius: 10,
+                        },
+                        propsForDots: {
+                          r: '4',
+                          strokeWidth: '5',
+                          color: '#fdbe39',
+                        },
+                      }}
+                      bezier
+                      style={{
+                        paddingVertical: 15,
+                        backgroundColor: '#52875a',
+                        //  paddingHorizontal: 0,
+                        // padding: 10,
+                        // borderRadius: 15,
+                      }}
+                    />
+                  </View>
+                </View>
+                // </View>
+              )}
+              <Text style={styles.header_snapshots}>snapshots</Text>
+            </>
+          }
+          renderItem={({ item }) => (
+            <View>
+              <View style={styles.plant_container}>
+                <Image
+                  source={{ uri: item.plant_uri }}
+                  style={styles.image}
+                  onLoadEnd={isLoading(false)}
+                />
               </View>
-            )}
-          />
-        </View>
-      </ScrollView>
+              <View style={styles.plant_details}>
+                <Text style={styles.timeAgo_pre_text}>
+                  snapped:{' '}
+                  <TimeAgo time={item.created_at} style={styles.timeAgo_text} />
+                </Text>
+
+                <View style={styles.height_details}>
+                  {/* <PlantHeightIcon width={25} height={25} fill="green" /> */}
+                  <Text style={styles.height_pre_text}>
+                    plant height:{' '}
+                    <Text style={styles.height_text}>{item.height}</Text>
+                  </Text>
+                </View>
+              </View>
+              {snapshots.length > 1 && (
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(
+                      `Delete snapshot`,
+                      `Are you sure you want to permanently delete this snapshot?`,
+                      [
+                        {
+                          text: 'No, do not delete!',
+                          onPress: () => {
+                            console.log('deletion cancelled');
+                          },
+                        },
+                        {
+                          text: 'Yes, delete!',
+                          onPress: () => {
+                            api
+                              .deleteSnapshotById(item.snapshot_id)
+                              .then((response) => {
+                                if (response.status === 204) {
+                                  Alert.alert(
+                                    'Snapshot deleted!',
+                                    `Successfully deleted snapshot`,
+                                  );
+                                  navigation.navigate('garden');
+                                } else {
+                                  Alert.alert(
+                                    'Unsuccessful',
+                                    `Could not delete snapshot - please try again`,
+                                  );
+                                }
+                              });
+                          },
+                        },
+                      ],
+                    );
+                  }}
+                  style={styles.delete_button}
+                >
+                  <Entypo name="cross" size={24} color="#9e5143" />
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -332,8 +339,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   background_plate: {
-    marginLeft: '5%',
-    marginRight: '5%',
+    marginLeft: '2%',
+    marginRight: '2%',
     backgroundColor: '#e6e6e6',
     borderRadius: 25,
     marginBottom: 10,

@@ -17,6 +17,8 @@ const Tab = createBottomTabNavigator();
 function App() {
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
+  // const [userId, setUserId] = useState(1);
+  // const [username, setUsername] = useState('robert_plant');
   const [name, setName] = useState(null);
   // to undo hardcode, set state back to id null and useState ''
 
