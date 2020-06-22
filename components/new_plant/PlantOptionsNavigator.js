@@ -51,7 +51,11 @@ function PlantOptionsNavigator({ route }) {
         component={NewPlantEntry}
       />
       <Stack.Screen name="image picker" component={ImagePickerScreen} />
-      <Stack.Screen name="new snapshot" component={NewSnapshotPage} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="new snapshot"
+        component={NewSnapshotPage}
+      />
     </Stack.Navigator>
   );
 }

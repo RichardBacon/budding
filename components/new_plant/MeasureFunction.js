@@ -96,12 +96,11 @@ function MeasureFunction({ route, navigation }) {
 
   const navNextPage = () => {
     isLoading(true);
-    console.log(plantId)
+    console.log(plantId);
     // if there's a plantId, send a patch request, then navigate to individual plant page
     // if not, go to new plant entry
     // NEED TO SEND PHOTO TO S3
     if (plantId) {
-      
       return api
         .patchPlantById(
           plantId,
@@ -138,7 +137,7 @@ function MeasureFunction({ route, navigation }) {
         })
         .then((response) => {
           console.log(response, '<--- after post request');
-          Alert.alert('Successful', 'Snapshot added!')
+          Alert.alert('Successful', 'Snapshot added!');
           navigation.push('garden');
         })
         .catch((err) => {
@@ -189,15 +188,17 @@ function MeasureFunction({ route, navigation }) {
   else {
     return (
       <View style={styles.container}>
-        <Text style={styles.headingText}>
-          {pressCount.current === 0
-            ? `Place your first marker at the bottom of the pot`
-            : pressCount.current === 1
-            ? `Place your second marker at the top of the pot`
-            : pressCount.current === 2
-            ? `Place your third marker at the top of the plant`
-            : `Confirm your measurements`}
-        </Text>
+        <View style={styles.header_container}>
+          <Text style={styles.headingText}>
+            {pressCount.current === 0
+              ? `Place your first marker at the bottom of the pot`
+              : pressCount.current === 1
+              ? `Place your second marker at the top of the pot`
+              : pressCount.current === 2
+              ? `Place your third marker at the top of the plant`
+              : `Confirm your measurements`}
+          </Text>
+        </View>
         <Image
           // onTouchStart={this.handleTouch}
           style={styles.logo}
@@ -215,12 +216,12 @@ function MeasureFunction({ route, navigation }) {
           <View style={styles.horizontal_line} />
           <View style={styles.vertical_line} />
         </Animated.View>
-        <Button
+        {/* <Button
           title="view tutorial"
           onPress={() => {
             navigation.navigate('tutorial');
           }}
-        />
+        /> */}
         {
           // image, s3 link, plant measurements, pot measurement
         }
@@ -244,7 +245,15 @@ function MeasureFunction({ route, navigation }) {
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={resetMeasure} style={styles.button}>
-          <Text style={styles.buttonText}>reset</Text>
+          <Text style={styles.buttonText_reset}>reset</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('tutorial');
+          }}
+          style={styles.button_tutorials}
+        >
+          <Text style={styles.buttonText_tutorials}>tutorials</Text>
         </TouchableOpacity>
       </View>
     );
@@ -255,8 +264,15 @@ export default MeasureFunction;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
+    // padding: 40,
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header_container: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -301,22 +317,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   top_button: {
-    alignItems: 'center',
-    height: 35,
-    width: 200,
-    marginTop: -60,
     backgroundColor: '#52875a',
-    padding: 4,
     borderRadius: 5,
-    marginBottom: 10,
-    zIndex: 5,
-    elevation: 5,
+    // marginBottom: 15,
+    // marginTop: 20,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '65%',
+    height: 45,
   },
   top_button_select: {
     backgroundColor: '#fdbe39',
     alignItems: 'center',
-    height: 35,
-    width: 200,
+    height: 45,
+    width: '65%',
     marginTop: -60,
     padding: 4,
     borderRadius: 5,
@@ -325,19 +339,42 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    alignItems: 'center',
-    height: 35,
-    width: 200,
     backgroundColor: '#52875a',
-    padding: 4,
     borderRadius: 5,
-    marginBottom: 10,
-    zIndex: 5,
-    elevation: 5,
+    // marginBottom: 15,
+    marginTop: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '65%',
+    height: 45,
+  },
+  button_tutorials: {
+    // backgroundColor: '#52875a',
+    borderRadius: 5,
+    // marginBottom: 15,
+    // marginTop: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '65%',
+    height: 45,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 25,
     color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  buttonText_tutorials: {
+    fontSize: 25,
+    color: '#355a3a',
+    textAlign: 'center',
+    fontWeight: '300',
+  },
+  buttonText_reset: {
+    fontSize: 25,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '300',
   },
   tinyLogo: {
     width: 50,
