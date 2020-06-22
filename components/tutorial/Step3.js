@@ -36,10 +36,20 @@ function Step1({ navigation }) {
     <ScrollView>
       {fontLoading && (
         <View style={styles.container}>
-          <Text style={styles.tutorial_heading}>3, measuring your plant</Text>
+          <Text style={styles.tutorial_heading}>
+            3 Calculating plant's height
+          </Text>
           <Text style={styles.tutorial_subheading}>
-            calculate your plant's height by adding a marker at the bottom of
-            the pot, the top of the pot, and the top of the plant
+            Place the marker at the bottom of the pot, and press 'add first
+            marker' button
+            {'\n'}
+            {'\n'}
+            Place the marker at the top of the pot, and press 'add second
+            marker' button
+            {'\n'}
+            {'\n'}
+            Place the marker at the highest point of the plant, and press 'add
+            third marker' button
           </Text>
 
           <View style={styles.section_1_container}>
@@ -50,14 +60,13 @@ function Step1({ navigation }) {
               <MeasureAnimation></MeasureAnimation>
             </View>
           </View>
-
           <TouchableOpacity
             style={[styles.button_next]}
             onPress={() => {
               navigation.navigate('new plant');
             }}
           >
-            <Text style={styles.button_text_step_2}>choose a photo</Text>
+            <Text style={styles.button_text_step_2}>get started!</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

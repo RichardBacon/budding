@@ -189,7 +189,6 @@ function NewPlantEntry({ route, navigation }) {
                 style={styles.input}
                 placeholder={'e.g. Plants Armstrong'}
               ></TextInput>
-              <View style={styles.input_line}></View>
             </View>
           </View>
           <View style={styles.input_section_2}>
@@ -570,6 +569,10 @@ const pickerSelectStyles = StyleSheet.create({
     borderStyle: 'solid',
     padding: 11,
     borderRadius: 5,
+
+    // borderColor: 'green',
+    // borderWidth: 1,
+    // textDecorationLine: 'underline',
     backgroundColor: '#52875a',
     width: '80%',
     height: 50,

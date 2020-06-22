@@ -38,8 +38,8 @@ function Step1({ navigation }) {
         <View style={styles.container}>
           <Text style={styles.tutorial_heading}>2, measuring your pot</Text>
           <Text style={styles.tutorial_subheading}>
-            we need your pot measurement to correctly calculate your plant's
-            height
+            To calculate your plant's height, we need the height of the pot in
+            centimetres, from the base to the very top of the rim.
           </Text>
 
           <View style={styles.section_1_container}>
@@ -53,8 +53,12 @@ function Step1({ navigation }) {
           <Text style={styles.tutorial_heading_2}>12cm</Text>
 
           <Text style={styles.tutorial_subheading_2}>
-            simply enter your height in the form provided, we'll store your
-            pot's height for the next time you measure
+            Enter the pot height in the form provided. We will store the plant's
+            pot height for you.{'\n'}
+            {'\n'}
+            If you re-pot your plant, you can either change the pot's height the
+            next time you measure, or you can update its height in the 'edit
+            plant' page.
           </Text>
 
           <TouchableOpacity

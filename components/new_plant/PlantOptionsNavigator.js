@@ -45,6 +45,7 @@ function PlantOptionsNavigator({ route }) {
         component={TutorialNavigator}
       />
       <Stack.Screen
+        name="measure plant"
         options={{ headerShown: false }}
         name="measure plant"
         component={MeasureFunction}
