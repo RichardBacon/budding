@@ -102,6 +102,8 @@ function PlantPage(props) {
               onPress={() => {
                 navigation.navigate('edit plant', {
                   plant_id,
+                  plant,
+                  snapshots,
                 });
               }}
               style={styles.edit_button}
@@ -160,7 +162,7 @@ function PlantPage(props) {
                   <PotHeightIcon width={30} height={30} fill="green" />
 
                   <Text style={styles.plant_info_text}>
-                    pot height: {plant.pot_height}
+                    pot height: {plant.pot_height} cm
                   </Text>
                 </View>
               </View>
@@ -272,7 +274,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 15,
     fontSize: 40,
-    fontWeight: 'bold',
+    //fontWeight: 'bold',
     color: '#355a3a',
     fontFamily: 'arciform',
   },
