@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
-  KeyboardAvoidingView,
+  ScrollView,
   Image,
 } from 'react-native';
 import * as api from '../api-requests/api';
@@ -115,42 +115,51 @@ const Login = (props) => {
     );
   else
     return (
-      <View style={styles.centered_view}>
-        <Text style={styles.title}>budding</Text>
+      <ScrollView>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: ScreenHeight,
+            backgroundColor: '#52875a',
+            paddingTop: 50,
+          }}
+        >
+          <Text style={styles.title}>budding</Text>
 
-        <View style={styles.middle_buttons}>
-          {!loggingIn && (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => setLoggingIn(true)}
-            >
-              <Text style={styles.button_text}>login</Text>
-            </TouchableOpacity>
-          )}
-          {loggingIn && (
-            <TextInput
-              returnKeyType="done"
-              returnKeyLabel="Done"
-              placeholderTextColor={'white'}
-              textAlign={'center'}
-              autoCapitalize="none"
-              onChangeText={(username) => {
-                setUsername(username);
-              }}
-              style={styles.input}
-              placeholder={'enter username'}
-            />
-          )}
-          {loggingIn && (
-            <TouchableOpacity
-              style={styles.button_afterLogin}
-              onPress={getUserData}
-            >
-              <Text style={styles.button_text}>login</Text>
-            </TouchableOpacity>
-          )}
+          <View style={styles.middle_buttons}>
+            {!loggingIn && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setLoggingIn(true)}
+              >
+                <Text style={styles.button_text}>login</Text>
+              </TouchableOpacity>
+            )}
+            {loggingIn && (
+              <TextInput
+                returnKeyType="done"
+                returnKeyLabel="Done"
+                placeholderTextColor={'white'}
+                textAlign={'center'}
+                autoCapitalize="none"
+                onChangeText={(username) => {
+                  setUsername(username);
+                }}
+                style={styles.input}
+                placeholder={'enter username'}
+              />
+            )}
+            {loggingIn && (
+              <TouchableOpacity
+                style={styles.button_afterLogin}
+                onPress={getUserData}
+              >
+                <Text style={styles.button_text}>login</Text>
+              </TouchableOpacity>
+            )}
 
-          <View>
             {!signingUp && (
               <TouchableOpacity
                 style={styles.button}
@@ -186,26 +195,18 @@ const Login = (props) => {
               </TouchableOpacity>
             )}
           </View>
-        </View>
 
-        <Text style={styles.bottom_text}>
-          Track your plants as they grow and watch them thrive!
-        </Text>
-      </View>
+          <Text style={styles.bottom_text}>
+            Track your plants as they grow and watch them thrive!
+          </Text>
+        </View>
+      </ScrollView>
     );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  centered_view: {
-    width: '100%',
-    flex: 1,
-    paddingTop: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#52875a',
-  },
   title: {
     fontFamily: 'arciform',
     fontSize: 50,
