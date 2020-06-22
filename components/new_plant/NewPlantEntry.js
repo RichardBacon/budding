@@ -34,7 +34,6 @@ function NewPlantEntry({ route, navigation }) {
 
   const { resizedImage, potHeight, plantHeight, userId } = route.params;
   let plantId = '';
-  console.log(userId, '<--- inside newplantentry');
 
   // renders new plant form, everything but soil and water frequency required
   // upon pressing 'add new plant' button, sends POST request to our database

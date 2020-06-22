@@ -9,22 +9,16 @@ import TutorialNavigator from '../tutorial/TutorialNavigator';
 
 const Stack = createStackNavigator();
 
-function PlantOptionsNavigator({ userId, route }) {
+function PlantOptionsNavigator({ userId, route: { plant_id, pot_height } }) {
   let plantId;
   let potHeight;
   let user_id;
-
-  const { plant_id, pot_height } = route.params;
 
   if (userId || plant_id || pot_height) {
     plantId = plant_id;
     potHeight = pot_height;
     user_id = userId;
   }
-
-  console.log(pot_height, '<--- plant options nav pot_height');
-
-  console.log(user_id, '<--- plant options nav');
   return (
     <Stack.Navigator
       screenOptions={{
