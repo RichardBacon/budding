@@ -106,7 +106,7 @@ function PlantPage(props) {
               }}
               style={styles.edit_button}
             >
-              <EditIcon width={35} height={35}></EditIcon>
+              <EditIcon width={25} height={25}></EditIcon>
             </TouchableOpacity>
             <View style={styles.plant_info_view}>
               <View style={styles.plant_info_left_view}>

@@ -32,19 +32,25 @@ function Garden({ userId, navigation }) {
   let ScreenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
-    let promise = new Promise((resolve, reject) => {
-      Font.loadAsync({
-        arciform: require('../../assets/fonts/Arciform.otf'),
-      });
+    Font.loadAsync({
+      arciform: require('../../assets/fonts/Arciform.otf'),
     }).then(
       api
         .getPlantsByUserId(userId, order, sort_by, plant_type)
         .then((plants) => {
           const snapShotArr = plants.map((plant) => {
-            const { plant_id, plant_name, snapshot_count } = plant;
-
+            const { plant_id, plant_name, snapshot_count, created_at } = plant;
             return api.getSnapshotsByPlantId(plant_id).then((snap) => {
-              return { plant_name, snapshot_count, ...snap[0] };
+              const { height, plant_id, plant_uri, snapshot_id } = snap[0];
+              return {
+                plant_name,
+                snapshot_count,
+                created_at,
+                height,
+                plant_id,
+                plant_uri,
+                snapshot_id,
+              };
             });
           });
 
@@ -185,25 +191,32 @@ function Garden({ userId, navigation }) {
                 </View>
                 <View style={styles.plant_view}>
                   <View style={styles.plant_left_view}>
-                    <Text style={styles.plant_name}>{item.plant_name}</Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('plant page', {
+                          item,
+                        })
+                      }
+                    >
+                      <Text style={styles.plant_name}>{item.plant_name}</Text>
+                    </TouchableOpacity>
+
                     <Text style={styles.plant_stats}>
-                      <>last snapped: </>
+                      <>planted: </>
                       <TimeAgo
                         time={item.created_at}
                         style={styles.plant_stats_value}
                       />
                     </Text>
 
-                    <View>
-                      <Text style={styles.plant_stats}>
-                        <>plant height: </>
-                        <Text style={styles.plant_stats_value}>
-                          {item.height}cm
-                        </Text>
+                    <Text style={styles.plant_stats}>
+                      <>height: </>
+                      <Text style={styles.plant_stats_value}>
+                        {item.height}cm
                       </Text>
-                    </View>
+                    </Text>
                   </View>
-                  <View style={styles.plant_right_view}>
+                  <View style={styles.snapshot}>
                     <Text style={styles.plant_stats}>
                       <>{item.snapshot_count} </>
                       <View width={13} height={13} style={{ paddingTop: 2 }}>
@@ -255,15 +268,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   plant_view: {
-    flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 10,
+    // flexDirection: 'row',
   },
   plant_left_view: {
+    marginLeft: 3,
     flex: 1,
   },
-  plant_right_view: {
-    textAlign: 'right',
-    alignItems: 'center',
-    paddingTop: 7,
+  // plant_right_view: {
+  //   paddingRight: 5,
+  //   textAlign: 'right',
+  //   alignItems: 'center',
+  //   paddingTop: 2,
+  // },
+  snapshot: {
+    position: 'absolute',
+    marginLeft: '85%',
+    marginTop: -5,
   },
   plant_name: {
     fontSize: 25,
@@ -271,7 +293,8 @@ const styles = StyleSheet.create({
     fontFamily: 'arciform',
   },
   plant_stats: {
-    fontWeight: '600',
+    fontWeight: '400',
+    marginTop: 5,
     fontSize: 12,
     color: '#52875a',
   },
@@ -294,13 +317,13 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
+    borderWidth: 0.5,
+    borderRadius: 8,
     color: 'white',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    borderColor: 'gray',
+    backgroundColor: '#52875a',
+    paddingHorizontal: 20,
+    paddingVertical: 7.5,
   },
   inputAndroid: {
     fontSize: 16,
@@ -309,8 +332,8 @@ const pickerSelectStyles = StyleSheet.create({
     color: 'white',
     borderColor: 'gray',
     backgroundColor: '#52875a',
-    paddingHorizontal: 10,
-
+    paddingHorizontal: 20,
+    paddingVertical: 7.5,
     // paddingRight: 15, // to ensure the text is never behind the icon
   },
   sort_by_button: {

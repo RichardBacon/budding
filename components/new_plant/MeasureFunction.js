@@ -208,6 +208,7 @@ function MeasureFunction({ route, navigation }) {
         />
         <Animated.View
           style={{
+            marginTop: -50,
             transform: [{ translateX: pan.x }, { translateY: pan.y }],
           }}
           {...panResponder.panHandlers}
@@ -282,6 +283,7 @@ const styles = StyleSheet.create({
   },
   headingText: {
     textAlign: 'center',
+    color: '#355a3a',
     fontSize: 25,
     lineHeight: 24,
     fontWeight: 'bold',
@@ -331,10 +333,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 45,
     width: '65%',
-    marginTop: -60,
+    marginTop: 0,
     padding: 4,
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 5,
     zIndex: 5,
     elevation: 5,
   },
