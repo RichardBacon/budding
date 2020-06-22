@@ -93,8 +93,6 @@ function Garden({ userId, navigation }) {
     // If confirm, sends request to delete, if 204 response navigates back to garden
     // If cancel, does nothing
     // Function is passed down into PlantPage so, once delete button is pressed, will set the garden state to 'loading' - otherwise, there are a couple of seconds where can still press on the plant before garden re-renders, which throws an error
-
-    console.log('deleting');
     isLoading(true);
     Alert.alert(
       `Delete ${plant_name}`,
