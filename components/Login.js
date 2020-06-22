@@ -77,7 +77,8 @@ const Login = (props) => {
         })
         .then((user) => {
           //setLoading(false);
-          props.logIn(user.user_id);
+          const { user_id, username, name } = user;
+          props.logIn(user_id, username, name);
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);
