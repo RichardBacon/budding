@@ -25,7 +25,7 @@ function GardenNavigator({ userId, from }) {
         name="plant page"
         component={PlantPage}
       />
-      {/* <Stack.Screen name="garden" component={Garden} /> */}
+
       <Stack.Screen name="garden" options={{ headerShown: false }}>
         {(navigation) => <Garden {...navigation} userId={userId} from={from} />}
       </Stack.Screen>

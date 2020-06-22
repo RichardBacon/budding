@@ -24,7 +24,7 @@ import LoadingGif from '../LoadingGif';
 
 function NewPlantEntry({ route, navigation }) {
   const [plantName, setPlantName] = useState('');
-  const [type, setType] = useState(null);
+  const [type, setType] = useState('');
   const [variety, setVariety] = useState('');
   const [waterFreq, setWaterFreq] = useState('');
   const [soil, setSoil] = useState('');
@@ -34,6 +34,7 @@ function NewPlantEntry({ route, navigation }) {
 
   const { resizedImage, potHeight, plantHeight, userId } = route.params;
   let plantId = '';
+  console.log(userId, '<--- inside newplantentry');
 
   // renders new plant form, everything but soil and water frequency required
   // upon pressing 'add new plant' button, sends POST request to our database
@@ -98,12 +99,12 @@ function NewPlantEntry({ route, navigation }) {
           console.log('before navigation');
           isLoading(false);
           setPlantName('');
-          setType('vegetable');
+          setType(null);
           setVariety('');
           setWaterFreq('');
           setSoil('');
-          setSunlight('indirect');
-          setLocation('indoor');
+          setSunlight(null);
+          setLocation(null);
           Alert.alert(
             'Plant added',
             'Great! You can now view your plant in your garden!',

@@ -81,7 +81,11 @@ function App() {
                   <GardenNavigator {...navigation} userId={userId} />
                 )}
               </Tab.Screen>
-              <Tab.Screen name="new plant" component={PlantOptionsNavigator} />
+              <Tab.Screen name="new plant">
+                {(navigation) => (
+                  <PlantOptionsNavigator {...navigation} userId={userId} />
+                )}
+              </Tab.Screen>
               <Tab.Screen name="profile">
                 {(navigation) => (
                   <Profile

@@ -20,6 +20,7 @@ function NewPlantHome({ plant_id, pot_height, navigation, userId }) {
   const [imagePickerSelected, setPickerSelected] = React.useState(true);
   const [potHeight, setPotHeight] = useState(pot_height);
   const [plantId, setPlantId] = useState(plant_id);
+  console.log(userId);
 
   // pass pot height down as a prop, set this as state, and have in input box when loads
 

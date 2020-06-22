@@ -25,6 +25,8 @@ function ImagePickerScreen(props) {
     imagePickerSelected,
     userId,
   } = props.route.params;
+
+  console.log(userId, '<---- image picker');
   return (
     // <ScrollView>
     <View style={styles.container}>

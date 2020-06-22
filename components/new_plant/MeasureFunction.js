@@ -34,6 +34,8 @@ function MeasureFunction({ route, navigation }) {
   const [plantHeight, setPlantHeight] = useState(null);
   const [loading, isLoading] = useState(true);
 
+  console.log(userId, '<--- top of measure func');
+
   const name = shortid.generate();
   const file = {
     uri: resizedImage,
@@ -148,6 +150,7 @@ function MeasureFunction({ route, navigation }) {
         });
     } else {
       isLoading(false);
+      console.log(userId, '<--- inside measure func');
       navigation.navigate('new plant entry', {
         resizedImage,
         potHeight,

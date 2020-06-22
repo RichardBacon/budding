@@ -8,7 +8,6 @@ import {
   ScrollView,
   Button,
   Picker,
-  ActivityIndicator,
   Alert,
   TouchableOpacity,
 } from 'react-native';
@@ -111,6 +110,24 @@ function EditPlant({ route, navigation }) {
                 edit any plant info you'd like to change below:
               </Text>
               <Text style={styles.titleText}>{plantName}</Text>
+            </View>
+
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>plant name: </Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  onChangeText={(plantName) => {
+                    setPlantName(plantName);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. Bell pepper'}
+                  value={plantName}
+                  maxLength={25}
+                />
+                <View style={styles.input_line}></View>
+              </View>
             </View>
 
             <View style={styles.input_section_2}>

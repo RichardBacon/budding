@@ -30,8 +30,9 @@ import * as Font from 'expo-font';
 import LoadingGif from '../LoadingGif';
 
 function PlantPage(props) {
-  const { navigation, deletingPlant } = props.route.params;
-  console.log(deletingPlant);
+  const { deletingPlant } = props.route.params;
+  const { navigation } = props;
+  console.log(props, '<--- plant page');
 
   const {
     plant_id,

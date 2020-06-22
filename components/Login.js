@@ -39,7 +39,6 @@ const Login = (props) => {
   }, []);
 
   const getUserData = () => {
-    console.log(username);
     if (username.length < 4) {
       Alert.alert(
         'Input field error',

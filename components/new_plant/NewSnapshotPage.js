@@ -29,6 +29,8 @@ function NewSnapshotPage(props) {
   );
   const { navigation } = props;
 
+  console.log(userId), '<--- snapshot page';
+
   return (
     <View>
       <ScrollView>
