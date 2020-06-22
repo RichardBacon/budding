@@ -39,7 +39,7 @@ function Step1({ navigation }) {
     <ScrollView>
       {fontLoading && (
         <View style={styles.container}>
-          <Text style={styles.tutorial_heading}>1, choosing your picture</Text>
+          <Text style={styles.tutorial_heading}>1, taking your picture</Text>
           {/* <Text style={styles.tutorial_subheading}>choosing your picture</Text> */}
           <View style={styles.hero_container}>
             <HeroImage width={300} height={300}></HeroImage>
@@ -57,7 +57,8 @@ function Step1({ navigation }) {
               <ImageSVG width={175} height={200}></ImageSVG>
             </View>
             <Text style={[styles.tutorial_2_copy, { flex: 1 }]}>
-              positioned your phone in the middle of the plant
+              Position your phone midway between the top of the plant and the
+              bottom of the pot
             </Text>
           </View>
 

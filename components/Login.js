@@ -189,7 +189,7 @@ const Login = (props) => {
         </View>
 
         <Text style={styles.bottom_text}>
-          Track your seeds as they grow and watch them thrive!
+          Track your plants as they grow and watch them thrive!
         </Text>
       </View>
     );
