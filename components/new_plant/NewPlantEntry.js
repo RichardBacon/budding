@@ -112,6 +112,7 @@ function NewPlantEntry({ route, navigation }) {
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);
+          setPlantName('');
           isLoading(false);
           console.log(err);
         });
@@ -451,7 +452,6 @@ const styles = StyleSheet.create({
     // width: '80%',
     paddingLeft: '5%',
     paddingRight: '5%',
-    fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'arciform',
   },
