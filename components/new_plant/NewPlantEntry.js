@@ -181,6 +181,7 @@ function NewPlantEntry({ route, navigation }) {
             <View style={styles.input_container}>
               <TextInput
                 returnKeyType="done"
+                returnKeyLabel="Done"
                 maxLength={25}
                 onChangeText={(plantName) => {
                   setPlantName(plantName);
