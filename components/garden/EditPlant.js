@@ -15,6 +15,7 @@ import {
 import * as api from '../../api-requests/api';
 import RNPickerSelect from 'react-native-picker-select';
 import * as Font from 'expo-font';
+import LoadingGif from '../LoadingGif';
 
 function EditPlant({ route, navigation }) {
   const { plant_id, plant, snapshots } = route.params;
@@ -90,7 +91,7 @@ function EditPlant({ route, navigation }) {
     }
   };
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <LoadingGif />;
   else {
     return (
       <ScrollView>

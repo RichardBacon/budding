@@ -58,7 +58,7 @@ function Step1({ navigation }) {
           </View>
           <View style={styles.section_1_container}>
             <Text style={[styles.tutorial_1_copy, { flex: 1 }]}>
-              Keep your phone at a 90 degrees angle.
+              Keep your phone at a 90 degree angle.
             </Text>
             <View styles={{ flex: 1 }}>
               <AngleImage width={175} height={200}></AngleImage>

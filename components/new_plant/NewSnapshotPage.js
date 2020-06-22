@@ -18,7 +18,7 @@ import Arrow from '../../utils/animations/Arrow';
 import { ScrollView } from 'react-native-gesture-handler';
 
 function NewSnapshotPage(props) {
-  const { image, plant_id, pot_height } = props.route.params;
+  const { image, plant_id, pot_height, userId } = props.route.params;
   const [potHeight, setPotHeight] = useState(
     // 0,
     pot_height,
@@ -96,6 +96,7 @@ function NewSnapshotPage(props) {
                 plantId,
                 potHeight,
                 image,
+                userId,
               });
             }
           }}

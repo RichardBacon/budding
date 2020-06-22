@@ -18,6 +18,7 @@ import TimeAgo from 'react-native-timeago';
 import * as Font from 'expo-font';
 import * as api from '../../api-requests/api';
 import { Entypo } from '@expo/vector-icons';
+import LoadingGif from '../LoadingGif';
 
 function Snapshots(props) {
   const { snapshots, plant_name, plant_id, potHeight } = props.route.params;
@@ -55,26 +56,7 @@ function Snapshots(props) {
           spacing={10}
           ListHeaderComponent={
             <>
-              {loading && (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: ScreenHeight,
-                    backgroundColor: 'white',
-                  }}
-                >
-                  <Image
-                    style={{
-                      width: 100,
-                      height: 100,
-                      backgroundColor: 'white',
-                    }}
-                    source={require('../../assets/gifs/Shifter_V01.gif')}
-                  />
-                </View>
-              )}
+              {loading && <LoadingGif />}
 
               {snapshots.length === 1 && (
                 <View style={styles.background_plate_blank}>

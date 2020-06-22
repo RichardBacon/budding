@@ -15,7 +15,7 @@ import * as ImagePicker from 'expo-image-picker';
 import uploadToAnonymousFilesAsync from 'anonymous-files';
 import logo from '../../assets/logo.png';
 
-function NewPlantHome({ plant_id, pot_height, navigation }) {
+function NewPlantHome({ plant_id, pot_height, navigation, userId }) {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [imagePickerSelected, setPickerSelected] = React.useState(true);
   const [potHeight, setPotHeight] = useState(pot_height);
@@ -83,6 +83,7 @@ function NewPlantHome({ plant_id, pot_height, navigation }) {
       openImagePickerAsync: openImagePickerAsync,
       launchCameraAsync: launchCameraAsync,
       imagePickerSelected: imagePickerSelected,
+      userId,
     });
   };
 

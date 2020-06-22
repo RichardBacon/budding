@@ -11,7 +11,6 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
-  ActivityIndicator,
 } from 'react-native';
 
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -20,9 +19,10 @@ import * as api from '../../api-requests/api';
 const { options } = require('../../s3-config.js');
 const shortid = require('shortid');
 import { RNS3 } from 'react-native-s3-upload';
+import LoadingGif from '../LoadingGif';
 
 function MeasureFunction({ route, navigation }) {
-  const { image, potHeight, plantId } = route.params;
+  const { image, potHeight, plantId, userId } = route.params;
   const [bottomPotClick, setBottomPotClick] = useState(null);
   const [topPotClick, setTopPotClick] = useState(null);
   const [topPlantClick, setTopPlantClick] = useState(null);
@@ -147,10 +147,12 @@ function MeasureFunction({ route, navigation }) {
           isLoading(false);
         });
     } else {
+      isLoading(false);
       navigation.navigate('new plant entry', {
         resizedImage,
         potHeight,
         plantHeight: height.current,
+        userId,
       });
     }
   };
@@ -185,7 +187,7 @@ function MeasureFunction({ route, navigation }) {
     potHeight: 12.5,
   };
 
-  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
+  if (loading) return <LoadingGif />;
   else {
     return (
       <View style={styles.container}>
@@ -274,6 +276,7 @@ const styles = StyleSheet.create({
   header_container: {
     paddingLeft: 40,
     paddingRight: 40,
+    paddingTop: 30,
     // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -384,7 +387,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   logo: {
-    width: 300,
-    height: 350,
+    width: 270,
+    height: 315,
   },
 });

@@ -12,11 +12,13 @@ const Stack = createStackNavigator();
 function PlantOptionsNavigator({ route }) {
   let plantId;
   let potHeight;
+  let user_id;
 
   if (route.params) {
-    const { plant_id, pot_height } = route.params;
+    const { plant_id, pot_height, userId } = route.params;
     plantId = plant_id;
     potHeight = pot_height;
+    user_id = userId;
   }
 
   return (
@@ -35,6 +37,7 @@ function PlantOptionsNavigator({ route }) {
             {...navigation}
             plant_id={plantId}
             pot_height={potHeight}
+            userId={user_id}
           />
         )}
       </Stack.Screen>
@@ -54,7 +57,11 @@ function PlantOptionsNavigator({ route }) {
         name="new plant entry"
         component={NewPlantEntry}
       />
-      <Stack.Screen name="image picker" component={ImagePickerScreen} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="image picker"
+        component={ImagePickerScreen}
+      />
       <Stack.Screen
         options={{ headerShown: false }}
         name="new snapshot"

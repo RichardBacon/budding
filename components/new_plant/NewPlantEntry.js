@@ -20,6 +20,7 @@ import { RNS3 } from 'react-native-s3-upload';
 import RNPickerSelect from 'react-native-picker-select';
 import * as Font from 'expo-font';
 import { StackActions } from '@react-navigation/native';
+import LoadingGif from '../LoadingGif';
 
 function NewPlantEntry({ route, navigation }) {
   const [plantName, setPlantName] = useState('');
@@ -31,7 +32,7 @@ function NewPlantEntry({ route, navigation }) {
   const [location, setLocation] = useState('');
   const [loading, isLoading] = useState(false);
 
-  const { resizedImage, potHeight, plantHeight } = route.params;
+  const { resizedImage, potHeight, plantHeight, userId } = route.params;
   let plantId = '';
 
   // renders new plant form, everything but soil and water frequency required
@@ -62,7 +63,7 @@ function NewPlantEntry({ route, navigation }) {
 
       api
         .postPlant(
-          1,
+          userId,
           plantName,
           type,
           soil,
@@ -110,10 +111,7 @@ function NewPlantEntry({ route, navigation }) {
           navigation.dispatch(StackActions.popToTop());
         })
         .catch((err) => {
-          Alert.alert(
-            'Error',
-            `Please ensure you have filled in all the required fields`,
-          );
+          Alert.alert('Error', `${err}`);
           isLoading(false);
           console.log(err);
         });
@@ -122,7 +120,7 @@ function NewPlantEntry({ route, navigation }) {
 
   let ScreenHeight = Dimensions.get('window').height;
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return <LoadingGif />;
   // else {
   return (
     // <View style={styles.view}>

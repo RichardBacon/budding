@@ -14,6 +14,7 @@ import * as api from '../api-requests/api';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { Asset } from 'expo-asset';
+import LoadingGif from './LoadingGif';
 
 const Login = (props) => {
   const [username, setUsername] = useState('');
@@ -38,6 +39,7 @@ const Login = (props) => {
   }, []);
 
   const getUserData = () => {
+    console.log(username);
     if (username.length < 4) {
       Alert.alert(
         'Input field error',
@@ -96,23 +98,7 @@ const Login = (props) => {
   // displays login and sign up option
   // when sign up button pressed, displays input boxes and a submit button, which then posts the new user info and immediately logs them in, taking them to garden page
 
-  if (loading)
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: ScreenHeight,
-          backgroundColor: 'white',
-        }}
-      >
-        <Image
-          style={{ width: 100, height: 100, backgroundColor: 'white' }}
-          source={require('../assets/gifs/Shifter_V01.gif')}
-        />
-      </View>
-    );
+  if (loading) return <LoadingGif />;
   else
     return (
       <ScrollView>

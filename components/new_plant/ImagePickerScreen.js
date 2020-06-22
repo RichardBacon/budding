@@ -23,6 +23,7 @@ function ImagePickerScreen(props) {
     openImagePickerAsync,
     selectedImage,
     imagePickerSelected,
+    userId,
   } = props.route.params;
   return (
     // <ScrollView>
@@ -42,6 +43,7 @@ function ImagePickerScreen(props) {
             image: selectedImage.localUri,
             pot_height: potHeight,
             plant_id: plantId,
+            userId,
           })
         }
       >

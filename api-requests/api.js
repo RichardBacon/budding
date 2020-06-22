@@ -10,7 +10,6 @@ export const getUsers = () => {
 
 export const getUserByUsername = (username) => {
   return axios.get(`${baseURL}/users/${username}`).then(({ data }) => {
-    console.log(data, '<--- received data');
     return data.user;
   });
 };

@@ -21,6 +21,7 @@ import TimeAgo from 'react-native-timeago';
 import { useIsFocused } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import CameraIcon from '../../assets/icons/camera_icon.svg';
+import LoadingGif from '../LoadingGif';
 
 function Garden({ userId, navigation }) {
   const [sort_by, changeSort] = useState('created_at');
@@ -30,7 +31,6 @@ function Garden({ userId, navigation }) {
   const [plant_type, changeType] = useState(null);
 
   const isFocused = useIsFocused();
-  let ScreenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
     Font.loadAsync({
@@ -129,23 +129,7 @@ function Garden({ userId, navigation }) {
     );
   };
 
-  if (loading)
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: ScreenHeight,
-          backgroundColor: 'white',
-        }}
-      >
-        <Image
-          style={{ width: 100, height: 100, backgroundColor: 'white' }}
-          source={require('../../assets/gifs/Shifter_V01.gif')}
-        />
-      </View>
-    );
+  if (loading) return <LoadingGif />;
   else {
     return (
       <SafeAreaView style={[GlobalStyles.droidSafeArea, { flex: 1 }]}>
@@ -199,13 +183,17 @@ function Garden({ userId, navigation }) {
         <View style={styles.container}>
           {snaps.length === 0 && (
             <>
-              <Text>you don't have any plants! get growing!</Text>
-              <Button
-                title="add new plant"
+              <Text style={styles.add_plants}>
+                you don't have any plants! get growing!
+              </Text>
+              <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('new plant');
+                  navigation.navigate('plant navigator', { userId });
                 }}
-              />
+                style={styles.button}
+              >
+                <Text style={styles.button_text}>add new plant</Text>
+              </TouchableOpacity>
             </>
           )}
           <FlatGrid
@@ -286,6 +274,14 @@ const styles = StyleSheet.create({
     fontFamily: 'arciform',
     marginTop: 20,
   },
+  add_plants: {
+    textAlign: 'center',
+    marginBottom: 10,
+    fontSize: 30,
+    color: '#355a3a',
+    fontFamily: 'arciform',
+    marginTop: 20,
+  },
   grid_view: {
     marginTop: 5,
     flex: 1,
@@ -354,6 +350,22 @@ const styles = StyleSheet.create({
   logo: {
     marginTop: 20,
     marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#fdbe39',
+    borderRadius: 5,
+    marginBottom: 15,
+    marginTop: 15,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '83%',
+    height: 45,
+  },
+  button_text: {
+    fontSize: 25,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 

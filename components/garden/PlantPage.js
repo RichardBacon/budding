@@ -27,6 +27,7 @@ import WaterIcon from '../../assets/icons/water_plant_page.svg';
 import LocationIcon from '../../assets/icons/indoor_vs_outdoor_plant_page.svg';
 import EditIcon from '../../assets/icons/edit_plant_icon.svg';
 import * as Font from 'expo-font';
+import LoadingGif from '../LoadingGif';
 
 function PlantPage(props) {
   const { navigation, deletingPlant } = props.route.params;
@@ -66,22 +67,7 @@ function PlantPage(props) {
 
   return (
     <ScrollView>
-      {loading && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: ScreenHeight,
-            backgroundColor: 'white',
-          }}
-        >
-          <Image
-            style={{ width: 100, height: 100, backgroundColor: 'white' }}
-            source={require('../../assets/gifs/Shifter_V01.gif')}
-          />
-        </View>
-      )}
+      {loading && <LoadingGif />}
       {!fontLoading && (
         <View>
           <View style={styles.container}>
