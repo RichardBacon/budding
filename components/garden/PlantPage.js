@@ -25,6 +25,7 @@ import SunIcon from '../../assets/icons/sunlight_plant_page.svg';
 import PlantTypeIcon from '../../assets/icons/plant_type_page.svg';
 import WaterIcon from '../../assets/icons/water_plant_page.svg';
 import LocationIcon from '../../assets/icons/indoor_vs_outdoor_plant_page.svg';
+import EditIcon from '../../assets/icons/edit_plant_icon.svg';
 import * as Font from 'expo-font';
 
 function PlantPage(props) {
@@ -96,6 +97,17 @@ function PlantPage(props) {
           <View style={styles.background_plate}>
             <Text style={styles.name_text}>{plant_name}</Text>
             <Text style={styles.type_text}>{plant.plant_variety}</Text>
+
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('edit plant', {
+                  plant_id,
+                });
+              }}
+              style={styles.edit_button}
+            >
+              <EditIcon width={35} height={35}></EditIcon>
+            </TouchableOpacity>
             <View style={styles.plant_info_view}>
               <View style={styles.plant_info_left_view}>
                 <View style={styles.plant_info_card}>
@@ -155,16 +167,6 @@ function PlantPage(props) {
             </View>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('edit plant', {
-                  plant_id,
-                });
-              }}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>edit plant </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
                 navigation.navigate('plant navigator', {
                   plant_id,
                   pot_height: plant.pot_height,
@@ -176,49 +178,6 @@ function PlantPage(props) {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity
-              onPress={() => {
-                // Asks for confirmation to delete the plant
-                // If confirm, sends request to delete, if 204 response navigates back to garden
-                // If cancel, does nothing
-                Alert.alert(
-                  `Delete ${plant_name}`,
-                  `Are you sure you want to permanently delete ${plant_name}?`,
-                  [
-                    {
-                      text: 'No, do not delete!',
-                      onPress: () => {
-                        console.log('deletion cancelled');
-                      },
-                    },
-                    {
-                      text: 'Yes, delete!',
-                      onPress: () => {
-                        api.deletePlantById(plant_id).then((response) => {
-                          if (response.status === 204) {
-                            Alert.alert(
-                              'Plant deleted!',
-                              `Successfully deleted ${plant_name}`,
-                            );
-                            navigation.navigate('garden');
-                            // plant name deleted
-                          } else {
-                            Alert.alert(
-                              'Unsuccessful',
-                              `Could not delete ${plant_name} - please try again`,
-                            );
-                            // deletion unsuccessful
-                          }
-                        });
-                      },
-                    },
-                  ],
-                );
-              }}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>delete plant </Text>
-            </TouchableOpacity>
             <Text style={styles.recent_snaps}>recent snapshots</Text>
           </View>
           {snapshots && <SnapshotCarousel snapshots={snapshots} />}
@@ -273,9 +232,9 @@ function PlantPage(props) {
                 ],
               );
             }}
-            style={styles.button}
+            style={styles.delete_button}
           >
-            <Text style={styles.buttonText}>delete plant </Text>
+            <Text style={styles.delete_button_text}>delete plant </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -368,6 +327,21 @@ const styles = StyleSheet.create({
     width: '70%',
     height: 45,
   },
+  delete_button: {
+    // backgroundColor: '#fdbe39',
+    borderRadius: 5,
+    marginBottom: 15,
+    // marginTop: 15,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '70%',
+    height: 45,
+  },
+  edit_button: {
+    position: 'absolute',
+    marginLeft: '85%',
+    marginTop: 24,
+  },
   button_text_new: {
     fontSize: 25,
     color: '#fff',
@@ -380,10 +354,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '300',
   },
+  delete_button_text: {
+    fontSize: 25,
+    color: '#9e5143',
+    textAlign: 'center',
+    fontWeight: '300',
+  },
   button_all: {
     backgroundColor: '#52875a',
     borderRadius: 5,
-    marginBottom: 25,
+    marginBottom: 15,
     marginTop: 25,
     justifyContent: 'center',
     alignSelf: 'center',

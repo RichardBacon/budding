@@ -7,6 +7,9 @@ import GardenNavigator from './components/garden/GardenNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './components/Login';
 import Profile from './components/Profile';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import GardenIcon from './assets/icons/garden_icon.svg';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +47,34 @@ function App() {
         <>
           <NavigationContainer>
             <Tab.Navigator
+              screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                  let iconName;
+
+                  if (route.name === 'garden') {
+                    iconName = focused
+                      ? 'ios-information-circle'
+                      : 'ios-information-circle-outline';
+                  } else if (route.name === 'garden') {
+                    iconName = focused ? 'ios-list-box' : 'ios-list';
+                  }
+
+                  // You can return any component that you like here!
+                  return (
+                    <GardenIcon
+                      // name={iconName}
+                      width={20}
+                      height={20}
+                      // size={40}
+                      color={'white'}
+                    ></GardenIcon>
+                  );
+                },
+              })}
+              tabBarOptions={{
+                activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+              }}
               tabBarOptions={{
                 activeTintColor: 'white',
                 style: styles.bottomNav,
