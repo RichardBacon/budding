@@ -12,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import * as api from '../../api-requests/api';
+import RNPickerSelect from 'react-native-picker-select';
 
 function EditPlant({ route, navigation }) {
   const [plantName, setPlantName] = useState(null);
@@ -83,12 +84,13 @@ function EditPlant({ route, navigation }) {
   if (loading) return <ActivityIndicator />;
   else {
     return (
-      <View styles={styles.view}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <Text>
+      <ScrollView>
+        <View style={styles.view}>
+          <Text style={styles.subHeadingText}>
             Input any information you'd like to change. You can leave any fields
             you do not wish to update blank.
           </Text>
+
           <Text>plant name:</Text>
           <TextInput
             onChangeText={(plantName) => {
@@ -98,6 +100,53 @@ function EditPlant({ route, navigation }) {
             placeholder={'e.g. Plants Armstrong'}
           />
           <Text>plant type:</Text>
+          <View style={styles.input_container}>
+            <RNPickerSelect
+              // style={pickerSelectStyles}
+              // useNativeAndroidPickerStyle={false}
+              onValueChange={(value) => setSunlight(value)}
+              placeholder={{
+                label: 'select direct or indirect',
+                // textAlign: 'centre',
+              }}
+              style={{
+                ...pickerSelectStyles,
+                iconContainer: {
+                  top: 20,
+                  right: 10,
+                },
+                placeholder: {
+                  color: 'white',
+                  fontSize: 18,
+                  fontWeight: '300',
+                  // textAlign: 'center',
+                },
+              }}
+              Icon={() => {
+                return (
+                  <View
+                    style={{
+                      marginLeft: -70,
+                      backgroundColor: 'transparent',
+                      borderTopWidth: 10,
+                      borderTopColor: 'white',
+                      borderRightWidth: 10,
+                      borderRightColor: 'transparent',
+                      borderLeftWidth: 10,
+                      borderLeftColor: 'transparent',
+                      width: 0,
+                      height: 0,
+                    }}
+                  />
+                );
+              }}
+              items={[
+                { label: 'indirect', value: 'indirect' },
+                { label: 'direct', value: 'direct' },
+              ]}
+            />
+          </View>
+
           <Picker
             selectedValue={type}
             onValueChange={(itemValue) => {
@@ -177,8 +226,8 @@ function EditPlant({ route, navigation }) {
             onPress={updatePlant}
             style={styles.button}
           />
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -186,27 +235,35 @@ function EditPlant({ route, navigation }) {
 export default EditPlant;
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-  container2: {
-    width: 450,
-    height: 500,
-  },
   titleText: {
-    fontSize: 14,
-    lineHeight: 24,
+    height: 30,
+    // marginTop: 10,
+    marginBottom: 40,
+    fontSize: 40,
+    color: '#355a3a',
+
+    // lineHeight: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'arciform',
   },
-  logo: {
-    width: 350,
-    height: 450,
-  },
+  // logo: {
+  //   width: 350,
+  //   height: 450,
+  // },
   input: {
+    fontSize: 18,
+    fontWeight: '300',
+    color: '#355a3a',
     borderStyle: 'solid',
-    borderColor: 'green',
-    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+    // borderColor: 'green',
+    backgroundColor: '#e6e6e6',
+    // borderWidth: 1,
+    // textDecorationLine: 'underline',
+    width: '80%',
+    height: 50,
   },
   optional: {
     fontSize: 8,
@@ -215,7 +272,67 @@ const styles = StyleSheet.create({
   button: {
     color: 'green',
   },
+
+  input_container: {
+    // padding: '5%',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  input_text_container: {
+    marginLeft: 51,
+    marginBottom: 5,
+  },
+  input_text: {
+    fontSize: 18,
+    color: '#355a3a',
+    fontWeight: '600',
+  },
   view: {
     flex: 1,
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+  subHeadingText: {
+    // marginTop: 10,
+    marginBottom: 20,
+    fontSize: 18,
+    // lineHeight: 24,
+    color: '#355a3a',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'arciform',
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    marginLeft: 41,
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+    borderStyle: 'solid',
+    padding: 11,
+    borderRadius: 5,
+    // borderColor: 'green',
+    backgroundColor: '#52875a',
+    // borderWidth: 1,
+    // textDecorationLine: 'underline',
+    width: '80%',
+    height: 50,
+  },
+  inputAndroid: {
+    marginLeft: 41,
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+    borderStyle: 'solid',
+    padding: 11,
+    borderRadius: 5,
+    // borderColor: 'green',
+    backgroundColor: '#52875a',
+    // borderWidth: 1,
+    // textDecorationLine: 'underline',
+    width: '80%',
+    height: 50,
   },
 });

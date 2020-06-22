@@ -189,7 +189,6 @@ function NewPlantEntry({ route, navigation }) {
                 style={styles.input}
                 placeholder={'e.g. Plants Armstrong'}
               ></TextInput>
-              <View style={styles.input_line}></View>
             </View>
           </View>
           <View style={styles.input_section_2}>
@@ -566,13 +565,18 @@ const pickerSelectStyles = StyleSheet.create({
     height: 50,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'purple',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    marginLeft: 41,
+    fontSize: 18,
+    fontWeight: '300',
+    color: 'white',
+    borderStyle: 'solid',
+    padding: 11,
+    borderRadius: 5,
+    // borderColor: 'green',
+    backgroundColor: '#52875a',
+    // borderWidth: 1,
+    // textDecorationLine: 'underline',
+    width: '80%',
+    height: 50,
   },
 });
