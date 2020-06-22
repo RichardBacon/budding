@@ -42,7 +42,6 @@ function Garden({ userId, navigation }) {
             const { plant_id, plant_name, snapshot_count, created_at } = plant;
             return api.getSnapshotsByPlantId(plant_id).then((snap) => {
               const { height, plant_id, plant_uri, snapshot_id } = snap[0];
-              console.log(snap[0]);
               return {
                 plant_name,
                 snapshot_count,

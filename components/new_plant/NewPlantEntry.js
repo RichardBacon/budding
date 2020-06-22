@@ -110,7 +110,7 @@ function NewPlantEntry({ route, navigation }) {
             'Plant added',
             'Great! You can now view your plant in your garden!',
           );
-          navigation.navigate('new plant');
+          navigation.navigate('garden');
         })
         .catch((err) => {
           Alert.alert('Error', `${err}`);

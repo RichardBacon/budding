@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -46,6 +47,8 @@ const styles = StyleSheet.create({
   user_card: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     backgroundColor: 'white',
   },
   user_info: {
@@ -68,7 +71,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
     marginBottom: 10,
-    paddingHorizontal: 80,
+    width: '65%',
+    // paddingHorizontal: 80,
   },
   button_text: {
     fontSize: 20,
