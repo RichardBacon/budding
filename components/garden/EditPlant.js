@@ -18,7 +18,7 @@ import * as Font from 'expo-font';
 
 function EditPlant({ route, navigation }) {
   const { plant_id, plant, snapshots } = route.params;
-
+  const { plant_uri } = snapshots[0];
   const [plantName, setPlantName] = useState(plant.plant_name);
   const [type, setType] = useState(plant.plant_type);
   const [variety, setVariety] = useState(plant.plant_variety);
@@ -95,203 +95,250 @@ function EditPlant({ route, navigation }) {
     return (
       <ScrollView>
         {!fontLoading && (
-          <View style={styles.view}>
-            <Text style={styles.subHeadingText}>
-              enter any plant info you'd like to change below
-            </Text>
+          <View>
+            <View style={styles.container}>
+              <Image
+                style={styles.image}
+                // onLoadEnd={() => isLoading(false)}
+                source={{
+                  uri: plant_uri,
+                }}
+              />
+            </View>
+            <View style={styles.header_text_container}>
+              <Text style={styles.subHeadingText}>
+                edit any plant info you'd like to change below:
+              </Text>
+              <Text style={styles.titleText}>{plantName}</Text>
+            </View>
 
-            <Text style={styles.infoTitle}>plant name:</Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>plant type:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <RNPickerSelect
+                  onValueChange={(value) => setType(value)}
+                  placeholder={{
+                    label: 'select plant type',
+                  }}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: 'white',
+                      fontSize: 18,
+                      fontWeight: '300',
+                    },
+                  }}
+                  Icon={() => {
+                    return (
+                      <View
+                        style={{
+                          marginLeft: -70,
+                          backgroundColor: 'transparent',
+                          borderTopWidth: 10,
+                          borderTopColor: 'white',
+                          borderRightWidth: 10,
+                          borderRightColor: 'transparent',
+                          borderLeftWidth: 10,
+                          borderLeftColor: 'transparent',
+                          width: 0,
+                          height: 0,
+                        }}
+                      />
+                    );
+                  }}
+                  items={[
+                    { label: 'garden', value: 'garden' },
+                    { label: 'vegetable', value: 'vegetable' },
+                    { label: 'fruit', value: 'fruit' },
+                    { label: 'herb', value: 'herb' },
+                    { label: 'houseplant', value: 'houseplant' },
+                    { label: 'succulent', value: 'succulent' },
+                  ]}
+                  value={type}
+                />
+              </View>
+            </View>
 
-            <TextInput
-              onChangeText={(plantName) => {
-                setPlantName(plantName);
-              }}
-              style={styles.input}
-              placeholder={'e.g. Plants Armstrong'}
-              value={plantName}
-            />
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>variety: </Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  onChangeText={(variety) => {
+                    setVariety(variety);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. Bell pepper'}
+                  value={variety}
+                />
+                <View style={styles.input_line}></View>
+              </View>
+            </View>
 
-            <Text style={styles.infoTitle}>plant type:</Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>pot height:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  onChangeText={(potHeight) => {
+                    setPotHeight(potHeight);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. 10'}
+                  value={potHeight}
+                />
+                <View style={styles.input_line}></View>
+              </View>
+            </View>
 
-            <RNPickerSelect
-              onValueChange={(value) => setType(value)}
-              placeholder={{
-                label: 'select plant type',
-              }}
-              style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 20,
-                  right: 10,
-                },
-                placeholder: {
-                  color: 'white',
-                  fontSize: 18,
-                  fontWeight: '300',
-                },
-              }}
-              Icon={() => {
-                return (
-                  <View
-                    style={{
-                      marginLeft: -70,
-                      backgroundColor: 'transparent',
-                      borderTopWidth: 10,
-                      borderTopColor: 'white',
-                      borderRightWidth: 10,
-                      borderRightColor: 'transparent',
-                      borderLeftWidth: 10,
-                      borderLeftColor: 'transparent',
-                      width: 0,
-                      height: 0,
-                    }}
-                  />
-                );
-              }}
-              items={[
-                { label: 'garden', value: 'garden' },
-                { label: 'vegetable', value: 'vegetable' },
-                { label: 'fruit', value: 'fruit' },
-                { label: 'herb', value: 'herb' },
-                { label: 'houseplant', value: 'houseplant' },
-                { label: 'succulent', value: 'succulent' },
-              ]}
-              value={type}
-            />
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>sunlight:</Text>
+              </View>
+              <View style={styles.input_container}>
+                <RNPickerSelect
+                  onValueChange={(value) => setSunlight(value)}
+                  placeholder={{
+                    label: 'select direct or indirect',
+                  }}
+                  style={{
+                    ...pickerSelectStyles,
+                    iconContainer: {
+                      top: 20,
+                      right: 10,
+                    },
+                    placeholder: {
+                      color: 'white',
+                      fontSize: 18,
+                      fontWeight: '300',
+                    },
+                  }}
+                  Icon={() => {
+                    return (
+                      <View
+                        style={{
+                          marginLeft: -70,
+                          backgroundColor: 'transparent',
+                          borderTopWidth: 10,
+                          borderTopColor: 'white',
+                          borderRightWidth: 10,
+                          borderRightColor: 'transparent',
+                          borderLeftWidth: 10,
+                          borderLeftColor: 'transparent',
+                          width: 0,
+                          height: 0,
+                        }}
+                      />
+                    );
+                  }}
+                  items={[
+                    { label: 'indirect', value: 'indirect' },
+                    { label: 'direct', value: 'direct' },
+                  ]}
+                  value={sunlight}
+                />
+              </View>
+            </View>
 
-            <Text style={styles.infoTitle}>variety: </Text>
-            <TextInput
-              onChangeText={(variety) => {
-                setVariety(variety);
-              }}
-              style={styles.input}
-              placeholder={'e.g. Bell pepper'}
-              value={variety}
-            />
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>location:</Text>
+              </View>
+            </View>
+            <View style={styles.input_container}>
+              <RNPickerSelect
+                // style={pickerSelectStyles}
+                // useNativeAndroidPickerStyle={false}
+                onValueChange={(value) => setLocation(value)}
+                placeholder={{
+                  label: 'select indoor or outdoor',
+                  // textAlign: 'centre',
+                }}
+                style={{
+                  ...pickerSelectStyles,
+                  iconContainer: {
+                    top: 20,
+                    right: 10,
+                  },
+                  placeholder: {
+                    color: 'white',
+                    fontSize: 18,
+                    fontWeight: '300',
+                    // textAlign: 'center',
+                  },
+                }}
+                Icon={() => {
+                  return (
+                    <View
+                      style={{
+                        marginLeft: -70,
+                        backgroundColor: 'transparent',
+                        borderTopWidth: 10,
+                        borderTopColor: 'white',
+                        borderRightWidth: 10,
+                        borderRightColor: 'transparent',
+                        borderLeftWidth: 10,
+                        borderLeftColor: 'transparent',
+                        width: 0,
+                        height: 0,
+                      }}
+                    />
+                  );
+                }}
+                items={[
+                  { label: 'indoor', value: 'indoor' },
+                  { label: 'outdoor', value: 'outdoor' },
+                ]}
+                value={location}
+              />
+            </View>
+            {/* </View> */}
 
-            <Text style={styles.infoTitle}>pot height:</Text>
-            <TextInput
-              onChangeText={(potHeight) => {
-                setPotHeight(potHeight);
-              }}
-              style={styles.input}
-              placeholder={'e.g. 10'}
-              value={potHeight}
-            />
-            <Text style={styles.infoTitle}>sunlight:</Text>
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>
+                  watering frequency:{' '}
+                  <Text style={styles.optional}>optional</Text>
+                </Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  onChangeText={(freq) => {
+                    setWaterFreq(freq);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. Once a week'}
+                  value={waterFreq}
+                />
+              </View>
+            </View>
 
-            <RNPickerSelect
-              onValueChange={(value) => setSunlight(value)}
-              placeholder={{
-                label: 'select direct or indirect',
-              }}
-              style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 20,
-                  right: 10,
-                },
-                placeholder: {
-                  color: 'white',
-                  fontSize: 18,
-                  fontWeight: '300',
-                },
-              }}
-              Icon={() => {
-                return (
-                  <View
-                    style={{
-                      marginLeft: -70,
-                      backgroundColor: 'transparent',
-                      borderTopWidth: 10,
-                      borderTopColor: 'white',
-                      borderRightWidth: 10,
-                      borderRightColor: 'transparent',
-                      borderLeftWidth: 10,
-                      borderLeftColor: 'transparent',
-                      width: 0,
-                      height: 0,
-                    }}
-                  />
-                );
-              }}
-              items={[
-                { label: 'indirect', value: 'indirect' },
-                { label: 'direct', value: 'direct' },
-              ]}
-              value={sunlight}
-            />
+            <View style={styles.input_section_2}>
+              <View style={styles.input_text_container}>
+                <Text style={styles.input_text}>
+                  soil:<Text style={styles.optional}> optional</Text>
+                </Text>
+              </View>
+              <View style={styles.input_container}>
+                <TextInput
+                  onChangeText={(soil) => {
+                    setSoil(soil);
+                  }}
+                  style={styles.input}
+                  placeholder={'e.g. Peat'}
+                  value={soil}
+                />
+              </View>
+            </View>
 
-            <Text style={styles.infoTitle}>location:</Text>
-            <RNPickerSelect
-              // style={pickerSelectStyles}
-              // useNativeAndroidPickerStyle={false}
-              onValueChange={(value) => setLocation(value)}
-              placeholder={{
-                label: 'select indoor or outdoor',
-                // textAlign: 'centre',
-              }}
-              style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 20,
-                  right: 10,
-                },
-                placeholder: {
-                  color: 'white',
-                  fontSize: 18,
-                  fontWeight: '300',
-                  // textAlign: 'center',
-                },
-              }}
-              Icon={() => {
-                return (
-                  <View
-                    style={{
-                      marginLeft: -70,
-                      backgroundColor: 'transparent',
-                      borderTopWidth: 10,
-                      borderTopColor: 'white',
-                      borderRightWidth: 10,
-                      borderRightColor: 'transparent',
-                      borderLeftWidth: 10,
-                      borderLeftColor: 'transparent',
-                      width: 0,
-                      height: 0,
-                    }}
-                  />
-                );
-              }}
-              items={[
-                { label: 'indoor', value: 'indoor' },
-                { label: 'outdoor', value: 'outdoor' },
-              ]}
-              value={location}
-            />
-
-            <Text style={styles.infoTitle}>
-              watering frequency: <Text style={styles.optional}>optional</Text>
-            </Text>
-            <TextInput
-              onChangeText={(freq) => {
-                setWaterFreq(freq);
-              }}
-              style={styles.input}
-              placeholder={'e.g. Once a week'}
-              value={waterFreq}
-            />
-
-            <Text style={styles.infoTitle}>
-              soil:<Text style={styles.optional}> optional</Text>
-            </Text>
-            <TextInput
-              onChangeText={(soil) => {
-                setSoil(soil);
-              }}
-              style={styles.input}
-              placeholder={'e.g. Peat'}
-              value={soil}
-            />
             <TouchableOpacity
               title={'update plant'}
               onPress={updatePlant}
@@ -309,10 +356,36 @@ function EditPlant({ route, navigation }) {
 export default EditPlant;
 
 const styles = StyleSheet.create({
-  titleText: {
-    height: 30,
-    // marginTop: 10,
+  container: {
+    height: 400,
+    shadowOffset: { width: 1, height: 3 },
+    shadowColor: '#355a3a',
+    shadowOpacity: 3,
+    elevation: 2,
+    backgroundColor: '#355a3a',
+    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 50,
     marginBottom: 40,
+  },
+  image: {
+    alignSelf: 'stretch',
+    height: '100%',
+    width: '100%',
+    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 25,
+  },
+  container2: {
+    width: 450,
+    height: 500,
+  },
+  // header_text_container: {
+  //   height: 50,
+  //   // margin: 50,
+  // },
+  titleText: {
+    // height: 30,
+    marginTop: 10,
+    marginBottom: 10,
     fontSize: 40,
     color: '#355a3a',
 
@@ -321,10 +394,37 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'arciform',
   },
-  // logo: {
-  //   width: 350,
-  //   height: 450,
-  // },
+  subHeadingText: {
+    // textAlign: 'center',
+    // marginTop: 10,
+    marginBottom: 20,
+    fontSize: 18,
+    // lineHeight: 24,
+    color: '#355a3a',
+    // width: '80%',
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'arciform',
+  },
+  input_section_2: {
+    marginTop: 40,
+  },
+  input_container: {
+    // padding: '5%',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  input_text_container: {
+    marginLeft: 51,
+    marginBottom: 5,
+  },
+  input_text: {
+    fontSize: 18,
+    color: '#355a3a',
+    fontWeight: '600',
+  },
   input: {
     fontSize: 18,
     fontWeight: '300',
@@ -339,60 +439,27 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 50,
   },
-  autoSet: {
-    fontSize: 18,
-    fontWeight: '300',
-    color: '#355a3a',
+  input_line: {
+    marginTop: -10,
+    width: '75%',
+    height: 1,
+    backgroundColor: '#355a3a',
   },
   optional: {
-    fontSize: 8,
+    fontSize: 10,
     color: 'grey',
   },
   button: {
     color: 'green',
   },
-
-  input_container: {
-    // padding: '5%',
-    //  width: '50vw',
-    alignItems: 'center',
-  },
-  input_text_container: {
-    marginLeft: 51,
-    marginBottom: 5,
-  },
-  input_text: {
-    fontSize: 18,
-    color: '#355a3a',
-    fontWeight: '600',
-  },
   view: {
     flex: 1,
-    alignItems: 'center',
-    paddingTop: 50,
   },
-  subHeadingText: {
-    // marginTop: 10,
-    //marginBottom: 20,
-    fontSize: 30,
-    // lineHeight: 24,
-    color: '#355a3a',
+  button_text_all: {
+    fontSize: 25,
+    color: '#fff',
     textAlign: 'center',
-    fontFamily: 'arciform',
-  },
-  infoTitle: {
-    fontSize: 18,
-    color: '#355a3a',
-    fontWeight: 'bold',
-    padding: 10,
-    paddingTop: 30,
-  },
-  optional: {
-    fontSize: 10,
-    color: '#355a3a',
-    fontWeight: 'bold',
-    padding: 10,
-    paddingTop: 30,
+    fontWeight: '600',
   },
   button_all: {
     backgroundColor: '#fdbe39',
@@ -403,12 +470,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '65%',
     height: 45,
-  },
-  button_text_all: {
-    fontSize: 25,
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
   },
 });
 
