@@ -59,7 +59,7 @@ function Step1({ navigation }) {
 
           <View style={styles.section_1_container}>
             <Text style={[styles.tutorial_1_copy, { flex: 1 }]}>
-              Keep your phone at a 90 degrees angle
+              Keep your phone at a 90 degrees angle.
             </Text>
             <View styles={{ flex: 1 }}>
               <AngleImage width={175} height={200}></AngleImage>
@@ -71,8 +71,9 @@ function Step1({ navigation }) {
               <PlantDistance width={170} height={250}></PlantDistance>
             </View>
             <Text style={[styles.tutorial_2_copy, { flex: 1 }]}>
-              Ensure your plant is positioned in the middle of the screen when
-              taking a photo.
+              When taking a photo of your plant, ensure you are not taking the
+              photo too close, and that your plant and its pot are positioned in
+              the middle of the screen.
             </Text>
           </View>
 
