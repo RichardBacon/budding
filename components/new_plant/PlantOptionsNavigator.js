@@ -14,10 +14,15 @@ function PlantOptionsNavigator({ userId, plant_id, pot_height, route }) {
   let potHeight;
   let user_id;
 
+  console.log(route);
   if (route.params) {
-    if (route.params.params.plant_id) {
-      potHeight = route.params.params.pot_height;
-      plantId = route.params.params.plant_id;
+    if (!route.params.params) {
+      console.log('here');
+    } else {
+      if (route.params.params.plant_id) {
+        potHeight = route.params.params.pot_height;
+        plantId = route.params.params.plant_id;
+      }
     }
   }
   if (plant_id) {
