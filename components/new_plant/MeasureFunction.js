@@ -35,6 +35,7 @@ function MeasureFunction({ route, navigation }) {
   const [loading, isLoading] = useState(true);
 
   console.log(userId, '<--- top of measure func');
+  console.log(plantId, '<--- top of meaure func plantId');
 
   const name = shortid.generate();
   const file = {
@@ -98,7 +99,7 @@ function MeasureFunction({ route, navigation }) {
 
   const navNextPage = () => {
     isLoading(true);
-    console.log(plantId);
+    console.log(plantId, '<--- measure func!');
     // if there's a plantId, send a patch request, then navigate to individual plant page
     // if not, go to new plant entry
     // NEED TO SEND PHOTO TO S3

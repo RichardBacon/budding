@@ -9,16 +9,29 @@ import TutorialNavigator from '../tutorial/TutorialNavigator';
 
 const Stack = createStackNavigator();
 
-function PlantOptionsNavigator({ userId, route: { plant_id, pot_height } }) {
+function PlantOptionsNavigator({ userId, plant_id, pot_height, route }) {
   let plantId;
   let potHeight;
   let user_id;
 
-  if (userId || plant_id || pot_height) {
-    plantId = plant_id;
-    potHeight = pot_height;
+  if (route.params) {
+    if (route.params.params.plant_id) {
+      potHeight = route.params.params.pot_height;
+      plantId = route.params.params.plant_id;
+    }
+  }
+  if (plant_id) {
+    console.log('in if');
+    const { plant_id, pot_height } = route.params;
+  }
+  if (userId) {
     user_id = userId;
   }
+
+  if (pot_height) {
+    potHeight = pot_height;
+  }
+
   return (
     <Stack.Navigator
       screenOptions={{

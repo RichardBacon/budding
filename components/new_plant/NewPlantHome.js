@@ -15,12 +15,13 @@ import * as ImagePicker from 'expo-image-picker';
 import uploadToAnonymousFilesAsync from 'anonymous-files';
 import logo from '../../assets/logo.png';
 
-function NewPlantHome({ plant_id, pot_height, navigation, userId }) {
+function NewPlantHome({ plant_id, pot_height, navigation, userId, route }) {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [imagePickerSelected, setPickerSelected] = React.useState(true);
   const [potHeight, setPotHeight] = useState(pot_height);
   const [plantId, setPlantId] = useState(plant_id);
-  console.log(userId);
+
+  console.log(pot_height, userId, plantId, '<===');
 
   // pass pot height down as a prop, set this as state, and have in input box when loads
 

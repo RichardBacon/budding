@@ -32,7 +32,6 @@ import LoadingGif from '../LoadingGif';
 function PlantPage(props) {
   const { deletingPlant } = props.route.params;
   const { navigation } = props;
-  console.log(props, '<--- plant page');
 
   const {
     plant_id,
@@ -43,6 +42,8 @@ function PlantPage(props) {
     created_at,
     pot_height,
   } = props.route.params.item;
+
+  console.log(pot_height, '<--- plant page');
 
   const [plant, addPlantData] = useState([]);
   const [snapshots, addSnapshotData] = useState(undefined);
@@ -158,8 +159,8 @@ function PlantPage(props) {
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('plant navigator', {
-                  plant_id,
-                  pot_height: plant.pot_height,
+                  screen: 'new plant',
+                  params: { plant_id, pot_height: plant.pot_height },
                 });
               }}
               style={styles.button}

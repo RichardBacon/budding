@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Garden from './Garden';
 import PlantPage from './PlantPage';
@@ -9,10 +9,22 @@ import PlantOptionsNavigator from '../new_plant/PlantOptionsNavigator';
 
 const Stack = createStackNavigator();
 
-function GardenNavigator({ userId, from, route }) {
+function GardenNavigator({ userId, plant_id, from, route }) {
+  let potHeight;
+  let plantId;
+
   if (!userId) {
     let userId = route.params.userId;
   }
+
+  if (!route.params) {
+    plantId = null;
+    potHeight = null;
+  } else {
+    potHeight = route.params.pot_height;
+    plantId = route.params.plantId;
+  }
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -44,7 +56,12 @@ function GardenNavigator({ userId, from, route }) {
       />
       <Stack.Screen name="plant navigator" options={{ headerShown: false }}>
         {(navigation) => (
-          <PlantOptionsNavigator {...navigation} userId={userId} />
+          <PlantOptionsNavigator
+            {...navigation}
+            userId={userId}
+            pot_height={potHeight}
+            plant_id={plantId}
+          />
         )}
       </Stack.Screen>
 
