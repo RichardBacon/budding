@@ -9,6 +9,7 @@ While there are currently many apps that can identify a plant, or remind you to 
 This is the repository for the front-end of our app, which was built using React Native, Expo, React Navigation, and s3. Requests are made to our back-end API using Axios.
 
 Our API can be found here https://budding-back-end.herokuapp.com/api
+
 Our Budding back-end repository can be found here https://github.com/budding-team/budding-back-end/
 
 ## Prerequisites
@@ -16,12 +17,13 @@ Our Budding back-end repository can be found here https://github.com/budding-tea
 To run the app, you will need either:
 
 - Android Studio Emulator or Xcode
-- An iOS or Android phone.
+- An iOS or Android phone
 
 If running the app on a mobile phone, you will need to download the Expo app from Google Play or the App Store.
 You do not need an Expo account to run the app.
 
 Instructions for how to use emulators with Expo can be found in Expo's documentation:
+
 https://docs.expo.io/workflow/android-studio-emulator/
 https://docs.expo.io/workflow/ios-simulator/
 
@@ -35,7 +37,8 @@ To install the global Expo CLI:
 
 `npm install -g expo-cli`
 
-##Getting started##
+## Getting started
+
 To run the app with Expo, run:
 
 `npm start`
