@@ -200,10 +200,10 @@ function MeasureFunction({ route, navigation }) {
             {pressCount.current === 0
               ? `Place your first marker at the bottom of the pot`
               : pressCount.current === 1
-              ? `Place your second marker at the top of the pot`
+              ? `Place your second marker at the top of the front rim of the pot`
               : pressCount.current === 2
               ? `Place your third marker at the top of the plant`
-              : `Confirm your measurements`}
+              : `Bloomin' marvellous! You can now hit the submit button below`}
           </Text>
         </View>
         <Image
@@ -249,7 +249,7 @@ function MeasureFunction({ route, navigation }) {
             onPress={calculateDistance}
             style={styles.top_button_select}
           >
-            <Text style={styles.buttonText}>calculate</Text>
+            <Text style={styles.buttonText}>submit</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={resetMeasure} style={styles.button}>
