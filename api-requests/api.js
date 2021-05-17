@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://budding-back-end.herokuapp.com/api';
+const baseURL = 'https://budding-api.herokuapp.com/api';
 
 export const getUsers = () => {
   return axios.get(`${baseURL}/users`).then(({ data }) => {
@@ -41,7 +41,7 @@ export const postPlant = (
   location,
   watering_freq,
   plant_variety,
-  pot_height,
+  pot_height
 ) => {
   return axios
     .post(`${baseURL}/users/${user_id}/plants`, {
@@ -74,7 +74,7 @@ export const patchPlantById = (
   location,
   watering_freq,
   plant_variety,
-  pot_height,
+  pot_height
 ) => {
   return axios
     .patch(`${baseURL}/plants/${plant_id}`, {
@@ -87,13 +87,15 @@ export const patchPlantById = (
       plant_variety,
       pot_height,
     })
-    .then(({status, data: {plant}}) => {
-      return {status, plant}
+    .then(({ status, data: { plant } }) => {
+      return { status, plant };
     });
 };
 
 export const deletePlantById = (plant_id) => {
-  return axios.delete(`${baseURL}/plants/${plant_id}`).then((response) => {return response})
+  return axios.delete(`${baseURL}/plants/${plant_id}`).then((response) => {
+    return response;
+  });
 };
 
 export const getSnapshotsByPlantId = (plant_id) => {
